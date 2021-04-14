@@ -5,12 +5,13 @@ import 'package:Decon/Controller/Utils/sizeConfig.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 class Updatelocation extends StatefulWidget {
   final BuildContext menuScreenContext;
   //final List<DeviceData> allDeviceList;
-  Updatelocation({Key key, this.menuScreenContext,})
-      : super(key: key);
+  Updatelocation({
+    Key key,
+    this.menuScreenContext,
+  }) : super(key: key);
 
   @override
   _Updatelocation createState() => _Updatelocation();
@@ -47,14 +48,13 @@ class _Updatelocation extends State<Updatelocation> {
         title: Text("Update Location"),
       ),
       body: Container(
-        child: Consumer<ChangeCity>(
-          builder: (context, changeList, child){
-            _filteredDeviceData = [];
-            changeList.allDeviceData.forEach((element) {
+        child: Consumer<ChangeCity>(builder: (context, changeList, child) {
+          _filteredDeviceData = [];
+          changeList.allDeviceData.forEach((element) {
             _filteredDeviceData.add(element);
-            });
-    
-            return Column(
+          });
+
+          return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: SizeConfig.v * 3),
@@ -62,7 +62,6 @@ class _Updatelocation extends State<Updatelocation> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Container(
-                    alignment: Alignment.center,
                     width: SizeConfig.b * 89.06,
                     child: TextField(
                       onChanged: (value) {
@@ -88,27 +87,23 @@ class _Updatelocation extends State<Updatelocation> {
                       },
                       style: TextStyle(fontSize: SizeConfig.b * 4.3),
                       decoration: InputDecoration(
-                        fillColor: Color(0xffDEE0E0),
-                        filled: true,
+                        prefixIcon: Icon(
+                          Icons.search,
+                          size: 24.0,
+                        ),
                         isDense: true,
-                        hintText: 'Search by DeviceID/ location',
+                        hintText: 'Search by Device ID / location',
                         hintStyle: TextStyle(fontSize: SizeConfig.b * 4),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color(0xffDEE0E0),
-                          ),
-                          borderRadius: BorderRadius.circular(25.7),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color(0xffDEE0E0),
-                          ),
-                          borderRadius: BorderRadius.circular(25.7),
-                        ),
+                        filled: true,
+                        fillColor: Color(0xffDEE0E0),
                         border: InputBorder.none,
-                        prefixIcon: IconButton(
-                          onPressed: null,
-                          icon: Icon(Icons.search),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(60.0)),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(60.0)),
+                          borderSide: BorderSide.none,
                         ),
                       ),
                     ),
@@ -185,8 +180,9 @@ class _Updatelocation extends State<Updatelocation> {
                                                 horizontal: SizeConfig.b * 2),
                                             color: Color(0xff263238),
                                             shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(
-                                                  SizeConfig.b * 1.3),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      SizeConfig.b * 1.3),
                                             ),
                                             //onPressed: null,
                                             onPressed: () {
@@ -213,8 +209,7 @@ class _Updatelocation extends State<Updatelocation> {
               ),
             ],
           );
-          }
-        ),
+        }),
       ),
     );
   }

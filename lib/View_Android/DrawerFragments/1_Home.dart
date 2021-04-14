@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
-
 class Home extends StatefulWidget {
   Home();
   @override
@@ -36,27 +35,29 @@ class HomeState extends State<Home> {
 
   _animateMap(double lat, double lon) async {
     GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(lat,lon),
-        zoom: 8.0)));
+    controller.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(target: LatLng(lat, lon), zoom: 8.0)));
   }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    
 
     return Scaffold(
       body: Consumer<ChangeCity>(
-        builder: (context, changeList, child){
-          if (VariableGlobal.iscitychanged && changeList.allDeviceData.length != 0) {
-           _animateMap(changeList.allDeviceData[0].latitude, changeList.allDeviceData[0].longitude);
-           }
+        builder: (context, changeList, child) {
+          if (VariableGlobal.iscitychanged &&
+              changeList.allDeviceData.length != 0) {
+            _animateMap(changeList.allDeviceData[0].latitude,
+                changeList.allDeviceData[0].longitude);
+          }
           return Stack(
-                 children: <Widget>[googlemap(context, changeList.allDeviceData), 
-                             searchBar(changeList.allDeviceData), 
-                             showBottomLayout(changeList.allDeviceData)],
-        );
+            children: <Widget>[
+              googlemap(context, changeList.allDeviceData),
+              searchBar(changeList.allDeviceData),
+              showBottomLayout(changeList.allDeviceData)
+            ],
+          );
         },
       ),
     );
@@ -94,11 +95,11 @@ class HomeState extends State<Home> {
                   prefixIcon: Icon(
                     Icons.search,
                     color: Colors.black,
-                    size: 28.0,
+                    size: SizeConfig.screenHeight * 20 / 640,
                   ),
                   contentPadding:
                       EdgeInsets.only(top: SizeConfig.screenHeight * 9 / 640),
-                  hintText: 'Search by Device/ ID/ location',
+                  hintText: 'Search by Device ID / location',
                   hintStyle: TextStyle(
                       fontSize: SizeConfig.b * 4, color: Colors.black),
                   border: InputBorder.none,
@@ -113,7 +114,7 @@ class HomeState extends State<Home> {
 
   Widget googlemap(BuildContext context, List<DeviceData> allDeviceData) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.50,
+      height: MediaQuery.of(context).size.height * 0.55,
       child: GoogleMap(
         mapType: MapType.normal,
         initialCameraPosition: CameraPosition(target: _latLng, zoom: _value),

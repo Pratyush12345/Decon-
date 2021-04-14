@@ -18,7 +18,6 @@ class LocationDialog extends StatefulWidget {
   _LocationDialog createState() => _LocationDialog();
 }
 
-
 class _LocationDialog extends State<LocationDialog> {
   Position position;
   bool _isChanged = false;
@@ -51,22 +50,18 @@ class _LocationDialog extends State<LocationDialog> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Card(
-        margin: EdgeInsets.fromLTRB(
-            SizeConfig.screenWidth * 0.05,
-            SizeConfig.screenHeight * 0.2,
-            SizeConfig.screenWidth * 0.05,
-            SizeConfig.screenHeight * 0.21),
-        elevation: 5,
-        color: Color(0xff263238),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(SizeConfig.b * 2.25),
-        ),
-        child: Container(
-          padding: EdgeInsets.fromLTRB(SizeConfig.b * 2.5, SizeConfig.v * 3.0,
-              SizeConfig.b * 2.5, SizeConfig.v * 3),
-          child: Column(children: [
-            SizedBox(height: SizeConfig.v * 1.5),
+    return Dialog(
+      elevation: 4,
+      backgroundColor: Color(0xff263238),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(SizeConfig.b * 2.25),
+      ),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: SizeConfig.b * 2.5),
+        height: SizeConfig.screenHeight * 260 / 640,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -98,7 +93,6 @@ class _LocationDialog extends State<LocationDialog> {
                 ),
               ],
             ),
-            SizedBox(height: SizeConfig.v * 2.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -131,15 +125,45 @@ class _LocationDialog extends State<LocationDialog> {
                 ),
               ],
             ),
-            SizedBox(height: SizeConfig.v * 2.5),
-            Container(
-                width: 200,
-                child: Text(
-                    "Are You sure?\nLocation of ${widget.cityid.split("_")[2].replaceAll("D", "Device ")} is :",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white, fontSize: SizeConfig.b * 4.09))),
-            SizedBox(height: SizeConfig.v * 2.5),
+            Column(
+              children: [
+                Text(
+                  'Are you sure?',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: SizeConfig.screenHeight * 11 / 640),
+                ),
+                Container(
+                  width: SizeConfig.screenWidth * 250 / 360,
+                  child: Center(
+                    child: Text.rich(
+                      TextSpan(
+                        text: 'Location of ',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: SizeConfig.screenHeight * 11 / 640),
+                        children: [
+                          TextSpan(
+                            text:
+                                '${widget.cityid.split("_")[2].replaceAll("D", "Device ")}',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w800,
+                                fontSize: SizeConfig.screenHeight * 12 / 640),
+                          ),
+                          TextSpan(
+                            text: ' is:',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: SizeConfig.screenHeight * 11 / 640),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
             Container(
               width: 340,
               child: TextField(
@@ -165,7 +189,6 @@ class _LocationDialog extends State<LocationDialog> {
                 style: TextStyle(fontSize: SizeConfig.b * 4.09),
               ),
             ),
-            SizedBox(height: SizeConfig.v * 4),
             SizedBox(
               child: MaterialButton(
                 padding: EdgeInsets.zero,
@@ -198,7 +221,6 @@ class _LocationDialog extends State<LocationDialog> {
                 ),
               ),
             ),
-            SizedBox(height: SizeConfig.v * 2.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -258,7 +280,9 @@ class _LocationDialog extends State<LocationDialog> {
                                     fontWeight: FontWeight.w400))))),
               ],
             ),
-          ]),
-        ));
+          ],
+        ),
+      ),
+    );
   }
 }

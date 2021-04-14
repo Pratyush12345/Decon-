@@ -24,6 +24,7 @@ const tc = Color(0xff263238);
 class _PeopleForAdmin extends State<PeopleForAdmin> {
   DelegateModel _delegateModel;
   String ccode;
+  bool _teamSearchBar = false;
   _loadFromDatabase() async {
     try {
       DataSnapshot snapshot = await FirebaseDatabase.instance
@@ -99,7 +100,21 @@ class _PeopleForAdmin extends State<PeopleForAdmin> {
     return Scaffold(
       appBar: widget.fromManager
           ? AppBar(
-              title: Text("Admin Team"),
+              title: Text(
+                "Admin Team",
+                style: TextStyle(color: Color(0xff263832)),
+              ),
+              backgroundColor: Colors.white,
+              elevation: 2,
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Color(0xff263832),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
             )
           : PreferredSize(
               preferredSize: Size.fromHeight(0.0),
@@ -110,6 +125,7 @@ class _PeopleForAdmin extends State<PeopleForAdmin> {
       floatingActionButton: Auth.instance.post == "Admin" || widget.fromManager
           ? FloatingActionButton(
               backgroundColor: Color(0xff0099FF),
+              elevation: 2,
               onPressed: () {
                 showDelegatesDialog(context);
               },
@@ -130,97 +146,144 @@ class _PeopleForAdmin extends State<PeopleForAdmin> {
               Expanded(
                 flex: 3,
                 child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: SizeConfig.b * 45.81,
-                        child: Text(
-                          "${_delegateModel?.name ?? Auth.instance.displayName}",
-                          style: TextStyle(
-                              fontSize: SizeConfig.b * 5.1,
-                              fontWeight: FontWeight.w700),
-                        ),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: SizeConfig.b * 45.81,
+                      child: Text(
+                        "${_delegateModel?.name ?? Auth.instance.displayName}",
+                        style: TextStyle(
+                            fontSize: SizeConfig.b * 5.1,
+                            fontWeight: FontWeight.w700),
                       ),
-                      SizedBox(height: SizeConfig.v * 1),
-                      Text(
-                          _delegateModel?.post != null
-                              ? "${_delegateModel?.post?.split("@")[1]}"
-                              : Auth.instance.post,
-                          style: TextStyle(fontSize: SizeConfig.b * 3.56)),
-                      SizedBox(height: SizeConfig.v * 1),
-                      Row(children: [
+                    ),
+                    Text(
+                      _delegateModel?.post != null
+                          ? "${_delegateModel?.post?.split("@")[1]}"
+                          : Auth.instance.post,
+                      style: TextStyle(fontSize: SizeConfig.b * 3.56),
+                    ),
+                    SizedBox(
+                      height: SizeConfig.screenHeight * 4 / 640,
+                    ),
+                    Row(
+                      children: [
                         Container(
-                            height: SizeConfig.v * 2.57,
-                            width: SizeConfig.b * 4.58,
+                            height: SizeConfig.b * 5,
+                            width: SizeConfig.b * 5,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(SizeConfig.b * 1.2),
+                                color: Color(0x804ADB58)),
                             child: IconButton(
                                 onPressed: null,
                                 padding: EdgeInsets.zero,
                                 icon: Icon(Icons.call,
-                                    color: Colors.green,
-                                    size: SizeConfig.b * 4))),
+                                    color: Colors.white,
+                                    size: SizeConfig.b * 3.5))),
                         SizedBox(width: SizeConfig.b * 3),
                         Text(
                             "${_delegateModel?.numb ?? FirebaseAuth.instance.currentUser.phoneNumber}",
                             style: TextStyle(fontSize: SizeConfig.b * 3.56)),
-                      ])
-                    ]),
+                      ],
+                    )
+                  ],
+                ),
               ),
               Spacer(),
               Expanded(
                 flex: 2,
                 child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("${_delegateModel?.cityName ?? ""}",
-                          style: TextStyle(
-                              fontSize: SizeConfig.b * 4.7,
-                              fontWeight: FontWeight.w700)),
-                      SizedBox(height: SizeConfig.v * 0.5),
-                      Text("${_delegateModel?.stateName ?? ""}",
-                          style: TextStyle(
-                              fontSize: SizeConfig.b * 4.7,
-                              fontWeight: FontWeight.w700)),
-                    ]),
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      "${_delegateModel?.cityName ?? ""}",
+                      style: TextStyle(
+                          fontSize: SizeConfig.screenHeight * 12 / 640,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    Text(
+                      "${_delegateModel?.stateName ?? ""}",
+                      style: TextStyle(
+                          fontSize: SizeConfig.screenHeight * 12 / 640,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(width: SizeConfig.b * 5),
             ]),
-            SizedBox(height: SizeConfig.v * 1),
+            SizedBox(height: SizeConfig.v * 2),
+            Divider(
+              color: Colors.black,
+              thickness: 0.4,
+              indent: 15,
+              endIndent: 15,
+            ),
             Expanded(
               child: Container(
-                color: Color(0xff263238),
-                padding: EdgeInsets.symmetric(
-                    horizontal: SizeConfig.b * 5.1,
-                    vertical: SizeConfig.v * 2.85),
                 child: Column(
                   children: [
-                    Row(children: [
-                      Text("Team",
-                          style: TextStyle(
-                              fontSize: SizeConfig.b * 5.1,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white)),
-                      Spacer(),
-                      Container(
-                        alignment: Alignment.center,
-                        padding:
-                            EdgeInsets.fromLTRB(SizeConfig.b * 5.09, 0, 0, 0),
-                        width: SizeConfig.b * 50,
-                        decoration: BoxDecoration(
-                            color: Color(0xffDEE0E0),
-                            borderRadius:
-                                BorderRadius.circular(SizeConfig.b * 1)),
-                        child: TextField(
-                          style: TextStyle(fontSize: SizeConfig.b * 4),
-                          decoration: InputDecoration(
-                            isDense: true,
-                            hintText: 'Search by Name/Contact',
-                            hintStyle: TextStyle(fontSize: SizeConfig.b * 3.7),
-                            border: InputBorder.none,
-                          ),
-                        ),
-                      ),
-                    ]),
-                    SizedBox(height: SizeConfig.v * 3),
+                    SizedBox(
+                      height: SizeConfig.screenHeight * 10 / 640,
+                    ),
+                    Row(
+                      mainAxisAlignment: _teamSearchBar
+                          ? MainAxisAlignment.spaceAround
+                          : MainAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        _teamSearchBar
+                            ? Container(
+                                width: SizeConfig.screenWidth * 320 / 360,
+                                height: SizeConfig.screenHeight * 30 / 640,
+                                child: TextField(
+                                  style:
+                                      TextStyle(fontSize: SizeConfig.b * 4.3),
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.search_rounded,
+                                      size: 20,
+                                    ),
+                                    isDense: true,
+                                    filled: true,
+                                    fillColor: Color(0xffDEE0E0),
+                                    hintText: 'Search by Name / Contact',
+                                    hintStyle:
+                                        TextStyle(fontSize: SizeConfig.b * 4),
+                                    border: InputBorder.none,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(SizeConfig.b * 1.1)),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(SizeConfig.b * 1.1)),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Padding(
+                                padding: EdgeInsets.only(
+                                  right: SizeConfig.b * 5.1,
+                                ),
+                                child: IconButton(
+                                    icon: Icon(
+                                      Icons.search_rounded,
+                                      color: Color(0xff263238),
+                                      size: SizeConfig.screenHeight * 22 / 640,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _teamSearchBar = !_teamSearchBar;
+                                      });
+                                    }),
+                              ),
+                      ],
+                    ),
+                    SizedBox(height: SizeConfig.v * 2),
                     Expanded(
                       child: SingleChildScrollView(
                         physics: ScrollPhysics(),
@@ -297,95 +360,85 @@ class _PeopleForAdmin extends State<PeopleForAdmin> {
                                           }
                                         });
                                       },
-                                      child: Column(children: [
-                                        Container(
-                                            decoration: BoxDecoration(
-                                              color: Color(0x35C4C4C4),
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      SizeConfig.b * 1.2),
+                                      child: Padding(
+                                        padding: EdgeInsets.fromLTRB(
+                                            SizeConfig.b * 5.1,
+                                            SizeConfig.v * 1,
+                                            SizeConfig.b * 5.1,
+                                            0),
+                                        child: Material(
+                                          color: Color(0xffececec),
+                                          elevation: 2,
+                                          borderRadius: BorderRadius.circular(
+                                              SizeConfig.b * 1.2),
+                                          child: Container(
+                                            padding: EdgeInsets.fromLTRB(
+                                                SizeConfig.b * 5.1,
+                                                SizeConfig.v * 1,
+                                                SizeConfig.b * 5.1,
+                                                SizeConfig.v * 1),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      _listofdelegates[index]
+                                                          .name,
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize:
+                                                              SizeConfig.b *
+                                                                  4.4,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                    Text(
+                                                      _listofdelegates[index]
+                                                          .post,
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize:
+                                                              SizeConfig.b *
+                                                                  3.2),
+                                                    ),
+                                                    Text(
+                                                      _listofdelegates[index]
+                                                          .numb,
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize:
+                                                              SizeConfig.b *
+                                                                  3.2),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            SizeConfig.b * 1.2),
+                                                    color: Color(0x804ADB58),
+                                                  ),
+                                                  height: SizeConfig.v * 3.5,
+                                                  width: SizeConfig.v * 3.5,
+                                                  child: IconButton(
+                                                    onPressed: null,
+                                                    padding: EdgeInsets.zero,
+                                                    icon: Icon(Icons.call,
+                                                        color: Colors.white,
+                                                        size: SizeConfig.b * 4),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: SizeConfig.b * 5.1,
-                                                vertical: SizeConfig.v * 0.8),
-                                            child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(children: [
-                                                    Container(
-                                                        width: SizeConfig.b *
-                                                            45,
-                                                        child: Text(
-                                                            _listofdelegates[
-                                                                    index]
-                                                                .name,
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize:
-                                                                    SizeConfig
-                                                                            .b *
-                                                                        4.071,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400))),
-                                                    Spacer(),
-                                                    Text(
-                                                        _listofdelegates[index]
-                                                            .post
-                                                            .split("@")[0],
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize:
-                                                                SizeConfig.b *
-                                                                    3.054,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w400)),
-                                                  ]),
-                                                  SizedBox(
-                                                      height: SizeConfig.v * 1),
-                                                  Row(children: [
-                                                    Container(
-                                                        height:
-                                                            SizeConfig.b * 4,
-                                                        width:
-                                                            SizeConfig.b * 4.58,
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                                    SizeConfig
-                                                                            .b *
-                                                                        1.2),
-                                                            color: Color(
-                                                                0x804ADB58)),
-                                                        child: IconButton(
-                                                            onPressed: null,
-                                                            padding:
-                                                                EdgeInsets.zero,
-                                                            icon: Icon(
-                                                                Icons.call,
-                                                                color: Colors
-                                                                    .white,
-                                                                size: SizeConfig
-                                                                        .b *
-                                                                    3.5))),
-                                                    SizedBox(
-                                                        width:
-                                                            SizeConfig.b * 3),
-                                                    Text(
-                                                        _listofdelegates[index]
-                                                            .numb,
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize:
-                                                                SizeConfig.b *
-                                                                    3.56)),
-                                                  ]),
-                                                ])),
-                                        SizedBox(height: SizeConfig.v * 1),
-                                      ]),
+                                          ),
+                                        ),
+                                      ),
                                     );
                                   });
                             } else {
