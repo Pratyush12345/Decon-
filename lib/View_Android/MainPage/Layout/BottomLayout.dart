@@ -78,212 +78,241 @@ class BottomLayoutState extends State<BottomLayout>
         //     data: data,
         //     child:
         AnimatedBuilder(
-            animation: animationController,
-            builder: (BuildContext context, Widget child) {
-              return Container(
-                width: SizeConfig.b * 98,
-                padding: EdgeInsets.fromLTRB(
-                    SizeConfig.b * 2.6, 0, SizeConfig.b * 2.6, 0),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(SizeConfig.b * 3.81),
-                    color: Color(0xff263238)),
-                child: Column(children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: SizeConfig.b * 1.8,
-                        vertical: SizeConfig.v * 1),
-                    child: Text(
-                      "Total Devices With",
-                      style: TextStyle(
-                          fontSize: SizeConfig.b * 4.1, color: Colors.white),
-                    ),
-                  ),
-                  SizedBox(height: SizeConfig.v * 1.5),
-                  Row(children: [
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                              width: SizeConfig.b * 45.8,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: SizeConfig.b * 1.8,
-                                  vertical: SizeConfig.v * 1),
-                              child: Row(
-                                children: [
-                                  Row(children: [
-                                    CircleAvatar(
-                                        backgroundColor: Color(0xffD93D3D),
-                                        radius: SizeConfig.b * 1.6),
-                                    SizedBox(width: SizeConfig.b * 2),
-                                    Text("Critical Level",
-                                        style: TextStyle(
-                                            fontSize: SizeConfig.b * 3.05,
-                                            color: Colors.white)),
-                                  ]),
-                                  Spacer(),
-                                  Text("${criticalAnimation.value}",
-                                      style: TextStyle(
-                                          fontSize: SizeConfig.b * 3.05,
-                                          color: Colors.white))
-                                ],
-                              )),
-                          SizedBox(height: SizeConfig.v * 0.5),
-                          Container(
-                              width: SizeConfig.b * 45.8,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: SizeConfig.b * 1.8,
-                                  vertical: SizeConfig.v * 1),
-                              child: Row(
-                                children: [
-                                  Row(children: [
-                                    CircleAvatar(
-                                        backgroundColor: Color(0xffE1E357),
-                                        radius: SizeConfig.b * 1.5),
-                                    SizedBox(width: SizeConfig.b * 2),
-                                    Text("Informative Level",
-                                        style: TextStyle(
-                                            fontSize: SizeConfig.b * 3.05,
-                                            color: Colors.white)),
-                                  ]),
-                                  Spacer(),
-                                  Text("${informativeAnimation.value}",
-                                      style: TextStyle(
-                                          fontSize: SizeConfig.b * 3.05,
-                                          color: Colors.white))
-                                ],
-                              )),
-                          SizedBox(height: SizeConfig.v * 0.5),
-                          Container(
-                              width: SizeConfig.b * 45.8,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: SizeConfig.b * 1.8,
-                                  vertical: SizeConfig.v * 1),
-                              child: Row(
-                                children: [
-                                  Row(children: [
-                                    CircleAvatar(
-                                        backgroundColor: Color(0xff69D66D),
-                                        radius: SizeConfig.b * 1.5),
-                                    SizedBox(width: SizeConfig.b * 2),
-                                    Text("Normal Level",
-                                        style: TextStyle(
-                                            fontSize: SizeConfig.b * 3.05,
-                                            color: Colors.white)),
-                                  ]),
-                                  Spacer(),
-                                  Text("${normalAnimation.value}",
-                                      style: TextStyle(
-                                          fontSize: SizeConfig.b * 3.05,
-                                          color: Colors.white))
-                                ],
-                              )),
-                          SizedBox(height: SizeConfig.v * 0.5),
-                          Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: SizeConfig.b * 1.8,
-                                  vertical: SizeConfig.v * 1),
-                              width: SizeConfig.b * 45.8,
-                              child: Row(
-                                children: [
-                                  Row(children: [
-                                    CircleAvatar(
-                                        backgroundColor: Color(0xffC4C4C4),
-                                        radius: SizeConfig.b * 1.4),
-                                    SizedBox(width: SizeConfig.b * 2),
-                                    Text("Ground Level",
-                                        style: TextStyle(
-                                            fontSize: SizeConfig.b * 3.05,
-                                            color: Colors.white)),
-                                  ]),
-                                  Spacer(),
-                                  Text("${groundAnimation.value}",
-                                      style: TextStyle(
-                                          fontSize: SizeConfig.b * 3.05,
-                                          color: Colors.white))
-                                ],
-                              )),
-                        ]),
-                    Spacer(),
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
+      animation: animationController,
+      builder: (BuildContext context, Widget child) {
+        return Container(
+          width: SizeConfig.b * 98,
+          padding:
+              EdgeInsets.fromLTRB(SizeConfig.b * 2.6, 0, SizeConfig.b * 2.6, 0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(SizeConfig.b * 3.81),
+            color: Color(0xff263238),
+          ),
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.b * 1.8, vertical: SizeConfig.v * 1),
+                child: Text(
+                  "Total Devices With",
+                  style: TextStyle(
+                      fontSize: SizeConfig.b * 4.1, color: Colors.white),
+                ),
+              ),
+              SizedBox(height: SizeConfig.v * 1.5),
+              Row(
+                children: [
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                            width: SizeConfig.b * 45.8,
                             padding: EdgeInsets.symmetric(
                                 horizontal: SizeConfig.b * 1.8,
                                 vertical: SizeConfig.v * 1),
-                            decoration: BoxDecoration(
-                              color: Color(0xff5F6265),
-                              borderRadius:
-                                  BorderRadius.circular(SizeConfig.b * 7.64),
+                            child: Row(
+                              children: [
+                                Row(children: [
+                                  CircleAvatar(
+                                      backgroundColor: Color(0xffD93D3D),
+                                      radius: SizeConfig.b * 1.6),
+                                  SizedBox(width: SizeConfig.b * 2),
+                                  Text("Critical Level",
+                                      style: TextStyle(
+                                          fontSize: SizeConfig.b * 3.05,
+                                          color: Colors.white)),
+                                ]),
+                                Spacer(),
+                                Text("${criticalAnimation.value}",
+                                    style: TextStyle(
+                                        fontSize: SizeConfig.b * 3.05,
+                                        color: Colors.white))
+                              ],
+                            )),
+                        SizedBox(height: SizeConfig.v * 0.5),
+                        Container(
+                            width: SizeConfig.b * 45.8,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: SizeConfig.b * 1.8,
+                                vertical: SizeConfig.v * 1),
+                            child: Row(
+                              children: [
+                                Row(children: [
+                                  CircleAvatar(
+                                      backgroundColor: Color(0xffE1E357),
+                                      radius: SizeConfig.b * 1.5),
+                                  SizedBox(width: SizeConfig.b * 2),
+                                  Text("Informative Level",
+                                      style: TextStyle(
+                                          fontSize: SizeConfig.b * 3.05,
+                                          color: Colors.white)),
+                                ]),
+                                Spacer(),
+                                Text("${informativeAnimation.value}",
+                                    style: TextStyle(
+                                        fontSize: SizeConfig.b * 3.05,
+                                        color: Colors.white))
+                              ],
+                            )),
+                        SizedBox(height: SizeConfig.v * 0.5),
+                        Container(
+                            width: SizeConfig.b * 45.8,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: SizeConfig.b * 1.8,
+                                vertical: SizeConfig.v * 1),
+                            child: Row(
+                              children: [
+                                Row(children: [
+                                  CircleAvatar(
+                                      backgroundColor: Color(0xff69D66D),
+                                      radius: SizeConfig.b * 1.5),
+                                  SizedBox(width: SizeConfig.b * 2),
+                                  Text("Normal Level",
+                                      style: TextStyle(
+                                          fontSize: SizeConfig.b * 3.05,
+                                          color: Colors.white)),
+                                ]),
+                                Spacer(),
+                                Text("${normalAnimation.value}",
+                                    style: TextStyle(
+                                        fontSize: SizeConfig.b * 3.05,
+                                        color: Colors.white))
+                              ],
+                            )),
+                        SizedBox(height: SizeConfig.v * 0.5),
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: SizeConfig.b * 1.8,
+                                vertical: SizeConfig.v * 1),
+                            width: SizeConfig.b * 45.8,
+                            child: Row(
+                              children: [
+                                Row(children: [
+                                  CircleAvatar(
+                                      backgroundColor: Color(0xffC4C4C4),
+                                      radius: SizeConfig.b * 1.4),
+                                  SizedBox(width: SizeConfig.b * 2),
+                                  Text("Ground Level",
+                                      style: TextStyle(
+                                          fontSize: SizeConfig.b * 3.05,
+                                          color: Colors.white)),
+                                ]),
+                                Spacer(),
+                                Text("${groundAnimation.value}",
+                                    style: TextStyle(
+                                        fontSize: SizeConfig.b * 3.05,
+                                        color: Colors.white))
+                              ],
+                            )),
+                      ]),
+                  Spacer(),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: SizeConfig.b * 1.8,
+                            vertical: SizeConfig.v * 1),
+                        decoration: BoxDecoration(
+                          color: Color(0xff5F6265),
+                          borderRadius:
+                              BorderRadius.circular(SizeConfig.b * 7.64),
+                        ),
+                        width: SizeConfig.b * 44,
+                        child: Row(
+                          children: [
+                            SizedBox(width: SizeConfig.b * 4),
+                            Text(
+                              "Open Manholes",
+                              style: TextStyle(
+                                  fontSize: SizeConfig.b * 3.05,
+                                  color: Colors.white),
                             ),
-                            width: SizeConfig.b * 44,
-                            child: Row(children: [
-                              SizedBox(width: SizeConfig.b * 4),
-                              Text(
-                                "Open Manholes",
-                                style: TextStyle(
-                                    fontSize: SizeConfig.b * 3.05,
-                                    color: Colors.white),
+                            Spacer(),
+                            Text(
+                              '5',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
                               ),
-                              Spacer(),
-                              CircleAvatar(
-                                  backgroundColor: Color(0xffC4C4C4),
-                                  radius: SizeConfig.b * 2.5),
-                            ]),
-                          ),
-                          SizedBox(height: SizeConfig.v * 1.5),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: SizeConfig.b * 1.8,
-                                vertical: SizeConfig.v * 1),
-                            decoration: BoxDecoration(
-                              color: Color(0xff5F6265),
-                              borderRadius:
-                                  BorderRadius.circular(SizeConfig.b * 7.64),
                             ),
-                            width: SizeConfig.b * 44,
-                            child: Row(children: [
-                              SizedBox(width: SizeConfig.b * 4),
-                              Text("High Temperature",
-                                  style: TextStyle(
-                                      fontSize: SizeConfig.b * 3.05,
-                                      color: Colors.white)),
-                              Spacer(),
-                              CircleAvatar(
-                                  child: Text(""),
-                                  backgroundColor: Color(0xffC4C4C4),
-                                  radius: SizeConfig.b * 2.6),
-                            ]),
-                          ),
-                          SizedBox(height: SizeConfig.v * 1.5),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: SizeConfig.b * 1.8,
-                                vertical: SizeConfig.v * 1),
-                            decoration: BoxDecoration(
-                              color: Color(0xff5F6265),
-                              borderRadius:
-                                  BorderRadius.circular(SizeConfig.b * 7.64),
+                            SizedBox(width: SizeConfig.b * 2),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: SizeConfig.v * 1.5),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: SizeConfig.b * 1.8,
+                            vertical: SizeConfig.v * 1),
+                        decoration: BoxDecoration(
+                          color: Color(0xff5F6265),
+                          borderRadius:
+                              BorderRadius.circular(SizeConfig.b * 7.64),
+                        ),
+                        width: SizeConfig.b * 44,
+                        child: Row(
+                          children: [
+                            SizedBox(width: SizeConfig.b * 4),
+                            Text(
+                              "High Temperature",
+                              style: TextStyle(
+                                  fontSize: SizeConfig.b * 3.05,
+                                  color: Colors.white),
                             ),
-                            width: SizeConfig.b * 44,
-                            child: Row(children: [
-                              SizedBox(width: SizeConfig.b * 4),
-                              Text("Insufficient Energy",
-                                  style: TextStyle(
-                                      fontSize: SizeConfig.b * 3.05,
-                                      color: Colors.white)),
-                              Spacer(),
-                              CircleAvatar(
-                                  child: Text("$countbattery"),
-                                  backgroundColor: Color(0xffC4C4C4),
-                                  radius: SizeConfig.b * 2.6),
-                            ]),
-                          ),
-                        ])
-                  ])
-                ]),
-              );
-            });
+                            Spacer(),
+                            Text(
+                              '5',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            SizedBox(width: SizeConfig.b * 2),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: SizeConfig.v * 1.5),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: SizeConfig.b * 1.8,
+                            vertical: SizeConfig.v * 1),
+                        decoration: BoxDecoration(
+                          color: Color(0xff5F6265),
+                          borderRadius:
+                              BorderRadius.circular(SizeConfig.b * 7.64),
+                        ),
+                        width: SizeConfig.b * 44,
+                        child: Row(
+                          children: [
+                            SizedBox(width: SizeConfig.b * 4),
+                            Text(
+                              "Insufficient Energy",
+                              style: TextStyle(
+                                  fontSize: SizeConfig.b * 3.05,
+                                  color: Colors.white),
+                            ),
+                            Spacer(),
+                            Text(
+                              '$countbattery',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            SizedBox(width: SizeConfig.b * 2),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              )
+            ],
+          ),
+        );
+      },
+    );
   }
 }
 

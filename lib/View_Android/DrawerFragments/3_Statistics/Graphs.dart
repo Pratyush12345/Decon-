@@ -9,7 +9,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'package:Decon/Controller/Utils/sizeConfig.dart';
 
-
 class Graphs extends StatefulWidget {
   final DeviceData deviceData;
   final String sheetURL;
@@ -312,30 +311,41 @@ class _GraphsState extends State<Graphs> {
                 children: [
                   Text(
                     "${widget.deviceData.id.split("_")[2].replaceAll("D", "Device ")}",
-                    style: TextStyle(fontSize: 20.0),
+                    style:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
                   ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  //   children: [
-                  //     Text("Last Updated: 28/nov/2019"),
-                  //     Container(
-                  //         padding: EdgeInsets.symmetric(
-                  //             horizontal: SizeConfig.b * 1,
-                  //             vertical: SizeConfig.v * 0.6),
-                  //         decoration: BoxDecoration(
-                  //             borderRadius:
-                  //                 BorderRadius.circular(SizeConfig.b * 2),
-                  //             color: Color(0xff0099FF)),
-                  //         child: Text(widget.deviceData.id,
-                  //             style: TextStyle(
-                  //                 color: Colors.white,
-                  //                 fontSize: SizeConfig.b * 3.57))),
-                  //   ],
-                  // ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: SizeConfig.screenWidth * 15 / 360),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SizedBox(width: SizeConfig.v * 1),
+                        Text(
+                          "Last Updated : 28/nov/2019",
+                          style: TextStyle(color: Color(0xff5C6266)),
+                        ),
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: SizeConfig.b * 1,
+                                vertical: SizeConfig.v * 0.6),
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(SizeConfig.b * 2),
+                                color: Color(0xff0099FF)),
+                            child: Text(widget.deviceData.id,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: SizeConfig.b * 3.57))),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: SizeConfig.screenWidth * 15 / 360),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
                         Row(children: [
                           CircleAvatar(
                               radius: SizeConfig.b * 1.781,
@@ -345,130 +355,140 @@ class _GraphsState extends State<Graphs> {
                           Text("${levels[widget.deviceData.wlevel]}",
                               style: TextStyle(fontSize: SizeConfig.b * 3.57))
                         ]),
-                        SizedBox(width: SizeConfig.v * 1),
                         Row(children: [
                           Icon(Icons.arrow_upward, size: SizeConfig.b * 4),
                           SizedBox(width: SizeConfig.b * 0.5),
                           Text("${widget.deviceData.openManhole}m")
                         ]),
-                        SizedBox(width: SizeConfig.v * 1),
                         Row(children: [
                           Icon(Icons.battery_charging_full,
                               color: Colors.green, size: SizeConfig.b * 4),
                           SizedBox(width: SizeConfig.b * 0.5),
                           Text("${widget.deviceData.battery}%")
                         ]),
-                        SizedBox(width: SizeConfig.v * 1),
                         Row(children: [
-                          Icon(Icons.add, size: SizeConfig.b * 4),
+                          Icon(
+                            Icons.thermostat_rounded,
+                            size: SizeConfig.b * 4,
+                            color: Colors.redAccent,
+                          ),
                           SizedBox(width: SizeConfig.b * 0.5),
                           Text("${widget.deviceData.temperature}\u2103")
                         ]),
-                        SizedBox(
-                          width: SizeConfig.v * 1,
-                        )
-                      ]),
+                        Row(children: [
+                          Icon(Icons.signal_cellular_alt_rounded,
+                              size: SizeConfig.b * 4),
+                          SizedBox(width: SizeConfig.b * 0.5),
+                          Text('3')
+                        ]),
+                      ],
+                    ),
+                  ),
                   SizedBox(height: SizeConfig.v * 1.5),
                   Container(
-                      padding: EdgeInsets.fromLTRB(SizeConfig.b * 5.6, 0, 0, 0),
-                      child: Text(widget.deviceData.address,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: SizeConfig.b * 3.054,
-                              color: Color(0xff0099FF)))),
+                    padding: EdgeInsets.fromLTRB(
+                        SizeConfig.b * 4, 0, SizeConfig.b * 4, 0),
+                    child: Text(
+                      widget.deviceData.address,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: SizeConfig.b * 4,
+                        color: Color(0xff0099FF),
+                      ),
+                    ),
+                  ),
                 ],
               )),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                width: SizeConfig.b * 40,
-                height: SizeConfig.v * 11,
-                child: DropdownButton<String>(
-                  dropdownColor: Color(0xff263238),
-                  underline: SizedBox(
-                    height: 0.0,
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: SizeConfig.screenWidth * 15 / 360),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: SizeConfig.b * 30,
+                  height: SizeConfig.v * 10,
+                  child: DropdownButton<String>(
+                    dropdownColor: Color(0xff263238),
+                    underline: SizedBox(
+                      height: 0.0,
+                    ),
+                    elevation: 8,
+                    items: list.map((dropDownStringitem) {
+                      return DropdownMenuItem<String>(
+                        value: dropDownStringitem,
+                        child: Container(
+                          width: SizeConfig.v * 60,
+                          height: SizeConfig.b * 11,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(
+                                SizeConfig.screenHeight * 8 / 640),
+                          ),
+                          child: Center(
+                            child: Text(
+                              dropDownStringitem,
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (newValueSelected) {
+                      setState(() {
+                        _itemSelected = newValueSelected;
+                        monthNo = _monthstonum[_itemSelected].toString();
+                        print(monthNo);
+                        _createLevelGraphDatapoints();
+                      });
+                    },
+                    isExpanded: true,
+                    hint: Text("Select Month"),
+                    value: _itemSelected ?? null,
                   ),
-                  elevation: 8,
-                  items: list.map((dropDownStringitem) {
-                    return DropdownMenuItem<String>(
-                      value: dropDownStringitem,
-                      child: Container(
-                        padding: EdgeInsets.only(
-                            left: SizeConfig.screenWidth * 10 / 360,
-                            top: SizeConfig.screenHeight * 9 / 640),
-                        width: SizeConfig.v * 70,
-                        height: SizeConfig.b * 11,
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(
-                              SizeConfig.screenHeight * 8 / 640),
-                        ),
-                        child: Text(
-                          dropDownStringitem,
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (newValueSelected) {
-                    setState(() {
-                      _itemSelected = newValueSelected;
-                      monthNo = _monthstonum[_itemSelected].toString();
-                      print(monthNo);
-                      _createLevelGraphDatapoints();
-                    });
-                  },
-                  isExpanded: true,
-                  hint: Text("Select Month"),
-                  value: _itemSelected ?? null,
                 ),
-              ),
-              SizedBox(
-                width: 10.0,
-              ),
-              Container(
-                width: SizeConfig.b * 30,
-                height: SizeConfig.v * 11,
-                child: DropdownButton<String>(
-                  dropdownColor: Color(0xff263238),
-                  underline: SizedBox(
-                    height: 0.0,
+                Container(
+                  width: SizeConfig.b * 30,
+                  height: SizeConfig.v * 10,
+                  child: DropdownButton<String>(
+                    dropdownColor: Color(0xff263238),
+                    underline: SizedBox(
+                      height: 0.0,
+                    ),
+                    elevation: 8,
+                    items: listyear.map((dropDownStringitem) {
+                      return DropdownMenuItem<String>(
+                        value: dropDownStringitem,
+                        child: Container(
+                          width: SizeConfig.v * 60,
+                          height: SizeConfig.b * 11,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(
+                                SizeConfig.screenHeight * 8 / 640),
+                          ),
+                          child: Center(
+                            child: Text(
+                              dropDownStringitem,
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (newValueSelected) {
+                      setState(() {
+                        yearSelected = newValueSelected;
+                        currentYY = yearSelected.toString();
+                        print(currentYY);
+                        _createLevelGraphDatapoints();
+                      });
+                    },
+                    isExpanded: true,
+                    hint: Text("Select Year"),
+                    value: yearSelected ?? null,
                   ),
-                  elevation: 8,
-                  items: listyear.map((dropDownStringitem) {
-                    return DropdownMenuItem<String>(
-                      value: dropDownStringitem,
-                      child: Container(
-                        padding: EdgeInsets.only(
-                            left: SizeConfig.screenWidth * 10 / 360,
-                            top: SizeConfig.screenHeight * 9 / 640),
-                        width: SizeConfig.v * 60,
-                        height: SizeConfig.b * 11,
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(
-                              SizeConfig.screenHeight * 8 / 640),
-                        ),
-                        child: Text(
-                          dropDownStringitem,
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (newValueSelected) {
-                    setState(() {
-                      yearSelected = newValueSelected;
-                      currentYY = yearSelected.toString();
-                      print(currentYY);
-                      _createLevelGraphDatapoints();
-                    });
-                  },
-                  isExpanded: true,
-                  hint: Text("Select Year"),
-                  value: yearSelected ?? null,
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           LevelGraph(
             seriesLinearData: _seriesLinearData,

@@ -46,17 +46,21 @@ class _Contact extends State<Contact> {
               ],
             ),
             SizedBox(height: SizeConfig.v * 6),
-            Container(
-              margin: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.screenWidth * 16 / 360),
-              child: Text(
-                'GET IN TOUCH',
-                style: TextStyle(
-                  fontSize: SizeConfig.screenWidth * 20 / 360,
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xff828282),
+            Row(
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(
+                      horizontal: SizeConfig.screenWidth * 16 / 360),
+                  child: Text(
+                    'GET IN TOUCH',
+                    style: TextStyle(
+                      fontSize: SizeConfig.screenWidth * 16 / 360,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff828282),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
             SizedBox(height: SizeConfig.v * 4),
             Container(

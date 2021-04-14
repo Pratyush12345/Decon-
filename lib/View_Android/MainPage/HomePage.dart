@@ -20,8 +20,6 @@ import 'package:Decon/Controller/Services/Auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-
-
 class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -30,7 +28,6 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-
   Widget middleContainer;
   bool _isfromDrawer = true;
   int _selectedDrawerIndex = 0, _currentIndex = 0;
@@ -95,7 +92,6 @@ class HomePageState extends State<HomePage> {
     _scafoldKey.currentState.openEndDrawer();
   }
 
-
   @override
   void initState() {
     HomePageVM.instance.initialize(context);
@@ -108,7 +104,6 @@ class HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  
   Future showErrorDialog(BuildContext context) {
     return showDialog(
         context: context,
@@ -132,6 +127,34 @@ class HomePageState extends State<HomePage> {
         });
   }
 
+  String _setTitle(int position) {
+    switch (position) {
+      case 0:
+        return 'Home';
+        break;
+      case 1:
+        return 'Device Settings';
+        break;
+      case 2:
+        return 'Statistics';
+        break;
+      case 3:
+        return 'Maintenance Report';
+        break;
+      case 4:
+        return 'Add Device';
+        break;
+      case 5:
+        return 'About Vysion';
+        break;
+      case 6:
+        return 'Contact';
+        break;
+      default:
+        return " ";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -143,7 +166,7 @@ class HomePageState extends State<HomePage> {
                   fontWeight: FontWeight.w400,
                   fontSize: SizeConfig.b * 4.08)),
           Icon(
-            Icons.home,
+            Icons.home_rounded,
             color: gc,
           )),
       Item(
@@ -167,7 +190,7 @@ class HomePageState extends State<HomePage> {
             color: tc,
           )),
       Item(
-          Text("Maintainence Report",
+          Text("Maintenance Report",
               style: TextStyle(
                   color: gc,
                   fontWeight: FontWeight.w400,
@@ -249,6 +272,7 @@ class HomePageState extends State<HomePage> {
     return Scaffold(
       key: _scafoldKey,
       appBar: AppBar(
+        elevation: 2,
         backgroundColor: Colors.white,
         leading: IconButton(
             icon: Icon(
@@ -258,77 +282,157 @@ class HomePageState extends State<HomePage> {
             onPressed: () {
               _scafoldKey.currentState.openDrawer();
             }),
-        title: Auth.instance.post == "Manager"
-            ?  Container(
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.fromLTRB(SizeConfig.b * 3.0, 0, 0, 0),
-                  height: SizeConfig.v * 5,
-                  width: SizeConfig.b * 80,
-                  decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 222, 224, 224),
-                      borderRadius: BorderRadius.circular(SizeConfig.b * 2.7)),
-                  child: 
-                    Consumer<ChangeWhenGetCity>(
-                 builder: (context, object,child ){
-                  return
-                    Consumer<ChangeCity>(
-                      builder: (context, changeList, child)=>
-                       DropdownButton<String>(
-                      icon: Icon(Icons.arrow_drop_down_rounded),
-                      elevation: 8,
-                      dropdownColor: Color(0xff263238),
-                      isDense: false,
-                      underline: SizedBox(
-                        height: 0.0,
-                      ),
-                      items: object.citiesMap.values.map((dropDownStringitem) {
-                        return DropdownMenuItem<String>(
-                          value: dropDownStringitem,
-                          child: Container(
-                            padding: EdgeInsets.fromLTRB(12.0, 8.0, 4.0, 4.0),
-                            width: SizeConfig.b * 80,
-                            height: SizeConfig.v * 4,
-                            decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 222, 224, 224)
-                                    .withOpacity(0.3),
-                                borderRadius:
-                                    BorderRadius.circular(SizeConfig.b * 2.7)),
-                            child: Text(
-                              dropDownStringitem,
+        title: _isfromDrawer
+            ? _selectedDrawerIndex == 0
+                ? Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.fromLTRB(SizeConfig.b * 3.0, 0, 0, 0),
+                    height: SizeConfig.v * 5,
+                    width: SizeConfig.b * 80,
+                    decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 222, 224, 224),
+                        borderRadius:
+                            BorderRadius.circular(SizeConfig.b * 2.7)),
+                    child: Consumer<ChangeWhenGetCity>(
+                      builder: (context, object, child) {
+                        return Consumer<ChangeCity>(
+                          builder: (context, changeList, child) =>
+                              DropdownButton<String>(
+                            icon: Icon(Icons.arrow_drop_down_rounded),
+                            elevation: 8,
+                            dropdownColor: Color(0xff263238),
+                            isDense: false,
+                            underline: SizedBox(
+                              height: 0.0,
+                            ),
+                            items: object.citiesMap.values
+                                .map((dropDownStringitem) {
+                              return DropdownMenuItem<String>(
+                                value: dropDownStringitem,
+                                child: Container(
+                                  padding:
+                                      EdgeInsets.fromLTRB(12.0, 8.0, 4.0, 4.0),
+                                  width: SizeConfig.b * 80,
+                                  height: SizeConfig.v * 4,
+                                  decoration: BoxDecoration(
+                                      color: Color.fromARGB(255, 222, 224, 224)
+                                          .withOpacity(0.3),
+                                      borderRadius: BorderRadius.circular(
+                                          SizeConfig.b * 1)),
+                                  child: Text(
+                                    dropDownStringitem,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black87),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (newValueSelected) {
+                              _itemSelected = newValueSelected;
+                              Provider.of<ChangeCity>(context, listen: false)
+                                  .reinitialize();
+
+                              object.citiesMap.forEach((key, value) {
+                                if (value == newValueSelected)
+                                  HomePageVM.instance.setCityCode = key;
+                              });
+                              VariableGlobal.iscitychanged = true;
+                              HomePageVM.instance.callSetQuery();
+                            },
+                            isExpanded: true,
+                            hint: Text(
+                              "Dummy City",
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   color: Colors.black87),
                             ),
+                            value: _itemSelected ?? null,
                           ),
                         );
-                      }).toList(),
-                      onChanged: (newValueSelected) {
-                        _itemSelected = newValueSelected;
-                        Provider.of<ChangeCity>(context, listen: false).reinitialize();
-
-                        object.citiesMap.forEach((key, value) {
-                          
-                          if (value == newValueSelected) HomePageVM.instance.setCityCode = key;
-                        });
-                        VariableGlobal.iscitychanged = true;
-                        HomePageVM.instance.callSetQuery();
                       },
-                      isExpanded: true,
-                      hint: Text(
-                        "Dummy City",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, color: Colors.black87),
-                      ),
-                      value: _itemSelected ?? null,
+                    ),
+                  )
+                : Text(
+                    _setTitle(_selectedDrawerIndex),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500, color: Colors.black87),
+                  )
+            : Auth.instance.post == "Manager"
+                ? Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.fromLTRB(SizeConfig.b * 3.0, 0, 0, 0),
+                    height: SizeConfig.v * 5,
+                    width: SizeConfig.b * 80,
+                    decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 222, 224, 224),
+                        borderRadius:
+                            BorderRadius.circular(SizeConfig.b * 2.7)),
+                    child: Consumer<ChangeWhenGetCity>(
+                      builder: (context, object, child) {
+                        return Consumer<ChangeCity>(
+                          builder: (context, changeList, child) =>
+                              DropdownButton<String>(
+                            icon: Icon(Icons.arrow_drop_down_rounded),
+                            elevation: 8,
+                            dropdownColor: Color(0xff263238),
+                            isDense: false,
+                            underline: SizedBox(
+                              height: 0.0,
+                            ),
+                            items: object.citiesMap.values
+                                .map((dropDownStringitem) {
+                              return DropdownMenuItem<String>(
+                                value: dropDownStringitem,
+                                child: Container(
+                                  padding:
+                                      EdgeInsets.fromLTRB(12.0, 8.0, 4.0, 4.0),
+                                  width: SizeConfig.b * 80,
+                                  height: SizeConfig.v * 4,
+                                  decoration: BoxDecoration(
+                                      color: Color.fromARGB(255, 222, 224, 224)
+                                          .withOpacity(0.3),
+                                      borderRadius: BorderRadius.circular(
+                                          SizeConfig.b * 2.7)),
+                                  child: Text(
+                                    dropDownStringitem,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black87),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (newValueSelected) {
+                              _itemSelected = newValueSelected;
+                              Provider.of<ChangeCity>(context, listen: false)
+                                  .reinitialize();
+
+                              object.citiesMap.forEach((key, value) {
+                                if (value == newValueSelected)
+                                  HomePageVM.instance.setCityCode = key;
+                              });
+                              VariableGlobal.iscitychanged = true;
+                              HomePageVM.instance.callSetQuery();
+                            },
+                            isExpanded: true,
+                            hint: Text(
+                              "Dummy City",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black87),
+                            ),
+                            value: _itemSelected ?? null,
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                : Text(
+                    "${Auth.instance.cityName ?? "Demo City"}",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500, color: Colors.black87),
                   ),
-                    );},
-                ),
-            )
-            : Text(
-                "${Auth.instance.cityName ?? "Demo City"}",
-                style: TextStyle(
-                    fontWeight: FontWeight.w500, color: Colors.black87),
-              ),
         actions: [
           IconButton(
               icon: Icon(
@@ -415,34 +519,32 @@ class HomePageState extends State<HomePage> {
           child: _isfromDrawer
               ? _getDrawerItemWidget(_selectedDrawerIndex)
               : _getBottomNavItem(_currentIndex)),
-        bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: BottomNavigationBar(
         unselectedItemColor: Colors.grey,
         selectedItemColor: Colors.white,
         selectedFontSize: 14.0,
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
         backgroundColor: Color(0xff263238),
-
         iconSize: 20.0,
-        //unselectedFontSize: 11.0,
         items: [
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.home,
-              size: SizeConfig.screenWidth * 23 / 360,
+              Icons.home_rounded,
+              size: SizeConfig.screenHeight * 23 / 640,
             ),
             label: 'Home',
           ),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.memory,
-                size: SizeConfig.screenWidth * 23 / 360,
+                size: SizeConfig.screenHeight * 23 / 640,
               ),
               label: 'Devices'),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.people,
-                size: SizeConfig.screenWidth * 23 / 360,
+                size: SizeConfig.screenHeight * 23 / 640,
               ),
               label: 'Team'),
         ],
@@ -456,7 +558,6 @@ class HomePageState extends State<HomePage> {
     );
   }
 }
-
 
 const gc = Colors.black;
 const tc = Color(0xff263238);
