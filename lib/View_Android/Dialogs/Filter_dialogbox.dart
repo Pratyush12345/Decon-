@@ -41,7 +41,7 @@ class FilterDialogDevice extends StatelessWidget {
                           ),
           Container(
             height: MediaQuery.of(context).size.height *0.4,
-            padding: EdgeInsets.fromLTRB(b * 13, h * 2, b * 13, h * 16),
+            padding: EdgeInsets.fromLTRB(b * 13, h * 1, b * 13, h * 16),
             child: 
               ListView.builder(
                 itemCount: _filterList.length,

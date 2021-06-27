@@ -128,30 +128,24 @@ class _ClientDetailsState extends State<ClientDetails> {
                             ],
                           ),
                           child: CircleAvatar(
+                                
                                 radius: SizeConfig.b * 11,
-                                backgroundImage: AssetImage("assets/f.png"),
+                                backgroundImage: AssetImage("assets/DECON_1.png"),
                               ),
                       
-                          // child: CachedNetworkImage(
-                          //   imageUrl:
-                          //       'https://images.unsplash.com/photo-1517423440428-a5a00ad493e8',
-                          //   fit: BoxFit.cover,
-                          //   imageBuilder: (context, imageProvider) => Container(
-                          //     decoration: BoxDecoration(
-                          //       shape: BoxShape.circle,
-                          //       image: DecorationImage(
-                          //         image: imageProvider,
-                          //         fit: BoxFit.cover,
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
-                        ),
-                        SizedBox(width: b * 20),
-                        Text(
-                          "${AddClientVM.instance.clientDetailModel.clientName??""}",
-                          style: txtS(blc, 20, FontWeight.w500),
                           
+                        ),
+                        SizedBox(width: b * 10),
+                        Container(
+                          height: 50.0,
+                          width: b * 200,
+                          child: Text(
+                            "${AddClientVM.instance.clientDetailModel.clientName??""}",
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: txtS(blc, 20, FontWeight.w500),
+                            
+                          ),
                         ),
                       ],
                     ),
@@ -185,7 +179,8 @@ class _ClientDetailsState extends State<ClientDetails> {
                           "${AddClientVM.instance.clientDetailModel.departmentName??""}",
                           style: txtS(dc, 16, FontWeight.w400),
                           overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
+                          maxLines:2,
+                          textAlign: TextAlign.end,
                         ),
                       ),
                     ],
@@ -269,7 +264,7 @@ class _ClientDetailsState extends State<ClientDetails> {
                       ),
                       Spacer(),
                       Text(
-                        _userDetailModel.name??"",
+                        _userDetailModel?.name??"",
                         style: txtS(dc, 16, FontWeight.w400),
                       ),
                     ],
@@ -288,7 +283,7 @@ class _ClientDetailsState extends State<ClientDetails> {
                       ),
                       Spacer(),
                       Text(
-                        "${AddClientVM.instance.clientDetailModel.selectedSeries.replaceFirst(",", "")??""}",
+                        "${AddClientVM.instance.clientDetailModel.selectedSeries?.replaceFirst(",", "")??""}",
                         style: txtS(dc, 16, FontWeight.w400),
                       ),
                     ],

@@ -25,8 +25,21 @@ class _AllClientsState extends State<AllClients> {
     var b = SizeConfig.screenWidth / 375;
 
     return Scaffold(
-     appBar: AppBar(title: Text("Client List"),
-     backgroundColor: blc,),
+     appBar: AppBar(elevation: 1,
+        titleSpacing: -3,
+        leading: InkWell(
+          onTap: () {
+          },
+          child: SizedBox(),
+        ),
+        iconTheme: IconThemeData(color: blc),
+        title: Text(
+          "Client List",
+          style: txtS(Colors.black, 16, FontWeight.w500),
+        ),
+        backgroundColor: Colors.white,
+      ),
+  
      floatingActionButton: FloatingActionButton(
        backgroundColor: blc,
        child: Icon(Icons.add),
@@ -79,25 +92,25 @@ class _AllClientsState extends State<AllClients> {
                       ),
                     ),
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: InkWell(
-                      child: Container(
-                        height: h * 45,
-                        padding: EdgeInsets.symmetric(horizontal: b * 18),
-                        width: b * 45,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: blc, width: 0.5),
-                          shape: BoxShape.circle,
-                        ),
-                        child: SvgPicture.asset(
-                          'images/filter.svg',
-                          allowDrawingOutsideViewBox: true,
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Expanded(
+                  //   flex: 1,
+                  //   child: InkWell(
+                  //     child: Container(
+                  //       height: h * 45,
+                  //       padding: EdgeInsets.symmetric(horizontal: b * 18),
+                  //       width: b * 45,
+                  //       decoration: BoxDecoration(
+                  //         color: Colors.white,
+                  //         border: Border.all(color: blc, width: 0.5),
+                  //         shape: BoxShape.circle,
+                  //       ),
+                  //       child: SvgPicture.asset(
+                  //         'images/filter.svg',
+                  //         allowDrawingOutsideViewBox: true,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
               sh(30),
@@ -113,6 +126,8 @@ class _AllClientsState extends State<AllClients> {
                     _clientsMap?.forEach((key, value) {
                       _clientList.add(ClientListModel(clientCode: key, clientName:  value));
                      });
+                     _clientList.sort((a, b) =>int.parse(a.clientCode.substring(1, 2)).compareTo(int.parse(b.clientCode.substring(1, 2))));
+    
                      AddClientVM.instance.setClientList = _clientList;
                     }
                     if(snapshot.data.snapshot.value!=null)
@@ -123,7 +138,7 @@ class _AllClientsState extends State<AllClients> {
                     itemBuilder: (context, index){
                     return InkWell(
                       onTap: (){
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ClientDetails(clientCode: "${_clientsMap.keys.toList()[index]}",
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ClientDetails(clientCode: "${_clientList[index].clientCode}",
                         )));
                         
                       },

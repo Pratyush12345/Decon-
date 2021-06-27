@@ -7,8 +7,8 @@ class ChangeDeviceData extends ChangeNotifier{
   
   void _sortList(){
     allDeviceData.sort((a, b) =>
-          int.parse(a.id.split("_")[2].substring(1, 2))
-              .compareTo(int.parse(b.id.split("_")[2].substring(1, 2))));
+          int.parse(a.id.split("_")[2].substring(1, a.id.split("_")[2].length))
+              .compareTo(int.parse(b.id.split("_")[2].substring(1, b.id.split("_")[2].length))));
   }
 
   void reinitialize(){
@@ -71,10 +71,10 @@ class ChangeSeries extends ChangeNotifier {
 
 class ChangeWhenGetClientsList extends ChangeNotifier{
    
-   Map clientsMap;
-   void changeWhenGetClientsList(Map _clientsMap){
+   List<ClientListModel> clientsList;
+   void changeWhenGetClientsList(List<ClientListModel> _clientsList){
            
-      clientsMap = _clientsMap;
+      clientsList = _clientsList;
 
      notifyListeners();
    }

@@ -111,8 +111,8 @@ class _AllDevicesState extends State<AllDevices> {
             if(!isdeviceSearched)
             _listDeviceData = List.from(changeList.allDeviceData);
     
-        return _listDeviceData == null?AppConstant.noDataFound():
-        _listDeviceData.isEmpty?AppConstant.noDataFound():
+        return changeList.allDeviceData == null?AppConstant.circulerProgressIndicator():
+        changeList.allDeviceData.isEmpty?AppConstant.noDataFound():
         Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -132,7 +132,7 @@ class _AllDevicesState extends State<AllDevices> {
                       child: TextField(
                          onChanged: (val){
                             if(val.isNotEmpty){
-                            _listDeviceData = changeList.allDeviceData.where((element) => element.id.split("_")[2].contains(val) || element.address.toLowerCase().contains(val) ).toList();
+                            _listDeviceData = changeList.allDeviceData.where((element) => element.id.toLowerCase().contains(val.toLowerCase()) || element.address.toLowerCase().contains(val.toLowerCase()) ).toList();
                             isdeviceSearched = true;
                             }else{
                               isdeviceSearched = false;
@@ -151,7 +151,7 @@ class _AllDevicesState extends State<AllDevices> {
                           isCollapsed: true,
                           prefixIconConstraints:
                               BoxConstraints(minWidth: 40, maxHeight: 24),
-                          hintText: 'Search by Name',
+                          hintText: 'Search by Device Id/ Location',
                           hintStyle: TextStyle(
                             fontSize: b * 14,
                             color: Color(0xff858585),
@@ -190,7 +190,6 @@ class _AllDevicesState extends State<AllDevices> {
               
           
           SizedBox(height: SizeConfig.v * 1),
-          Divider(color: Color(0xffCACACA), thickness: 1),
           Expanded(
               child: ListView.builder(
                   shrinkWrap: true,

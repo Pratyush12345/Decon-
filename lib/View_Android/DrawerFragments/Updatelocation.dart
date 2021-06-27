@@ -88,7 +88,7 @@ class _Updatelocation extends State<Updatelocation> {
                 child: TextField(
                   onChanged: (val){
                     if(val.isNotEmpty){
-                     _listDeviceData = changeList.allDeviceData.where((element) => element.id.split("_")[2].contains(val) || element.address.toLowerCase().contains(val) ).toList();
+                     _listDeviceData = changeList.allDeviceData.where((element) => element.id.toLowerCase().contains(val.toLowerCase()) || element.address.toLowerCase().contains(val.toLowerCase()) ).toList();
                      isDeviceSearched = true;
                     }else{
                       isDeviceSearched = false;
@@ -106,7 +106,7 @@ class _Updatelocation extends State<Updatelocation> {
                     isCollapsed: true,
                     prefixIconConstraints:
                         BoxConstraints(minWidth: 40, maxHeight: 24),
-                    hintText: 'Search by Name',
+                    hintText: 'Search by DeviceID/ location',
                     hintStyle: TextStyle(
                       fontSize: b * 14,
                       color: Color(0xff858585),
@@ -120,7 +120,6 @@ class _Updatelocation extends State<Updatelocation> {
               sh(15),
             
               SizedBox(height: SizeConfig.v * 1),
-              Divider(color: Color(0xffCACACA), thickness: 1),
               Expanded(
                 child: ListView.builder(
                   shrinkWrap: true,

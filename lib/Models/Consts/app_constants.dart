@@ -13,10 +13,10 @@ class AppConstant {
   static Widget circulerProgressIndicator(){
     return Center(
       child: Container(
-        height: 100.0,
-        width: 100.0,
-        child: RiveAnimation.asset('images/loading3.riv',
-                    animation: "Animation 1",
+        height: 200.0,
+        width: 200.0,
+        child: RiveAnimation.asset('images/loading7.riv',
+                    animation: "loading",
                     ),
       ),
     );

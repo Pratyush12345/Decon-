@@ -52,6 +52,17 @@ class _Add_man extends State<Add_man> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
+              Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                            "Add Manager",
+                            style: TextStyle(
+                              fontSize: b * 16,
+                              color: dc,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            ),
+                      ),
               sh(6),
                   Text(
                   "Name",

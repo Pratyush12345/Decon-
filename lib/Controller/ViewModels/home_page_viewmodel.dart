@@ -93,8 +93,16 @@ class HomePageVM {
     }else{
     _clientsMap.removeWhere((key, value) => !GlobalVar.userDetail.clientsVisible.contains(key));
     }
-    Provider.of<ChangeWhenGetClientsList>(context, listen: false).changeWhenGetClientsList(_clientsMap);
-    _ccode = _clientsMap.keys.toList()[0];
+    List<ClientListModel> _clientList = [];
+    _clientsMap.forEach((key, value) { 
+      _clientList.add(ClientListModel(clientCode: key, clientName: value));
+    });
+    _clientList.sort((a, b) =>
+          int.parse(a.clientCode.substring(1, 2))
+              .compareTo(int.parse(b.clientCode.substring(1, 2))));
+    
+    Provider.of<ChangeWhenGetClientsList>(context, listen: false).changeWhenGetClientsList(_clientList);
+    _ccode = _clientList[0]?.clientCode??"C0";
     }
 
   _setQuery(String clientCode, String seriesCode) async {
@@ -155,7 +163,7 @@ class HomePageVM {
     _onDataAddedSubscription.cancel();  
   }
 
-  Map get getCitiesMap => _clientsMap;
+  Map get getClientsMap => _clientsMap;
 
   String get getClientCode => _ccode;
 

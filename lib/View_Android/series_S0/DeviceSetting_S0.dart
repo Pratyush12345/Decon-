@@ -18,6 +18,7 @@ class _DeviceSettings extends State<DeviceSettingsS0> {
   
   @override
   void initState() {
+    DeviceSettingS0VM.instance.init(context);
     super.initState();
   }
    Text textRepeat() {
@@ -135,7 +136,7 @@ class _DeviceSettings extends State<DeviceSettingsS0> {
                 borderRadius: BorderRadius.circular(b * 6),
               ),
               onPressed: () {
-                 DeviceSettingS0VM.instance.onAddPressed();
+                 DeviceSettingS0VM.instance.onAddPressed(context);
               },
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: h * 10),

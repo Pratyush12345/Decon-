@@ -169,7 +169,7 @@ class _Add_Delegates extends State<Add_Delegates> {
                         return "Client Code not assigned";
                         else if(index!=-1)
                         return "Admin already assigned for this Client";
-                        else if(val.endsWith("C") || !val.startsWith("C") || HomePageVM.instance.getCitiesMap[val]==null )
+                        else if(val.endsWith("C") || !val.startsWith("C") || HomePageVM.instance.getClientsMap[val]==null )
                         return "Invalid Code";
                         else
                         return null;

@@ -61,6 +61,18 @@ class _Replace_Admin extends State<Replace_Admin> {
           crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
+              sh(4),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                            "Replace Admin",
+                            style: TextStyle(
+                              fontSize: b * 16,
+                              color: dc,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            ),
+                      ),
               sh(6),
               Text(
                   "Name",

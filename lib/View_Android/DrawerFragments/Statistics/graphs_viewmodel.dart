@@ -165,7 +165,9 @@ class GraphsVM {
   _createLevelGraphDatapoints() {
     String searchKey = "$_monthNo/$currentYY";
     String url1 = "$_scriptEditorURL?searchKey=$searchKey&deviceNo=${_deviceData.id.split("_")[2].substring(1, 2)}&sheetURL=$_sheetURL&sheetNo=${GlobalVar.seriesMap[HomePageVM.instance.getSeriesCode].graphs[0]}";
-    
+    print("=======================");
+    print(url1);
+    print("=======================");
     GraphsVM.intsance.getDataFromSheetList(url1).then((value) {
       int i = 1, ground = 0, normal = 0, informative = 0, critical = 0;
       _data1.clear();

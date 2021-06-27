@@ -34,10 +34,12 @@ class _PeopleTabBar extends State<PeopleTabBar> with SingleTickerProviderStateMi
   List<UserDetailModel> _listUserDetailModelAdmins = [];
   Map<String ,ClientDetailModel> _listClientDetailModel = {};
   List<UserDetailModel> _listUserDetailModelManager;
-  
+  TextEditingController _managerSearch = TextEditingController();
+  TextEditingController _adminSearch = TextEditingController();
   @override
   void initState() {
     super.initState();
+    PeopleVM.instance.init();
     _tabController = new TabController(length: 2, vsync: this, initialIndex: 1);
   }
 
@@ -197,6 +199,7 @@ class _PeopleTabBar extends State<PeopleTabBar> with SingleTickerProviderStateMi
                               borderRadius: BorderRadius.circular(b * 60),
                             ),
                             child: TextField(
+                              controller: _managerSearch,
                               onChanged: (val){
                                 _listUserDetailModelManager = PeopleVM.instance.onSearchManager(val);
                                 setState(() {});
@@ -346,6 +349,7 @@ class _PeopleTabBar extends State<PeopleTabBar> with SingleTickerProviderStateMi
                               borderRadius: BorderRadius.circular(b * 60),
                             ),
                             child: TextField(
+                              controller: _adminSearch,
                               onChanged: (val){
                                 _listUserDetailModelAdmins = PeopleVM.instance.onSearchAdmin(val);
                                 setState(() {});

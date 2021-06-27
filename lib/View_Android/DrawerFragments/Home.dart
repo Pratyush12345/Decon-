@@ -108,7 +108,7 @@ class HomeState extends State<Home> {
                   ),
                   contentPadding:
                       EdgeInsets.only(top: SizeConfig.screenHeight * 9 / 640),
-                  hintText: 'Search by Device/ ID/ location',
+                  hintText: 'Search by Device ID/ location',
                   hintStyle: TextStyle(
                       fontSize: SizeConfig.b * 4, color: Colors.black),
                   border: InputBorder.none,
@@ -211,8 +211,8 @@ class HomeState extends State<Home> {
     DeviceData specificDevice;
     if (val != "") {
       var Key = allDeviceData.firstWhere((entry) {
-        if (entry.id.split("_")[2].contains(val.trim()) ||
-            entry.address.contains(val.trim()))
+        if (entry.id.toLowerCase().contains(val.toLowerCase().trim()) ||
+            entry.address.toLowerCase().contains(val.toLowerCase().trim()))
           return true;
         else
           return false;

@@ -64,6 +64,17 @@ class _Add_admin extends State<Add_admin> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
+              Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                            "Add Admin",
+                            style: TextStyle(
+                              fontSize: b * 16,
+                              color: dc,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            ),
+                      ),
               sh(6),
               Text(
                   "Client Code",
@@ -84,7 +95,7 @@ class _Add_admin extends State<Add_admin> {
                         return "Client Code not assigned";
                         else if(index!=-1)
                         return "Admin already assigned for this Client";
-                        else if(val.endsWith("C") || !val.startsWith("C") || HomePageVM.instance.getCitiesMap[val]==null )
+                        else if(val.endsWith("C") || !val.startsWith("C") || HomePageVM.instance.getClientsMap[val]==null )
                         return "Invalid Code";
                         else
                         return null;

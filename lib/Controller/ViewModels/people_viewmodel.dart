@@ -6,13 +6,20 @@ class PeopleVM {
    static PeopleVM instance = PeopleVM._();
   PeopleVM._();
   DatabaseCallServices _databaseCallServices = DatabaseCallServices();
-  bool isManagerSearched = false, isAdminSearched = false;
-  bool isManagerTeamSearched = false, isAdminTeamSearched = false;
+  bool isManagerSearched, isAdminSearched;
+  bool isManagerTeamSearched, isAdminTeamSearched;
   List<UserDetailModel> _dupListManager ;
   List<UserDetailModel> _dupListAdmin;
   List<UserDetailModel> _dupListManagerTeam ;
   List<UserDetailModel> _dupListAdminTeam;
-
+  
+  init(){
+  isManagerSearched = false;
+  isAdminSearched = false;
+  isManagerTeamSearched = false;
+  isAdminTeamSearched = false;
+    
+  }
   Future<dynamic> getClientDetail(String clientCode) async{
    try{
     ClientDetailModel clientDetailModel =  await _databaseCallServices.getClientDetail(clientCode);

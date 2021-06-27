@@ -29,6 +29,8 @@ class _AllPeople extends State<AllPeople> {
   List<UserDetailModel> _listOfManagerTeam = [];
                                                         
   _initialize() async{
+    
+    PeopleVM.instance.init();
     AllPeopleVM.instance.init();
     _listOfAdminTeam = [];
     _listOfManagerTeam = [];
@@ -91,13 +93,24 @@ class _AllPeople extends State<AllPeople> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-              title: Text(
+      appBar: AppBar(elevation: 10,
+        titleSpacing: -3,
+        leading: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(Icons.arrow_back_ios, color: blc, size: b * 16),
+        ),
+        iconTheme: IconThemeData(color: blc),
+        title: Text(
                 widget.clientDetailModel == null? AppConstant.circulerProgressIndicator():
                 widget.clientDetailModel.cityName == null? AppConstant.noDataFound(): 
                 
-                "${widget.clientDetailModel.clientName}"),
-            ),
+                "${widget.clientDetailModel.clientName}",
+                
+          style: txtS(Colors.black, 16, FontWeight.w500),), 
+        backgroundColor: Colors.white,
+      ), 
       floatingActionButton: GlobalVar.strAccessLevel == "2" || GlobalVar.strAccessLevel == "3"
           ? FloatingActionButton(
               backgroundColor: Color(0xff0099FF),
@@ -301,7 +314,7 @@ class _AllPeople extends State<AllPeople> {
                             _listOfManagerTeam = [];
                           (snapshot.data.snapshot.value as Map)?.forEach((key, value) { 
                             UserDetailModel _usermodel = UserDetailModel.fromJson(key, value);
-                            _usermodel.clientsVisible = AllPeopleVM.instance.managerDetailModel.clientsVisible;
+                            _usermodel?.clientsVisible = AllPeopleVM.instance.managerDetailModel?.clientsVisible;
                             _listOfManagerTeam.add(_usermodel);
                           });
                           PeopleVM.instance.setManagerTeamList = _listOfManagerTeam;  
@@ -318,7 +331,7 @@ class _AllPeople extends State<AllPeople> {
                                       Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Profile(myProfile: false, userDetailModel: _listOfManagerTeam[index], )));
                                 },
                                 onLongPress: () {
-                                  if(GlobalVar.strAccessLevel == "2")
+                                  if(GlobalVar.strAccessLevel == "2" ||GlobalVar.strAccessLevel == "1")
                                   showDeleteDialog(context).then((value) async {
                                   
                                     if (value == "Yes") {
@@ -436,7 +449,7 @@ class _AllPeople extends State<AllPeople> {
                                       Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Profile(myProfile: false, userDetailModel: _listOfAdminTeam[index], )));
                                 },
                              onLongPress: () {
-                              if(GlobalVar.strAccessLevel == "3")
+                              if(GlobalVar.strAccessLevel == "3" ||GlobalVar.strAccessLevel == "1" )
                               showDeleteDialog(context).then((value) async {
                               
                                 if (value == "Yes") {

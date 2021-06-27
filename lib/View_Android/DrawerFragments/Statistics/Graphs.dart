@@ -51,8 +51,23 @@ class _GraphsState extends State<Graphs> {
     var b = SizeConfig.screenWidth / 375;
 
     return Scaffold(
-      appBar: AppBar(title: Text("Graph")),
+      appBar: AppBar(elevation: 10,
+        titleSpacing: -3,
+        leading: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(Icons.arrow_back_ios, color: blc, size: b * 16),
+        ),
+        iconTheme: IconThemeData(color: blc),
+        title: Text(
+          "${widget.deviceData.id.split("_")[2].replaceAll("D", "Device ")}",
+          style: txtS(Colors.black, 16, FontWeight.w500),
+        ),
+        backgroundColor: Colors.white,
+      ),
       body: ListView(
+        padding: EdgeInsets.fromLTRB(14.0,0.0 , 14.0, 0.0),
         children: [
           Container(
               height: MediaQuery.of(context).size.height * 0.3,

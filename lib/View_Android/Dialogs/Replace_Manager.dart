@@ -61,6 +61,18 @@ class _Replace_Manager extends State<Replace_Manager> {
           crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
+              sh(4),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                            "Replace Manager",
+                            style: TextStyle(
+                              fontSize: b * 16,
+                              color: dc,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            ),
+                      ),
               sh(6),
                   Text(
                   "Name",

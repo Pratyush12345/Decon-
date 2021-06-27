@@ -24,6 +24,7 @@ class _DeviceSettings extends State<DeviceSettingsS1> {
   
   @override
   void initState() {
+    DeviceSettingS1VM.instance.init(context);
     super.initState();
   }
 
@@ -238,7 +239,7 @@ class _DeviceSettings extends State<DeviceSettingsS1> {
                 borderRadius: BorderRadius.circular(b * 6),
               ),
               onPressed: () {
-                 DeviceSettingS1VM.instance.onAddPressed();
+                 DeviceSettingS1VM.instance.onAddPressed(context);
               },
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: h * 10),

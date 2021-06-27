@@ -50,105 +50,106 @@ class _AddDeviceState extends State<AddDevice> {
         },
         child: Icon(Icons.add),
       ),
-      body: Consumer<ChangeDeviceData>(
-        builder: (context, _model, child) => SingleChildScrollView(
-           padding: EdgeInsets.symmetric(horizontal: b * 22),
-       
-          child: StreamBuilder<Event>(
-            stream: FirebaseDatabase.instance
-                .reference()
-                .child(
-                    "clients/${HomePageVM.instance.getClientCode}/series/${HomePageVM.instance.getSeriesCode}/devices")
-                .onValue,
-            builder: (BuildContext context, snapshot) {
-              if (snapshot.hasData) {
-                Map datamap = snapshot.data.snapshot.value;
-                   _listOfDevices = [];
-                   datamap?.forEach((key, value) {
-                      DeviceData deviceData = DeviceData.fromJson(value, HomePageVM.instance.getSeriesCode ); 
-                     _listOfDevices.add(deviceData);                              
-                });
-                _listOfDevices?.sort((a, b) =>
-                    int.parse(a.id.split("_")[2].substring(1, 2)).compareTo(
-                        int.parse(b.id.split("_")[2].substring(1, 2))));
-                if (snapshot.data.snapshot.value != null)
-                  return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: _listOfDevices.length,
-                      itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            ListTile(
-                              onTap: () {
-                                if (_listOfDevices[index].address == "Empty")
-                                  showAddDeviceDialog(
-                                      context: context,
-                                      isUpdating: true,
-                                      deviceId: _listOfDevices[index].id);
-                              },
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: SizeConfig.screenHeight * 5 / 640,
-                                  horizontal: SizeConfig.screenWidth * 10 / 360),
-                              title: Text(
-                                "${_listOfDevices[index].id.split("_")[2].replaceAll("D", "Device ")}",
-                                style: TextStyle(
-                                    fontSize: SizeConfig.b * 5.09,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              subtitle: _listOfDevices[index].address != "Empty"
-                                  ? Text(_listOfDevices[index].address,
-                                      style: TextStyle(
-                                          fontSize: SizeConfig.b * 3.054,
-                                          color: Color(0xff0099FF)))
-                                  : Row(
-                                      children: [
-                                        Icon(
-                                          Icons.location_off_rounded,
-                                          color: Colors.red,
-                                        ),
-                                        SizedBox(
-                                          width: 4.0,
-                                        ),
-                                        Text("Add Location of this device",
-                                            style: TextStyle(
-                                                fontSize: SizeConfig.b * 3.054,
-                                                color: Colors.red))
-                                      ],
-                                    ),
-                              trailing: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: SizeConfig.b * 1,
-                                    vertical: SizeConfig.v * 0.6),
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.circular(SizeConfig.b * 2),
-                                    color: Color(0xff0099FF)),
-                                child: Text(
-                                  _listOfDevices[index].id,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: SizeConfig.b * 3.57),
-                                ),
-                              ),
-                            ),
-                            Divider(color: Color(0xffCACACA), thickness: 1),
-                          ],
-                        );
-                      });
-                else
-                  return AppConstant.noDataFound();
-              } else {
-                if (snapshot.hasError)
-                  return Center(
-                    child: Text('${snapshot.error}'),
-                  );
-                else
-                  return AppConstant.circulerProgressIndicator();
-              }
-            },
-          ),
+      body: 
+         Consumer<ChangeDeviceData>(
+        builder: (context, _model, child) =>
+          StreamBuilder<Event>(
+           stream: FirebaseDatabase.instance
+               .reference()
+               .child(
+                   "clients/${HomePageVM.instance.getClientCode}/series/${HomePageVM.instance.getSeriesCode}/devices")
+               .onValue,
+           builder: (BuildContext context, snapshot) {
+             if (snapshot.hasData) {
+               Map datamap = snapshot.data.snapshot.value;
+                  _listOfDevices = [];
+                  datamap?.forEach((key, value) {
+                     DeviceData deviceData = DeviceData.fromJson(value, HomePageVM.instance.getSeriesCode ); 
+                    _listOfDevices.add(deviceData);                              
+               });
+               _listOfDevices?.sort((a, b) =>
+                   int.parse(a.id.split("_")[2].substring(1, a.id.split("_")[2].length)).compareTo(
+                       int.parse(b.id.split("_")[2].substring(1, b.id.split("_")[2].length))));
+               if (snapshot.data.snapshot.value != null)
+                 return ListView.builder(
+                      padding: EdgeInsets.symmetric(horizontal: b * 22, vertical: h*4),
+                     physics: AlwaysScrollableScrollPhysics(),
+          
+                     shrinkWrap: true,
+                     itemCount: _listOfDevices.length,
+                     itemBuilder: (context, index) {
+                       return Column(
+                         children: [
+                           ListTile(
+                             onTap: () {
+                               if (_listOfDevices[index].address == "Empty")
+                                 showAddDeviceDialog(
+                                     context: context,
+                                     isUpdating: true,
+                                     deviceId: _listOfDevices[index].id);
+                             },
+                             contentPadding: EdgeInsets.symmetric(
+                                 vertical: SizeConfig.screenHeight * 5 / 640,
+                                 horizontal: SizeConfig.screenWidth * 10 / 360),
+                             title: Text(
+                               "${_listOfDevices[index].id.split("_")[2].replaceAll("D", "Device ")}",
+                               style: TextStyle(
+                                   fontSize: SizeConfig.b * 5.09,
+                                   fontWeight: FontWeight.w500),
+                             ),
+                             subtitle: _listOfDevices[index].address != "Empty"
+                                 ? Text(_listOfDevices[index].address,
+                                     style: TextStyle(
+                                         fontSize: SizeConfig.b * 3.054,
+                                         color: Color(0xff0099FF)))
+                                 : Row(
+                                     children: [
+                                       Icon(
+                                         Icons.location_off_rounded,
+                                         color: Colors.red,
+                                       ),
+                                       SizedBox(
+                                         width: 4.0,
+                                       ),
+                                       Text("Add Location of this device",
+                                           style: TextStyle(
+                                               fontSize: SizeConfig.b * 3.054,
+                                               color: Colors.red))
+                                     ],
+                                   ),
+                             trailing: Container(
+                               padding: EdgeInsets.symmetric(
+                                   horizontal: SizeConfig.b * 1,
+                                   vertical: SizeConfig.v * 0.6),
+                               decoration: BoxDecoration(
+                                   borderRadius:
+                                       BorderRadius.circular(SizeConfig.b * 2),
+                                   color: Color(0xff0099FF)),
+                               child: Text(
+                                 _listOfDevices[index].id,
+                                 style: TextStyle(
+                                     color: Colors.white,
+                                     fontSize: SizeConfig.b * 3.57),
+                               ),
+                             ),
+                           ),
+                           Divider(color: Color(0xffCACACA), thickness: 1),
+                         ],
+                       );
+                     });
+               else
+                 return AppConstant.noDataFound();
+             } else {
+               if (snapshot.hasError)
+                 return Center(
+                   child: Text('${snapshot.error}'),
+                 );
+               else
+                 return AppConstant.circulerProgressIndicator();
+             }
+           },
+         ),
         ),
-      ),
     );
   }
 }
