@@ -1,3 +1,4 @@
+import 'package:Decon/Controller/ViewModels/Services/GlobalVariable.dart';
 import 'package:Decon/Models/Consts/app_constants.dart';
 import 'package:Decon/Controller/Utils/sizeConfig.dart';
 import 'package:Decon/Models/AddressCaluclator.dart';
@@ -303,6 +304,7 @@ class _LocationDialog extends State<LocationDialog> {
                       ),
                       padding: EdgeInsets.zero,
                       onPressed: () async {
+                             if(GlobalVar.strAccessLevel != null)
                               validate();
                             },
                       child: Container(

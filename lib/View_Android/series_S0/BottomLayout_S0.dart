@@ -26,7 +26,8 @@ class BottomLayoutState extends State<BottomLayoutS0>
   TextEditingController descriptionController = TextEditingController();
   List<int> _count = List.filled(4, null);
   int countOpenManhole =0,
-      countbattery = 0;
+      countbattery = 0,
+      countError = 0;
   @override
   void initState() {
     _isStart
@@ -115,10 +116,15 @@ class BottomLayoutState extends State<BottomLayoutS0>
           print("Length of All device is ${model.allDeviceData.length}");
           _count = countDevices(model.allDeviceData);
           countbattery = 0;
+          countError = 0;
           model.allDeviceData.forEach((element) {
             if (element.battery < (GlobalVar.seriesMap["S0"].model as S0DeviceSettingModel).batterythresholdvalue) {
               countbattery++;
-            }  
+            } 
+            if(element.wlevel > 3){
+              countError++;
+            }
+
           });
           groundAnimation = IntTween(begin: 0, end: _count[0]).animate(
               CurvedAnimation(parent: animationController, curve: Curves.ease));
@@ -192,6 +198,7 @@ class BottomLayoutState extends State<BottomLayoutS0>
                     children: [
                       detailRow("Open Manholes", countOpenManhole),
                       detailRow("Insufficient Energy", countbattery),
+                      detailRow("Error in Devices", countError),
                     ],
                   ),
                 ),
@@ -241,9 +248,10 @@ List<int> countDevices(List<DeviceData> _allDevicedata) {
       _normal++;
     } else if (_allDevicedata[i].wlevel == 2) {
       _informative++;
-    } else {
+    } else if(_allDevicedata[i].wlevel == 3) {
       _critical++;
     }
+    
   }
   _count[0] = _ground;
   _count[1] = _normal;

@@ -28,13 +28,19 @@ class _AllDevicesState extends State<AllDevices> {
     0: "Ground level",
     1: "Normal Level",
     2: "Infromative Level",
-    3: "Critical Level"
+    3: "Critical Level",
+    191: "Error in Sensor 1",
+    192: "Error in Sensor 2",
+    193: "Error in Sensor 3"
   };
   final Map<int, Color> _levelsColor = {
     0: Color(0xffC4C4C4),
     1: Color(0xff69D66D),
     2: Color(0xffE1E357),
-    3: Color(0xffD93D3D)
+    3: Color(0xffD93D3D),
+    191: Colors.black,
+    192: Colors.black,
+    193: Colors.black
   };
   
   @override

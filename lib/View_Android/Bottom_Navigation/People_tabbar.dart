@@ -11,12 +11,14 @@ import 'package:Decon/Models/Models.dart';
 import 'package:Decon/Controller/Utils/sizeConfig.dart';
 import 'package:Decon/Controller/ViewModels/Services/Auth.dart';
 import 'package:Decon/View_Android/Dialogs/Replace_Manager.dart';
+import 'package:Decon/View_Android/Dialogs/update_dialog.dart';
 import 'package:Decon/View_Android/profile_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:provider/provider.dart';
 
 
@@ -49,6 +51,7 @@ class _PeopleTabBar extends State<PeopleTabBar> with SingleTickerProviderStateMi
     super.dispose();
   } 
 
+  
   Future showManagerDialog(BuildContext context) {
     return showAnimatedDialog(
         barrierDismissible: true,

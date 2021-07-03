@@ -1,6 +1,8 @@
+import 'package:Decon/Controller/Providers/People_provider.dart';
 import 'package:Decon/Models/Consts/client_not_found.dart';
 import 'package:Decon/Models/Consts/database_calls.dart';
 import 'package:Decon/Models/Models.dart';
+import 'package:provider/provider.dart';
 
 class AllPeopleVM{
   static AllPeopleVM instance = AllPeopleVM._();
@@ -10,11 +12,15 @@ class AllPeopleVM{
   List<UserDetailModel> listOfMangerTeam;
   List<UserDetailModel> listOfAdminTeam;
   
-  init(){
+  init(context){
     managerDetailModel = null;
     adminDetailModel = null;
     listOfAdminTeam = null; 
     listOfMangerTeam = null;
+    Provider.of<AfterManagerChangeProvider>(context, listen:  false).reinitialize();
+    Provider.of<AfterAdminChangeProvider>(context, listen:  false).reinitialize();
+      
+    
   }
   
 

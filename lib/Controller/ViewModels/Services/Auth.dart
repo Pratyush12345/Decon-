@@ -41,37 +41,37 @@ class Auth  {
         FirebaseDatabase.instance
             .reference()
             .child("/superAdmins/${FirebaseAuth.instance.currentUser.uid}")
-            .update({"tokenid": token});
+            .update({"andrtokenid": token});
       }
       else if (GlobalVar.strAccessLevel == "2") {
         FirebaseDatabase.instance
             .reference()
             .child("/managers/${FirebaseAuth.instance.currentUser.uid}")
-            .update({"tokenid": token});
+            .update({"andrtokenid": token});
       }  
       else if (GlobalVar.strAccessLevel == "3") {
         FirebaseDatabase.instance
             .reference()
             .child("/admins/${FirebaseAuth.instance.currentUser.uid}")
-            .update({"tokenid": token});
+            .update({"andrtokenid": token});
       }
       else if (GlobalVar.strAccessLevel == "4") {
         FirebaseDatabase.instance
             .reference()
             .child("/managerTeam/${FirebaseAuth.instance.currentUser.uid}")
-            .update({"tokenid": token});
+            .update({"andrtokenid": token});
       }
       else if (GlobalVar.strAccessLevel == "5") {
         FirebaseDatabase.instance
             .reference()
             .child("/adminTeam/${FirebaseAuth.instance.currentUser.uid}")
-            .update({"tokenid": token});
+            .update({"andrtokenid": token});
       }
       else {
         FirebaseDatabase.instance
             .reference()
             .child("/randomUser/${FirebaseAuth.instance.currentUser.uid}")
-            .update({"tokenid": token});
+            .update({"andrtokenid": token});
       }
       
       });
@@ -96,16 +96,25 @@ class Auth  {
       GlobalVar.userDetail.clientsVisible = await _databaseCallServices.getAdminClientsVisible(GlobalVar.userDetail.headUid);
     }
     else{
+      print("randommmmmmm user");
+      print(FirebaseAuth.instance.currentUser.uid);
       GlobalVar.userDetail =  await _databaseCallServices.getRandomUserCredentails(FirebaseAuth.instance.currentUser.uid);
       GlobalVar.userDetail.clientsVisible = "C0";
     }
   }
 
   Future<String> _getClaims(currentuser) async {
+    try{
     IdTokenResult idTokenResult = await currentuser.getIdTokenResult(true);
     print("accessLevel==============="+idTokenResult.claims['accessLevel']);
     GlobalVar.strAccessLevel = idTokenResult.claims['accessLevel'];    
     return "done";
+    }catch(e){
+      print(e);
+     GlobalVar.strAccessLevel = null;
+     return "done"; 
+    }
+    
   }
 
   Future<String> firstTimeLogin(User currentUser) async {

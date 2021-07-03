@@ -1,3 +1,4 @@
+import 'package:Decon/Controller/Providers/People_provider.dart';
 import 'package:Decon/Controller/ViewModels/Services/GlobalVariable.dart';
 import 'package:Decon/Controller/ViewModels/add_client_viewmodel.dart';
 import 'package:Decon/Controller/ViewModels/all_people_viewmodel.dart';
@@ -11,6 +12,7 @@ import 'package:Decon/Controller/Utils/sizeConfig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class AllPeople extends StatefulWidget {
   final String clientCode; 
@@ -31,7 +33,7 @@ class _AllPeople extends State<AllPeople> {
   _initialize() async{
     
     PeopleVM.instance.init();
-    AllPeopleVM.instance.init();
+    AllPeopleVM.instance.init(context);
     _listOfAdminTeam = [];
     _listOfManagerTeam = [];
     print("selected manager==========${widget.clientDetailModel?.selectedManager}");
@@ -95,12 +97,13 @@ class _AllPeople extends State<AllPeople> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(elevation: 10,
         titleSpacing: -3,
-        leading: InkWell(
+        leading: GlobalVar.strAccessLevel == "1"?
+             InkWell(
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(Icons.arrow_back_ios, color: blc, size: b * 16),
-        ),
+          child:  Icon(Icons.arrow_back_ios, color: blc, size: b * 16),
+        ): SizedBox(),
         iconTheme: IconThemeData(color: blc),
         title: Text(
                 widget.clientDetailModel == null? AppConstant.circulerProgressIndicator():
@@ -297,9 +300,12 @@ class _AllPeople extends State<AllPeople> {
                     style: txtS(dc, 13.57, FontWeight.w400),
                   ),
                   Spacer(),
-                  Text(
-                    "Total:${_listOfAdminTeam?.length??0}",
-                    style: txtS(Color(0xff858585), 12, FontWeight.w400),
+                  Consumer<AfterManagerChangeProvider>(
+                    builder: (context, model, child)=>
+                    Text(
+                      "Total:${model.listManager?.length}",
+                      style: txtS(Color(0xff858585), 12, FontWeight.w400),
+                    ),
                   ),
                 ],
               ),
@@ -317,7 +323,10 @@ class _AllPeople extends State<AllPeople> {
                             _usermodel?.clientsVisible = AllPeopleVM.instance.managerDetailModel?.clientsVisible;
                             _listOfManagerTeam.add(_usermodel);
                           });
-                          PeopleVM.instance.setManagerTeamList = _listOfManagerTeam;  
+                          PeopleVM.instance.setManagerTeamList = _listOfManagerTeam;
+                          WidgetsBinding.instance.addPostFrameCallback((_){
+                            Provider.of<AfterManagerChangeProvider>(context, listen:  false).afterManagerChangeProvider(_listOfManagerTeam);  
+                            });
                           }
                         if(snapshot.data.snapshot.value!=null)
                         return ListView.builder(
@@ -415,9 +424,12 @@ class _AllPeople extends State<AllPeople> {
                     style: txtS(dc, 13.57, FontWeight.w400),
                   ),
                   Spacer(),
-                  Text(
-                    "Total:${_listOfAdminTeam?.length??0}",
-                    style: txtS(Color(0xff858585), 12, FontWeight.w400),
+                  Consumer<AfterAdminChangeProvider>(
+                    builder: (context, _model, child)=>
+                    Text(
+                      "Total:${_model.listAdmin?.length??0}",
+                      style: txtS(Color(0xff858585), 12, FontWeight.w400),
+                    ),
                   ),
                 ],
               ),
@@ -436,6 +448,11 @@ class _AllPeople extends State<AllPeople> {
                         _listOfAdminTeam.add(_usermodel);
                       });
                       PeopleVM.instance.setAdminTeamList = _listOfAdminTeam;
+                      WidgetsBinding.instance.addPostFrameCallback((_){
+                      Provider.of<AfterAdminChangeProvider>(context, listen:  false).afterAdminChangeProvider(_listOfAdminTeam);  
+                      });
+                          
+                          
                       }
                     if(snapshot.data.snapshot.value!=null)
                     return ListView.builder(

@@ -31,6 +31,7 @@ class _Updatelocation extends State<Updatelocation> {
   Future showLocationDialog(BuildContext context, DeviceData device) {
     return showAnimatedDialog(
         context: context,
+        barrierDismissible: true,
         animationType: DialogTransitionType.scaleRotate,
         curve: Curves.fastOutSlowIn,
         duration: Duration(milliseconds: 400),

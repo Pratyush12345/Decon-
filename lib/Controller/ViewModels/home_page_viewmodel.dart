@@ -2,12 +2,16 @@ import 'dart:async';
 import 'package:Decon/Controller/Providers/devie_setting_provider.dart';
 import 'package:Decon/Controller/Providers/home_page_providers.dart';
 import 'package:Decon/Controller/ViewModels/Services/GlobalVariable.dart';
+import 'package:Decon/Models/Consts/app_constants.dart';
 import 'package:Decon/Models/Consts/database_calls.dart';
 import 'package:Decon/Models/Models.dart';
+import 'package:Decon/View_Android/Dialogs/update_dialog.dart';
 import 'package:Decon/View_Android/DrawerFragments/Home.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:provider/provider.dart';
 
 class HomePageVM {
@@ -28,6 +32,18 @@ class HomePageVM {
   final FirebaseDatabase _database = FirebaseDatabase.instance;
   String _ccode, _scode;
   
+  Future _showUpdateDialog(AppUpdateInfo info) {
+    return showAnimatedDialog(
+        barrierDismissible: true,
+        context: context,    
+        animationType: DialogTransitionType.scaleRotate,
+        curve: Curves.fastOutSlowIn,
+        duration: Duration(milliseconds: 400),
+        builder: (context) {
+          return UpdateDialog(updateInfo: info );
+        });
+  }
+
   onDeviceAdded(Event event) {
     if (event.snapshot.value["address"] != null) {
       Provider.of<ChangeDeviceData>(context, listen: false).changeDeviceData("onDeviceAdded", newDeviceData: DeviceData.fromSnapshot(event.snapshot, _scode));
@@ -86,6 +102,8 @@ class HomePageVM {
   }
 
   _getClientsList() async {  
+    List<ClientListModel> _clientList = [];
+    try{
     DataSnapshot citiesSnapshot = await FirebaseDatabase.instance.reference().child("clientsList").once();
     _clientsMap = citiesSnapshot.value??{};
     if(GlobalVar.strAccessLevel=="1"){
@@ -93,16 +111,26 @@ class HomePageVM {
     }else{
     _clientsMap.removeWhere((key, value) => !GlobalVar.userDetail.clientsVisible.contains(key));
     }
-    List<ClientListModel> _clientList = [];
     _clientsMap.forEach((key, value) { 
       _clientList.add(ClientListModel(clientCode: key, clientName: value));
     });
     _clientList.sort((a, b) =>
           int.parse(a.clientCode.substring(1, 2))
               .compareTo(int.parse(b.clientCode.substring(1, 2))));
-    
     Provider.of<ChangeWhenGetClientsList>(context, listen: false).changeWhenGetClientsList(_clientList);
+  
+    }
+    catch(e){
+      print(e);
+    }
+    
+    if(_clientList.isNotEmpty)
     _ccode = _clientList[0]?.clientCode??"C0";
+    else{
+    Provider.of<ChangeWhenGetClientsList>(context, listen: false).changeWhenGetClientsList([ClientListModel(clientCode: "C0", clientName: "Demo Municipal Corporation")]);
+    _ccode = "C0";
+    _scode = "S0";
+    }
     }
 
   _setQuery(String clientCode, String seriesCode) async {
@@ -149,13 +177,32 @@ class HomePageVM {
   _getScriptEditorUrl() async{
     _scriptEditorURL = (await FirebaseDatabase.instance.reference().child("urls/doPost").once()).value;
   }
-
+_checkForUpdate() async{
+  InAppUpdate.checkForUpdate().then((info) {
+      AppUpdateInfo _updateInfo;
+      _updateInfo = info;
+      
+      print("=====================================");
+      print(_updateInfo.updateAvailable);
+      print(_updateInfo.flexibleUpdateAllowed);
+      print(_updateInfo.availableVersionCode);
+      print(_updateInfo.immediateUpdateAllowed);
+      print("=====================================");
+       if(_updateInfo.updateAvailable){
+         _showUpdateDialog(info);
+       }
+      
+    }).catchError((e) {
+      AppConstant.showFailToast(context, "Error getting update info");
+    });
+}
   void initialize(BuildContext context){
     this.context = context;
     _ccode = "C0";
     _scode = "S0";
     onFirstLoad();
     _getScriptEditorUrl();
+    _checkForUpdate();
   }
 
   void dispose(){

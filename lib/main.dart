@@ -27,7 +27,9 @@ class MyApp extends StatelessWidget {
       
       child: MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (context)=> ChangeOnActive(),),
+           ChangeNotifierProvider(create: (context)=> AfterAdminChangeProvider(),),
+           ChangeNotifierProvider(create: (context)=> AfterManagerChangeProvider(),),
+           ChangeNotifierProvider(create: (context)=> ChangeOnActive(),),
            ChangeNotifierProvider(create: (context)=> PeopleProvider(),),
            ChangeNotifierProvider(create: (context)=> ChangeDrawerItems(),),
            ChangeNotifierProvider(create: (context)=> ChangeWhenGetClientsList(),),

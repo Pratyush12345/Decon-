@@ -27,7 +27,7 @@ class BottomLayoutState extends State<BottomLayoutS1>
   List<int> _count = List.filled(4, null);
   int countOpenManhole =0,
       countbattery = 0,
-      counttemp = 0;
+      counttemp = 0, countError = 0;
 
 
   @override
@@ -122,6 +122,9 @@ class BottomLayoutState extends State<BottomLayoutS1>
             if (element.temperature!=null && double.parse(element?.temperature.toString()??"0.0") < (GlobalVar.seriesMap["S1"].model as S1DeviceSettingModel).tempthresholdvalue ) {
               counttemp++;
             }
+            if(element.wlevel > 3){
+              countError++;
+            }
           });
           groundAnimation = IntTween(begin: 0, end: _count[0]).animate(
               CurvedAnimation(parent: animationController, curve: Curves.ease));
@@ -196,6 +199,7 @@ class BottomLayoutState extends State<BottomLayoutS1>
                       detailRow("Open Manholes", countOpenManhole),
                       detailRow("High Temperatures", counttemp),
                       detailRow("Insufficient Energy", countbattery),
+                      detailRow("Error in Devices", countError),
                     ],
                   ),
                 ),

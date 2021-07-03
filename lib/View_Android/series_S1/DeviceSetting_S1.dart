@@ -1,5 +1,6 @@
 import 'package:Decon/Controller/Providers/devie_setting_provider.dart';
 import 'package:Decon/Controller/Providers/home_page_providers.dart';
+import 'package:Decon/Controller/ViewModels/Services/GlobalVariable.dart';
 import 'package:Decon/Models/Consts/app_constants.dart';
 import 'package:Decon/View_Android/series_S1/device_setting_viewmodel_S1.dart';
 import 'package:Decon/Controller/ViewModels/home_page_viewmodel.dart';
@@ -239,6 +240,8 @@ class _DeviceSettings extends State<DeviceSettingsS1> {
                 borderRadius: BorderRadius.circular(b * 6),
               ),
               onPressed: () {
+                if(GlobalVar.strAccessLevel != null)
+          
                  DeviceSettingS1VM.instance.onAddPressed(context);
               },
               child: Container(

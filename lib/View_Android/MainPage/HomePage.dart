@@ -52,7 +52,7 @@ class HomePageState extends State<HomePage> {
       case 2:
         if (GlobalVar.strAccessLevel == "1")
           return PeopleTabBar();
-        else
+        else if (GlobalVar.strAccessLevel != null)
           return Consumer<ChangeClient>(
           builder: (context, model, child)=>
             AllPeople(

@@ -9,3 +9,28 @@ class PeopleProvider extends ChangeNotifier {
   notifyListeners();
  }
 }
+
+class AfterManagerChangeProvider extends ChangeNotifier {
+ List<UserDetailModel> listManager = [];  
+ reinitialize(){
+   listManager = [];
+   notifyListeners();
+ }
+ void afterManagerChangeProvider(List<UserDetailModel> _list ){
+  listManager = _list;
+  print("length of list manager ==========${listManager.length}");
+  notifyListeners();
+ }
+}
+
+class AfterAdminChangeProvider extends ChangeNotifier {
+ List<UserDetailModel> listAdmin = [];  
+ reinitialize(){
+   listAdmin = [];
+   notifyListeners();
+ }
+ void afterAdminChangeProvider(List<UserDetailModel> _list ){
+  listAdmin = _list;
+  notifyListeners();
+ }
+}

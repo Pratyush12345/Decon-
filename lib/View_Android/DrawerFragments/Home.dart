@@ -190,7 +190,7 @@ class HomeState extends State<Home> {
             snippet: "Informative Level"),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
       );
-    } else {
+    } else if(level == 3) {
       return Marker(
         markerId: MarkerId(_allDeviceData.id.split("_")[2]),
         onTap: () {
@@ -202,6 +202,20 @@ class HomeState extends State<Home> {
             title: "${_allDeviceData.id.split("_")[2]}",
             snippet: "Critical Level"),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+      );
+    }
+    else {
+      return Marker(
+        markerId: MarkerId(_allDeviceData.id.split("_")[2]),
+        onTap: () {
+          _showBottomSheet(
+              level, _allDeviceData.latitude, _allDeviceData.longitude);
+        },
+        position: LatLng(_allDeviceData.latitude, _allDeviceData.longitude),
+        infoWindow: InfoWindow(
+            title: "${_allDeviceData.id.split("_")[2]}",
+            snippet: "Error in Sensor"),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueMagenta),
       );
     }
   }
@@ -234,8 +248,10 @@ class HomeState extends State<Home> {
       _color = Colors.green;
     else if (level == 2)
       _color = Colors.yellow;
-    else
+    else if (level == 3)
       _color = Colors.red;
+    else
+      _color = Colors.purpleAccent;  
 
     Future<String> address =
         AddressCalculator(latitude, longitude).getLocation();

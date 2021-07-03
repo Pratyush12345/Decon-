@@ -1,4 +1,5 @@
 import 'package:Decon/Controller/Providers/home_page_providers.dart';
+import 'package:Decon/Controller/ViewModels/Services/GlobalVariable.dart';
 import 'package:Decon/Controller/ViewModels/home_page_viewmodel.dart';
 import 'package:Decon/Models/Consts/app_constants.dart';
 import 'package:Decon/View_Android/DrawerFragments/AddDevice/ClickOnAddDevice.dart';
@@ -46,6 +47,7 @@ class _AddDeviceState extends State<AddDevice> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xff0099FF),
         onPressed: () {
+          if(GlobalVar.strAccessLevel != null)
           showAddDeviceDialog(context: context, isUpdating: false);
         },
         child: Icon(Icons.add),
