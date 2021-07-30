@@ -69,31 +69,35 @@ class HomePageVM {
     if(_scode == "S0"){
       if(snapshot.value!=null){
       S0DeviceSettingModel deviceSettingModel = S0DeviceSettingModel.fromSnapshot(snapshot);
+      _sheetURL = deviceSettingModel.sheetURL;
       GlobalVar.seriesMap["S0"].model = deviceSettingModel; 
       }
       else{
+      _sheetURL = "";  
       GlobalVar.seriesMap["S0"].model = S0DeviceSettingModel();   
       }
+
     Provider.of<ChangeDeviceSeting>(context, listen:  false).changeDeviceSetting("S0");
     } 
     else if(_scode == "S1" && snapshot.value!=null){
       if(snapshot.value!=null){
       S1DeviceSettingModel deviceSettingModel = S1DeviceSettingModel.fromSnapshot(snapshot);
+      _sheetURL = deviceSettingModel.sheetURL;
       GlobalVar.seriesMap["S1"].model = deviceSettingModel;
       }else{
+      _sheetURL = "";  
       GlobalVar.seriesMap["S1"].model = S1DeviceSettingModel();   
       }
     Provider.of<ChangeDeviceSeting>(context, listen:  false).changeDeviceSetting("S1");
     }
     Provider.of<ChangeSeries>(context, listen: false).changeDeconSeries(_scode, _seriesList);
-  }
+  } 
 
    _getClientDetail(String clientCode) async{
    try{
     ClientDetailModel _clientDetailModel =  await _databaseCallServices.getClientDetail(clientCode);
     _seriesList = _clientDetailModel.selectedSeries.replaceFirst(",","").split(",");
     _scode = _seriesList[0];
-    _sheetURL = _clientDetailModel.sheetURL;
     Provider.of<ChangeClient>(context, listen: false).changeClientDetail(_clientDetailModel);
    }
    catch(e){
@@ -132,7 +136,12 @@ class HomePageVM {
     _scode = "S0";
     }
     }
-
+  _checkQuery() async{
+   await Future.delayed(Duration(seconds: 2));
+   if( Provider.of<ChangeDeviceData>(context, listen: false).allDeviceData.isEmpty){
+     Provider.of<ChangeDeviceData>(context, listen: false).rebuild();
+   }
+  }
   _setQuery(String clientCode, String seriesCode) async {
     Provider.of<ChangeDeviceData>(context, listen: false).reinitialize();
     
@@ -143,6 +152,7 @@ class HomePageVM {
     _query = _database.reference().child("clients/$clientCode/series/$seriesCode/devices");
     _onDataAddedSubscription = _query.onChildAdded.listen(onDeviceAdded);
     _onDataChangedSubscription = _query.onChildChanged.listen(onDeviceChanged);
+    _checkQuery();// To Avoid map Jerk loading
   }
  
   _getClientisActive(String clientCode) async{
@@ -164,6 +174,7 @@ class HomePageVM {
 
   onChangeClient() async{
     Provider.of<ChangeClient>(context, listen: false).reinitialize();
+    _getScriptEditorUrl();
     await _getClientisActive(_ccode);
     await _getClientDetail(_ccode);
     await _getDeviceSetting(_ccode, _scode);
@@ -171,11 +182,12 @@ class HomePageVM {
   }
   
   onChangeSeries() async{
+    _getScriptEditorUrl();
     await _getDeviceSetting(_ccode, _scode);
     await _setQuery(_ccode, _scode);
-  }
+  } 
   _getScriptEditorUrl() async{
-    _scriptEditorURL = (await FirebaseDatabase.instance.reference().child("urls/doPost").once()).value;
+    _scriptEditorURL = (await FirebaseDatabase.instance.reference().child("clients/$_ccode/series/$_scode/DeviceSetting/doPost").once()).value;
   }
 _checkForUpdate() async{
   InAppUpdate.checkForUpdate().then((info) {

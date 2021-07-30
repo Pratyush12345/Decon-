@@ -28,7 +28,7 @@ class _ClientDetailsState extends State<ClientDetails> {
     AddClientVM.instance.init(); 
     await AddClientVM.instance.getClientDetail(widget.clientCode);
     _userDetailModel = await AddClientVM.instance.getManagerDetail();
-    await AddClientVM.instance.getSeriesList();
+    await AddClientVM.instance.getSeriesList(true, widget.clientCode);
     DataSnapshot snapshot = await FirebaseDatabase.instance.reference().child("clients/${widget.clientCode}/isActive").once();
     if(snapshot.value == 1)
     _isActive = true;

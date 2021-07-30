@@ -13,6 +13,8 @@ class S1DeviceSettingModel {
   final double groundlevelbelow;
   final double tempthresholdvalue;
   final int batterythresholdvalue;
+  final String sheetURL;
+  final String doPost;
 
   S1DeviceSettingModel({
       this.manholedepth,
@@ -21,7 +23,9 @@ class S1DeviceSettingModel {
       this.nomrallevelabove,
       this.groundlevelbelow,
       this.tempthresholdvalue,
-      this.batterythresholdvalue});
+      this.batterythresholdvalue,
+      this.sheetURL,
+      this.doPost});
 
   S1DeviceSettingModel.fromSnapshot(DataSnapshot snapshot)
       : manholedepth = double.parse(snapshot.value["manHoleDepth"].toString()),
@@ -30,7 +34,9 @@ class S1DeviceSettingModel {
         nomrallevelabove =  double.parse(snapshot.value["nomralLevelAbove"].toString()),
         groundlevelbelow = double.parse(snapshot.value["groundLevelBelow"].toString()),
         tempthresholdvalue = double.parse(snapshot.value["tempThresholdValue"].toString()),
-        batterythresholdvalue = int.parse(snapshot.value["batteryThresholdValue"].toString());
+        batterythresholdvalue = int.parse(snapshot.value["batteryThresholdValue"].toString()),
+        sheetURL = snapshot.value["sheetURL"].toString(),
+        doPost = snapshot.value["doPost"].toString();
 
   toJson() {
     return {
@@ -52,7 +58,9 @@ class S1DeviceSettingModel {
       "nomralLevelAbove": 20.5,
       "groundLevelBelow": 10.5,
       "tempThresholdValue": 55.2,
-      "batteryThresholdValue": 80
+      "batteryThresholdValue": 80,
+      "doPost" : "",
+      "sheetURL" : sheetURL,
     };
   }
 }
@@ -60,14 +68,20 @@ class S1DeviceSettingModel {
 class S0DeviceSettingModel {
   final double manholedepth;
   final int batterythresholdvalue;
+  final String sheetURL;
+  final String doPost;
 
   S0DeviceSettingModel({
       this.manholedepth,
-      this.batterythresholdvalue});
+      this.batterythresholdvalue,
+      this.sheetURL,
+      this.doPost});
 
   S0DeviceSettingModel.fromSnapshot(DataSnapshot snapshot)
       : manholedepth = double.parse(snapshot.value["manHoleDepth"].toString()),
-        batterythresholdvalue = int.parse(snapshot.value["batteryThresholdValue"].toString());
+        batterythresholdvalue = int.parse(snapshot.value["batteryThresholdValue"].toString()),
+        sheetURL = snapshot.value["sheetURL"].toString(),
+        doPost = snapshot.value["doPost"].toString();
 
   toJson() {
     return {
@@ -79,7 +93,9 @@ class S0DeviceSettingModel {
   toDefaultJson() {
     return <String, dynamic> {
       "manHoleDepth": 75.5,
-      "batteryThresholdValue": 80
+      "batteryThresholdValue": 80,
+      "doPost" : "",
+      "sheetURL" : sheetURL,
     };
   }
 }
@@ -87,14 +103,27 @@ class S0DeviceSettingModel {
 class DataFromSheet {
   String date;
   String value;
+  
 
   DataFromSheet(
     this.date,
     this.value,
   );
 
-  factory DataFromSheet.fromJson(dynamic json) {
-    return DataFromSheet("${json['key']}", "${json['value']}");
+  factory DataFromSheet.fromLevelJson(dynamic json) {
+    return DataFromSheet("${json['key']}", "${json['value'].toString().split(",")[0].trim()}");
+  }
+
+  factory DataFromSheet.fromOpenManholeJson(dynamic json) {
+    Map<String, int> _map = {
+   "Close" : 0,
+   "Open" : 1
+  };
+    return DataFromSheet("${json['key']}", "${ _map[json['value'].toString().split(",")[1].trim()]}");
+  }
+
+  factory DataFromSheet.fromTempJson(dynamic json) {
+    return DataFromSheet("${json['key']}", "${json['value'].toString().split(",")[3].trim()}");
   }
 
   // Method to make GET parameters.
@@ -138,8 +167,8 @@ class DeviceData {
 
   DeviceData.fromSnapshot(DataSnapshot snapshot, String _seriesCode) {
     id = snapshot.value["id"];
-    latitude = snapshot.value["latitude"];
-    longitude = snapshot.value["longitude"];
+    latitude = double.parse(snapshot.value["latitude"].toString());
+    longitude = double.parse(snapshot.value["longitude"].toString());
     battery = snapshot.value["battery"];
     distance = snapshot.value["distance"];
     if(_seriesCode == "S0"){
@@ -168,8 +197,8 @@ class DeviceData {
   }
 DeviceData.fromJson(Map<dynamic, dynamic> json, String _seriesCode) {
     id = json["id"];
-    latitude = json["latitude"];
-    longitude = json["longitude"];
+    latitude = double.parse((json["latitude"]??"0").toString());
+    longitude = double.parse( (json["longitude"]??"0").toString()??"0");
     battery = json["battery"];
     distance = json["distance"];
     if(_seriesCode == "S0"){
@@ -349,7 +378,7 @@ class ClientDetailModel {
   String selectedSeries;
   String selectedManager;
   String selectedAdmin;
-  String sheetURL;
+  String maintainenceSheetURL;
 
   ClientDetailModel(
       {this.clientName,
@@ -360,7 +389,7 @@ class ClientDetailModel {
       this.selectedSeries,
       this.selectedManager,
       this.selectedAdmin,
-      this.sheetURL});
+      this.maintainenceSheetURL});
 
   ClientDetailModel.fromJson(Map<dynamic, dynamic> json) {
     clientName = json['clientName'];
@@ -371,7 +400,7 @@ class ClientDetailModel {
     selectedSeries = json['selectedSeries'];
     selectedManager = json['selectedManager'];
     selectedAdmin = json['selectedAdmin'];
-    sheetURL = json['sheetURL'];
+    maintainenceSheetURL = json['maintainenceSheetURL'];
   }
 
   Map<String, dynamic> toJson() {
@@ -384,7 +413,7 @@ class ClientDetailModel {
     data['selectedSeries'] = this.selectedSeries;
     data['selectedManager'] = this.selectedManager;
     data['selectedAdmin'] = this.selectedAdmin;
-    data['sheetURL'] = this.sheetURL;
+    data['maintainenceSheetURL'] = this.maintainenceSheetURL;
     return data;
   }
 }
@@ -401,6 +430,11 @@ class ClientListModel {
   }
 }
 
+class SeriesControllerModel {
+  String seriesName;
+  TextEditingController sheetController;
+  SeriesControllerModel({this.seriesName, this.sheetController});
+}
 
 class SeriesInfo {
   Object model;

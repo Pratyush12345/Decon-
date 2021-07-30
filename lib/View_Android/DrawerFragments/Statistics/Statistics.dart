@@ -43,7 +43,7 @@ class _StatsState extends State<Stats> {
     return Container(
      child: Consumer<ChangeDeviceData>(
           builder: (context, changeList, child){
-            _filteredDeviceData =[];
+            _filteredDeviceData = [];
             changeList.allDeviceData.forEach((element) {
             _filteredDeviceData.add(element);
             });

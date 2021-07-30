@@ -80,31 +80,7 @@ class _ManagersListState extends State<ManagersList> {
         backgroundColor: Colors.white,
       
      
-     actions: [
-       Column(
-         mainAxisAlignment: MainAxisAlignment.center,
-         children: [
-           SizedBox(height: 3.0,),
-           MaterialButton(
-             padding: EdgeInsets.symmetric(vertical: h * 3),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(b * 6),
-                  ),
-                  
-             color: blc,
-             child: Text("Save",
-             style: TextStyle(
-               color: Colors.black
-             ),
-             ),
-             onPressed: (){
-              dialogBoxConfirmAdd(context);
-           }),
-           SizedBox(height: 3.0,),
-           
-         ],
-       )
-     ],
+     
      ),
      floatingActionButton: FloatingActionButton(
        backgroundColor: blc,
@@ -159,7 +135,8 @@ class _ManagersListState extends State<ManagersList> {
             ),
             sh(20),
             
-           Expanded(
+           Container(
+             height: MediaQuery.of(context).size.height*0.7,
              child: StreamBuilder<Event>(
                stream: FirebaseDatabase.instance.reference().child("managers").onValue,
                builder: (context, snapshot){
@@ -201,9 +178,13 @@ class _ManagersListState extends State<ManagersList> {
                         trailing: Container(
                           width: 100.0,
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Text("${_listUserDetailModel[index].clientsVisible.replaceFirst(",", "")??""}"),
+                              Container(
+                                width: 50.0,
+                                child: Text("${_listUserDetailModel[index].clientsVisible.replaceFirst(",", "")??""}",
+                                maxLines: 3,),
+                              ),
                               Checkbox(
                                 value: index == _selectedIndex, 
                                 onChanged: (val){
@@ -233,6 +214,28 @@ class _ManagersListState extends State<ManagersList> {
                
              ),
            ),
+           MaterialButton(
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              color: blc,
+              padding: EdgeInsets.symmetric(vertical: h * 3),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(b * 6),
+              ),
+              onPressed: () {
+                dialogBoxConfirmAdd(context);
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: h * 10),
+                alignment: Alignment.center,
+                child: Text(
+                  "Save" ,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: b * 16,
+                      fontWeight: FontWeight.w400),
+                ),
+              ),
+            ),
          ],
        ),
      )

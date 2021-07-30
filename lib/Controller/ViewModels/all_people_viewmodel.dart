@@ -1,4 +1,5 @@
 import 'package:Decon/Controller/Providers/People_provider.dart';
+import 'package:Decon/Controller/ViewModels/Services/GlobalVariable.dart';
 import 'package:Decon/Models/Consts/client_not_found.dart';
 import 'package:Decon/Models/Consts/database_calls.dart';
 import 'package:Decon/Models/Models.dart';
@@ -34,14 +35,24 @@ class AllPeopleVM{
    }
   }
 
+  getManagerDetailDummy(){
+   managerDetailModel =  UserDetailModel(clientsVisible: ",C0", post: "Manager", phoneNo: "+919245789001", name: "Ajay Patel", delegate: "Manager", key: "DummyManager");
+   return managerDetailModel;
+  }
+
   Future<dynamic> getAdminDetail(String adminuid) async{
    try{
     adminDetailModel =  await _databaseCallServices.getAdminCredentails(adminuid);
     return adminDetailModel?? UserDetailModel();
-   }
+    }
    catch(e){
      print(e);
    }
+  }
+
+  getAdminDetailDummy(){
+    adminDetailModel =  UserDetailModel(clientsVisible: ",C0", post: "Admin", phoneNo: "+917893421010", name: "Nikunj Shah", delegate: "Admin", key: "DummyAdmin");
+   return adminDetailModel;
   }
 
   Future<dynamic> getManagerTeamDetailList(String manageruid) async{

@@ -13,11 +13,13 @@ class ChangeDeviceData extends ChangeNotifier{
 
   void reinitialize(){
     allDeviceData = [];
+  }
+
+  void rebuild(){
     notifyListeners();
   }
 
   void changeDeviceData(String methodName, { DeviceData newDeviceData } ){
-    
     if(methodName == "onDeviceAdded" && allDeviceData!=null){
       allDeviceData.add(newDeviceData);
       _sortList();

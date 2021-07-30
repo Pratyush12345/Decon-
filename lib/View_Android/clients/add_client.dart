@@ -3,9 +3,7 @@ import 'package:Decon/Controller/ViewModels/add_client_viewmodel.dart';
 import 'package:Decon/Models/Consts/app_constants.dart';
 import 'package:Decon/Models/Models.dart';
 import 'package:Decon/View_Android/DrawerFragments/managers_list.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class AddClient extends StatefulWidget {
   final String clientCode;
@@ -18,11 +16,11 @@ class AddClient extends StatefulWidget {
 
 class _AddClientState extends State<AddClient> {
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _departmentNameController = TextEditingController();
+  final TextEditingController _departmentNameController = TextEditingController(text: "");
   final TextEditingController _cityController = TextEditingController();
   final TextEditingController _districtController = TextEditingController();
   final TextEditingController _stateController = TextEditingController();
-  final TextEditingController _sheetController = TextEditingController();
+  final TextEditingController _maintainencesheetController = TextEditingController();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   
   UserDetailModel _userDetailModel;
@@ -49,7 +47,7 @@ class _AddClientState extends State<AddClient> {
                     stateName: _stateController.text.trim(),
                     selectedManager: _userDetailModel.key,
                     selectedAdmin: AddClientVM.instance.clientDetailModel?.selectedAdmin??"",
-                    sheetURL: _sheetController.text.trim()
+                    maintainenceSheetURL: _maintainencesheetController.text.trim(),
                   );
                   AddClientVM.instance.onPressedDone(context, _previousUserDetailModel,_userDetailModel.clientsVisible, widget.isedit, model, clientListModel);       
                   }
@@ -60,48 +58,83 @@ class _AddClientState extends State<AddClient> {
   }
 
    _getSeriesWidget(){
+    var h = SizeConfig.screenHeight / 812;
+    var b = SizeConfig.screenWidth / 375;
+
      return Column(
        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
        children: AddClientVM.instance.seriesList.map((e) => 
-       Row(children: [
-         Text(e),
-         Spacer(),
-         Checkbox(
-           value: AddClientVM.instance.selectedSeries.contains(e), 
-           onChanged: (val){
-             if(val){
-             AddClientVM.instance.selectedSeries = AddClientVM.instance.selectedSeries + "," + e.trim(); 
-             }
-             else{
-             AddClientVM.instance.selectedSeries = AddClientVM.instance.selectedSeries.replaceAll(","+e.trim(), "");
-             }
-             
-             setState(() {});
-         })
-       ],)
+       Column(
+         children: [
+           Row(children: [
+             Text(e.seriesName),
+             Spacer(),
+             Checkbox(
+               value: AddClientVM.instance.selectedSeries.contains(e.seriesName), 
+               onChanged: (val){
+                 if(val){
+                 AddClientVM.instance.selectedSeries = AddClientVM.instance.selectedSeries + "," + e.seriesName.trim(); 
+                 }
+                 else{
+                 AddClientVM.instance.selectedSeries = AddClientVM.instance.selectedSeries.replaceAll(","+e.seriesName.trim(), "");
+                 }
+                 
+                 setState(() {});
+             })
+           ],),
+           SizedBox(height: 15.0,),
+           if(AddClientVM.instance.selectedSeries.contains(e.seriesName))
+           TextFormField(
+                validator: (val){
+                            if(val.isEmpty)
+                            return "Sheet URL Cannot be empty";
+                            else
+                            return null;
+                          },
+                controller: e.sheetController,
+                decoration: InputDecoration(
+                  fillColor: Color(0xfff6f6f6),
+                 filled: true,
+                 contentPadding:
+                     EdgeInsets.symmetric(vertical: h * 8, horizontal: b * 8),
+                 border: InputBorder.none,
+                 focusedBorder: InputBorder.none,
+                 enabledBorder: InputBorder.none,
+                  
+                 
+                  hintText: "Enter Sheet URL",
+                  hintStyle: TextStyle(
+                   fontSize: b * 16,
+                   color: Color(0xff858585),
+                 ),
+                ),
+                
+               maxLines: 1,
+              ),
+              
+         ],
+       )
        ).toList()
      );
    }
-   _initializeDate() async{
+   _initializeData() async{
      if(!widget.isedit){
        AddClientVM.instance.init();
      }
-     _userDetailModel = widget.userDetailModel;
-     
+     _userDetailModel = widget.userDetailModel;  
     _previousUserDetailModel = _userDetailModel;
     _nameController.text = AddClientVM.instance.clientDetailModel?.clientName;
     _departmentNameController.text = AddClientVM.instance.clientDetailModel?.departmentName;
     _cityController.text = AddClientVM.instance.clientDetailModel?.cityName;
     _districtController.text = AddClientVM.instance.clientDetailModel?.districtName;
     _stateController.text = AddClientVM.instance.clientDetailModel?.stateName;
-    _sheetController.text = AddClientVM.instance.clientDetailModel?.sheetURL;
-    await AddClientVM.instance.getSeriesList();
+    _maintainencesheetController.text = AddClientVM.instance.clientDetailModel?.maintainenceSheetURL;
+    await AddClientVM.instance.getSeriesList(widget.isedit, widget.clientCode);
     setState(() {});
-    
    }
   @override
     void initState() {
-      _initializeDate();
+      _initializeData();
       super.initState();
     }
 
@@ -182,36 +215,36 @@ class _AddClientState extends State<AddClient> {
                ),
                maxLines: 1,
              ),
-              SizedBox(height: 15.0,),
-              TextFormField(
-               validator: (val){
-                            if(val.isEmpty)
-                            return "Department Name Cannot be empty";
-                            else
-                            return null;
-                          },
+            //   SizedBox(height: 15.0,),
+            //   TextFormField(
+            //    validator: (val){
+            //                 if(val.isEmpty)
+            //                 return "Department Name Cannot be empty";
+            //                 else
+            //                 return null;
+            //               },
                 
                 
-               controller: _departmentNameController,
-              style: TextStyle(fontSize: b * 16, color: dc),
-               decoration: InputDecoration(
-                 fillColor: Color(0xfff6f6f6),
-                 filled: true,
+            //    controller: _departmentNameController,
+            //   style: TextStyle(fontSize: b * 16, color: dc),
+            //    decoration: InputDecoration(
+            //      fillColor: Color(0xfff6f6f6),
+            //      filled: true,
                           
-                 isDense: true,
-                 contentPadding:
-                     EdgeInsets.symmetric(vertical: h * 8, horizontal: b * 8),
-                 border: InputBorder.none,
-                 focusedBorder: InputBorder.none,
-                 hintText: "Enter Department Name",
-                 hintStyle: TextStyle(
-                   fontSize: b * 16,
-                   color: Color(0xff858585),
-                 ),
-                 enabledBorder: InputBorder.none,
-               ),
-               maxLines: 1,
-             ),
+            //      isDense: true,
+            //      contentPadding:
+            //          EdgeInsets.symmetric(vertical: h * 8, horizontal: b * 8),
+            //      border: InputBorder.none,
+            //      focusedBorder: InputBorder.none,
+            //      hintText: "Enter Department Name",
+            //      hintStyle: TextStyle(
+            //        fontSize: b * 16,
+            //        color: Color(0xff858585),
+            //      ),
+            //      enabledBorder: InputBorder.none,
+            //    ),
+            //    maxLines: 1,
+            //  ),
               SizedBox(height: 15.0,),
               TextFormField(
                validator: (val){
@@ -301,11 +334,11 @@ class _AddClientState extends State<AddClient> {
               TextFormField(
                 validator: (val){
                             if(val.isEmpty)
-                            return "Sheet URL Cannot be empty";
+                            return "Maintainence Sheet URL Cannot be empty";
                             else
                             return null;
                           },
-                controller: _sheetController,
+                controller: _maintainencesheetController,
                 decoration: InputDecoration(
                   fillColor: Color(0xfff6f6f6),
                  filled: true,
@@ -316,7 +349,7 @@ class _AddClientState extends State<AddClient> {
                  enabledBorder: InputBorder.none,
                   
                  
-                  hintText: "Enter Sheet URL",
+                  hintText: "Enter Maintainence Sheet URL",
                   hintStyle: TextStyle(
                    fontSize: b * 16,
                    color: Color(0xff858585),

@@ -4,11 +4,11 @@ import 'package:rive/rive.dart';
 import 'package:toast/toast.dart';
 
 class AppConstant {
-  //  static Widget circulerProgressIndicator(){
-  //   return Center(
-  //     child: CircularProgressIndicator(),
-  //   );
-  // }
+   static Widget progressIndicator(){
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
 
   static Widget circulerProgressIndicator(){
     return Center(

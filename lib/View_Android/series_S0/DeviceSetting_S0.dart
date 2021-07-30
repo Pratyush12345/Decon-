@@ -67,46 +67,21 @@ class _DeviceSettings extends State<DeviceSettingsS0> {
     return SingleChildScrollView(
       child : Consumer<ChangeDeviceSeting>(
           builder: (context, _model, child){
-          return Column(
-          children: [
-            sh(32),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: b * 13, vertical: h * 13),
-            margin: EdgeInsets.symmetric(horizontal: b * 26),
-            decoration: BoxDecoration(
-              color: Color(0xfff3f3f3),
-              borderRadius: BorderRadius.circular(b * 6),
-            ),
-            child: Row(children: [
-              Text(
-                "Manhole's Depth",
-                style: TextStyle(
-                  color: dc,
-                  fontSize: b * 14,
-                ),
+          return Container(
+            height: MediaQuery.of(context).size.height *0.9,
+            child: Column(
+            children: [
+              sh(32),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: b * 13, vertical: h * 13),
+              margin: EdgeInsets.symmetric(horizontal: b * 26),
+              decoration: BoxDecoration(
+                color: Color(0xfff3f3f3),
+                borderRadius: BorderRadius.circular(b * 6),
               ),
-              Spacer(),
-              Row(children: [
-                containerText(DeviceSettingS0VM.instance.maholesdepth),
-                SizedBox(width: b * 5),
-                textRepeat(),
-              ]),
-            ]),
-          ),
-          sh(23),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: b * 13, vertical: h * 13),
-            margin: EdgeInsets.symmetric(horizontal: b * 26),
-            decoration: BoxDecoration(
-              color: Color(0xfff3f3f3),
-              borderRadius: BorderRadius.circular(b * 6),
-            ),
-            child: Column(children: [
-              
-              sh(10),
-              Row(children: [
+              child: Row(children: [
                 Text(
-                  "Battery Threshold Value",
+                  "Manhole's Depth",
                   style: TextStyle(
                     color: dc,
                     fontSize: b * 14,
@@ -114,72 +89,100 @@ class _DeviceSettings extends State<DeviceSettingsS0> {
                 ),
                 Spacer(),
                 Row(children: [
-                  containerText(DeviceSettingS0VM.instance.batterythresholdvalue),
+                  containerText(DeviceSettingS0VM.instance.maholesdepth),
                   SizedBox(width: b * 5),
+                  textRepeat(),
+                ]),
+              ]),
+            ),
+            sh(23),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: b * 13, vertical: h * 13),
+              margin: EdgeInsets.symmetric(horizontal: b * 26),
+              decoration: BoxDecoration(
+                color: Color(0xfff3f3f3),
+                borderRadius: BorderRadius.circular(b * 6),
+              ),
+              child: Column(children: [
+                
+                sh(10),
+                Row(children: [
                   Text(
-                    " %",
+                    "Battery Threshold Value",
                     style: TextStyle(
-                      color: Color(0xff9ba1a3),
+                      color: dc,
                       fontSize: b * 14,
                     ),
                   ),
+                  Spacer(),
+                  Row(children: [
+                    containerText(DeviceSettingS0VM.instance.batterythresholdvalue),
+                    SizedBox(width: b * 5),
+                    Text(
+                      " %",
+                      style: TextStyle(
+                        color: Color(0xff9ba1a3),
+                        fontSize: b * 14,
+                      ),
+                    ),
+                  ]),
                 ]),
               ]),
-            ]),
-          ),
-          sh(58),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: b * 25),
-            child: MaterialButton(
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              color: blc,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(b * 6),
-              ),
-              onPressed: () {
-                 if(GlobalVar.strAccessLevel != null)
-                 DeviceSettingS0VM.instance.onAddPressed(context);
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: h * 10),
-                alignment: Alignment.center,
-                child: Text(
-                  'Add Parameters',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: b * 16,
-                      fontWeight: FontWeight.w400),
-                ),
-              ),
             ),
-          ),
-          sh(14),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: b * 25),
-            child: InkWell(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => Updatelocation()));
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: h * 10),
-                decoration: BoxDecoration(
-                  border: Border.all(color: blc),
+            sh(58),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: b * 25),
+              child: MaterialButton(
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                color: blc,
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(b * 6),
                 ),
-                alignment: Alignment.center,
-                child: Text(
-                  'Update Location',
-                  style: TextStyle(
-                      color: blc,
-                      fontSize: b * 16,
-                      fontWeight: FontWeight.w400),
+                onPressed: () {
+                   if(GlobalVar.strAccessLevel != null)
+                   DeviceSettingS0VM.instance.onAddPressed(context);
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: h * 10),
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Add Parameters',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: b * 16,
+                        fontWeight: FontWeight.w400),
+                  ),
                 ),
               ),
             ),
-          ),
-          ],
-        );
+            sh(14),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: b * 25),
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => Updatelocation()));
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: h * 10),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: blc),
+                    borderRadius: BorderRadius.circular(b * 6),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Update Location',
+                    style: TextStyle(
+                        color: blc,
+                        fontSize: b * 16,
+                        fontWeight: FontWeight.w400),
+                  ),
+                ),
+              ),
+            ),
+            ],
+        ),
+          );
           },
       ),
     );

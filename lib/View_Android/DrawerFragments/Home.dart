@@ -58,7 +58,7 @@ class HomeState extends State<Home> {
              _animateMap(changeList.allDeviceData[0].latitude, changeList.allDeviceData[0].longitude);
              }
             return changeList.allDeviceData == null ?AppConstant.circulerProgressIndicator(): 
-            changeList.allDeviceData.isEmpty?AppConstant.noDataFound():
+            changeList.allDeviceData.isEmpty? AppConstant.noDataFound():
             Stack(
                    children: <Widget>[
                                googlemap(context, changeList.allDeviceData),
@@ -229,7 +229,7 @@ class HomeState extends State<Home> {
             entry.address.toLowerCase().contains(val.toLowerCase().trim()))
           return true;
         else
-          return false;
+          return false; 
       });
       specificDevice = allDeviceData[allDeviceData.indexOf(Key)];
       _value = 20.0;

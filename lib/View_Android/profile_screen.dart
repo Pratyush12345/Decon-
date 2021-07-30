@@ -5,6 +5,7 @@ import 'package:Decon/Models/Models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Profile extends StatefulWidget {
   final bool myProfile;
@@ -232,6 +233,17 @@ class _ProfileState extends State<Profile> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         InkWell(
+                          onTap: () async{
+                            
+                              String url = 'tel:${widget.userDetailModel.phoneNo.replaceAll("+91","" )??""}';
+                              if (await canLaunch(url)) {
+                                await launch(url);
+                              } else {
+                                throw 'Could not launch $url';
+                              }
+                              
+
+                          },
                           child: Container(
                             padding: EdgeInsets.symmetric(
                                 horizontal: b * 18, vertical: h * 6),

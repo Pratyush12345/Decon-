@@ -24,6 +24,9 @@ class GraphsVM {
   List<TempData> _data2 ;
   List<ManHoleData> _data3 ;
   DeviceData _deviceData;
+  List<DataFromSheet> _levelData = [];
+  List<DataFromSheet> _manHoleData = [];
+  List<DataFromSheet> _temperatureData = [];
   int i;
 
   final Map<String, String> _monthstonum = {
@@ -106,15 +109,21 @@ class GraphsVM {
     Provider.of<LinearGraphProvider>(context, listen: false).reinitialize();
     Provider.of<TempGraphProvider>(context, listen: false).reinitialize();
     Provider.of<OpenManholeGraphProvider>(context, listen: false).reinitialize();
-
-    if(GlobalVar.seriesMap[HomePageVM.instance.getSeriesCode].graphs.contains("${HomePageVM.instance.getSeriesCode}_levelSheet"))
+    _callFunctions();
+    
+  }
+  _callFunctions() async{
+    String searchKey = "$_monthNo/$currentYY";
+    String url1 = "$_scriptEditorURL?searchKey=$searchKey&deviceNo=${_deviceData.id.split("_")[2].substring(1, _deviceData.id.split("_")[2].length)}&sheetURL=$_sheetURL&sheetNo=DataSheet";
+    
+    await getDataFromSheetList(url1);
+   if(GlobalVar.seriesMap[HomePageVM.instance.getSeriesCode].graphs.contains("${HomePageVM.instance.getSeriesCode}_LevelGraph"))
     _createLevelGraphDatapoints();
-    if(GlobalVar.seriesMap[HomePageVM.instance.getSeriesCode].graphs.contains("${HomePageVM.instance.getSeriesCode}_temperatureSheet"))
+   if(GlobalVar.seriesMap[HomePageVM.instance.getSeriesCode].graphs.contains("${HomePageVM.instance.getSeriesCode}_TemperatureGraph"))
     _createTempGraphDatapoints();
-    if(GlobalVar.seriesMap[HomePageVM.instance.getSeriesCode].graphs.contains("${HomePageVM.instance.getSeriesCode}_openManholeSheet"))
+   if(GlobalVar.seriesMap[HomePageVM.instance.getSeriesCode].graphs.contains("${HomePageVM.instance.getSeriesCode}_ManholeGraph"))
     _createOpenGraphDatapoints();
   }
-
   onChangeYear(String selectedYear){
   GraphsVM.intsance.yearSelected = selectedYear;
   currentYY = GraphsVM.intsance.yearSelected.toString();
@@ -146,10 +155,16 @@ class GraphsVM {
     _loadGraphs();
  
   }
-  Future<List<DataFromSheet>> getDataFromSheetList(String _url) async {
+
+  getDataFromSheetList(String _url) async {
     return await http.get(_url).then((response) {
-      var jsonFeedback = convert.jsonDecode(response.body) as List;
-      return jsonFeedback.map((json) => DataFromSheet.fromJson(json)).toList();
+      var jsonFeedback = convert.jsonDecode(response.body) as List; 
+      if(HomePageVM.instance.getSeriesCode == "S0"|| HomePageVM.instance.getSeriesCode == "S1"){
+      _levelData = jsonFeedback.map((json) => DataFromSheet.fromLevelJson(json)).toList();
+      _manHoleData = jsonFeedback.map((json) => DataFromSheet.fromOpenManholeJson(json)).toList();
+      }
+      if(HomePageVM.instance.getSeriesCode == "S1")
+      _temperatureData = jsonFeedback.map((json) => DataFromSheet.fromTempJson(json)).toList();
     });
   }
 
@@ -163,12 +178,6 @@ class GraphsVM {
   }
 
   _createLevelGraphDatapoints() {
-    String searchKey = "$_monthNo/$currentYY";
-    String url1 = "$_scriptEditorURL?searchKey=$searchKey&deviceNo=${_deviceData.id.split("_")[2].substring(1, 2)}&sheetURL=$_sheetURL&sheetNo=${GlobalVar.seriesMap[HomePageVM.instance.getSeriesCode].graphs[0]}";
-    print("=======================");
-    print(url1);
-    print("=======================");
-    GraphsVM.intsance.getDataFromSheetList(url1).then((value) {
       int i = 1, ground = 0, normal = 0, informative = 0, critical = 0;
       _data1.clear();
       for (i = 1; i <= _endDateMap[_monthNo]; i++) {
@@ -176,7 +185,7 @@ class GraphsVM {
         normal = 0;
         informative = 0;
         critical = 0;
-        value.forEach((element) {
+        _levelData.forEach((element) {
           String date = i.toString().length == 1 ? "0$i" : "$i";
           if (element.date.contains("$date/$_monthNo/$currentYY\n")) {
             if (element.value == "0") {
@@ -230,18 +239,15 @@ class GraphsVM {
       ));
       Provider.of<LinearGraphProvider>(context, listen: false).linearChangeGraph(_seriesLinearData, _endDateMap[_monthNo]);
     
-    });
+    
   }
 
   _createTempGraphDatapoints() {
-    String searchKey = "$_monthNo/$currentYY";
-    String url2 = "$_scriptEditorURL?searchKey=$searchKey&deviceNo=${_deviceData.id.split("_")[2].substring(1, 2)}&sheetURL=$_sheetURL&sheetNo=${GlobalVar.seriesMap[HomePageVM.instance.getSeriesCode].graphs[2]}";
-
-    GraphsVM.intsance.getDataFromSheetList(url2).then((value) {
+    
       int i = 1;
       _data2.clear();
       for (i = 1; i <= _endDateMap[_monthNo]; i++) {
-        value.forEach((element) {
+        _temperatureData.forEach((element) {
           print(element.date);
           String date = i.toString().length == 1 ? "0$i" : "$i";
           if (element.date.contains("$date/$_monthNo/$currentYY\n")) {
@@ -274,21 +280,16 @@ class GraphsVM {
       ));
       Provider.of<TempGraphProvider>(context, listen: false).tempChangeGraph(_seriesTempData, _endDateMap[_monthNo]);
     
-    });
-    
   }
 
   _createOpenGraphDatapoints() {
-    String searchKey = "$_monthNo/$currentYY";
-    String url3 = "$_scriptEditorURL?searchKey=$searchKey&deviceNo=${_deviceData.id.split("_")[2].substring(1, 2)}&sheetURL=$_sheetURL&sheetNo=${GlobalVar.seriesMap[HomePageVM.instance.getSeriesCode].graphs[1]}";
-
-    GraphsVM.intsance.getDataFromSheetList(url3).then((value) {
+    
       int i = 1, open = 0, close = 0;
       _data3.clear();
       for (i = 1; i <= _endDateMap[_monthNo]; i++) {
         open = 0;
         close = 0;
-        value.forEach((element) {
+        _manHoleData.forEach((element) {
           String date = i.toString().length == 1 ? "0$i" : "$i";
           if (element.date.contains("$date/$_monthNo/$currentYY\n")) {
             if (element.value == "0") {
@@ -327,9 +328,5 @@ class GraphsVM {
             height: 3.0),
       ));
       Provider.of<OpenManholeGraphProvider>(context, listen: false).openManholeChangeGraph(_seriesManHoleData, _endDateMap[_monthNo]);
-    
-    });
   }
-  
-  
 }

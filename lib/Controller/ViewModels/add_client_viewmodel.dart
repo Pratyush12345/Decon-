@@ -1,8 +1,11 @@
+import 'package:Decon/Controller/ViewModels/Services/GlobalVariable.dart';
 import 'package:Decon/Controller/ViewModels/home_page_viewmodel.dart';
 import 'package:Decon/Models/Consts/app_constants.dart';
 import 'package:Decon/Models/Consts/database_calls.dart';
 import 'package:Decon/Models/Models.dart';
 import 'package:Decon/View_Android/Dialogs/please_wait_dialog.dart';
+import 'package:Decon/View_Android/clients/add_client.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
@@ -12,23 +15,33 @@ class AddClientVM {
   AddClientVM._();
   DatabaseCallServices _databaseCallServices = DatabaseCallServices();
   String seriesValue;
-  List<String> seriesList;
+  List<SeriesControllerModel> seriesList;
   String selectedSeries;
   ClientDetailModel clientDetailModel;
   List<ClientListModel> _dupClientList;
   bool isClientSearched = false;
-  
+ 
   init(){
-    selectedSeries = "";
+    selectedSeries = ""; 
     seriesList = null;
     clientDetailModel = ClientDetailModel();
   }
 
-  getSeriesList() async{
+  getSeriesList(bool isEdit, String clientCode) async{
      try{
       String series =  await _databaseCallServices.getSeriesList();
-      if(series != null)
-      seriesList = series?.split(",");
+      if(series != null){
+        List list =  series.split(",");
+        seriesList = [];
+        for(int i =0; i<list.length ; i++){
+          if(isEdit){
+          String sheetUrl = (await FirebaseDatabase.instance.reference().child("clients/$clientCode/series/${list[i]}/DeviceSetting/sheetURL").once()).value; 
+           seriesList.add(SeriesControllerModel(seriesName: list[i], sheetController: TextEditingController(text: sheetUrl??"")));
+          }else{
+           seriesList.add(SeriesControllerModel(seriesName: list[i], sheetController: TextEditingController(text: "")));
+          }
+        }
+      }
       else
       seriesList = [];
      }
@@ -81,7 +94,7 @@ class AddClientVM {
       String res5 = await _databaseCallServices.setManagerClientVisible(previousManagerModel?.key, previousManagerModel.clientsVisible );   
       print(res5);
      }
-     _setDeviceSetting( clientListModel.clientCode, clientDetailModel.selectedSeries.replaceFirst(",","" ).split(","));
+     await _setDeviceSetting( clientListModel.clientCode, clientDetailModel.selectedSeries.replaceFirst(",","" ).split(","));
      print(res1);
      print(res2);
      print(res3);
@@ -101,7 +114,14 @@ class AddClientVM {
 
   _setDeviceSetting(String clientCode, List<String> _selectedSeries) async{
      for(int i = 0; i < _selectedSeries.length; i++ ){
-      String res6 = await _databaseCallServices.setDeviceSettingDefault(clientCode,_selectedSeries[i]);
+       try{
+       String sheetUrl = seriesList.firstWhere((element) => element.seriesName.trim() == _selectedSeries[i].trim()).sheetController.text.trim();
+       String res6 = await _databaseCallServices.setDeviceSettingDefault(clientCode,_selectedSeries[i], sheetUrl );
+       }
+       catch(e){
+         print(e);
+       }
+      
      }
   }
 

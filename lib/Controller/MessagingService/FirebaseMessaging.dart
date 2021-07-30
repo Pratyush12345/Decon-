@@ -20,13 +20,17 @@ class FirebaseMessagingService {
     _firebaseMessaging.requestNotificationPermissions();
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) {
-        showNotification(message['data']['title'], message['data']['body']);
+        String title = "${message['notification']['title']}";
+        String body = "${message['notification']['body']}";
+        showNotification(title , body);
         return;
       },
       onBackgroundMessage: Platform.isIOS ? null : myBackgroundMessageHandler,
       onResume: (Map<String, dynamic> message) {
         if (Platform.isIOS) {
-          showNotification(message['data']['title'], message['data']['body']);
+        String title = "${message['notification']['title']}";
+        String body = "${message['notification']['body']}";
+        showNotification(title , body);
         }
         return;
       },
@@ -41,7 +45,9 @@ class FirebaseMessagingService {
   // TOP-LEVEL or STATIC function to handle background messages
   static Future<dynamic> myBackgroundMessageHandler(
       Map<String, dynamic> message) {
-    showNotification(message['data']['title'], message['data']['body']);
+        String title = "${message['notification']['title']}";
+        String body = "${message['notification']['body']}";
+        showNotification(title , body);
     return Future<void>.value();
   }
 

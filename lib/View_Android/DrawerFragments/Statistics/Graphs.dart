@@ -29,18 +29,18 @@ class _GraphsState extends State<Graphs> {
     1: "Normal Level",
     2: "Infromative Level",
     3: "Critical Level",
-    191: "Error in Sensor 1",
-    192: "Error in Sensor 2",
-    193: "Error in Sensor 3"
+    191: "Sensor 1",
+    192: "Sensor 2",
+    193: "Sensor 3"
   };
   final Map<int, Color> _levelsColor = {
     0: Color(0xffC4C4C4),
     1: Color(0xff69D66D),
     2: Color(0xffE1E357),
     3: Color(0xffD93D3D),
-    191: Colors.black,
-    192: Colors.black,
-    193: Colors.black
+    191: Colors.white,
+    192: Colors.white,
+    193: Colors.white
   };
 
   @override
@@ -120,6 +120,7 @@ class _GraphsState extends State<Graphs> {
                   ),
                 ),
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       margin: EdgeInsets.only(right: b * 6),
@@ -129,6 +130,11 @@ class _GraphsState extends State<Graphs> {
                         color: _levelsColor[widget.deviceData.wlevel],
                         shape: BoxShape.circle,
                       ),
+                      child: widget.deviceData.wlevel>= 191? 
+                          Icon(Icons.error,
+                          size: h * 14,
+                          color: Colors.red,): 
+                          SizedBox(),
                     ),
                     Text(
                       _levels[widget.deviceData.wlevel],
@@ -288,7 +294,7 @@ class _GraphsState extends State<Graphs> {
               ),
             ],
           ),
-          if(GlobalVar.seriesMap[HomePageVM.instance.getSeriesCode].graphs.contains("${HomePageVM.instance.getSeriesCode}_levelSheet"))
+          if(GlobalVar.seriesMap[HomePageVM.instance.getSeriesCode].graphs.contains("${HomePageVM.instance.getSeriesCode}_LevelGraph"))
           Consumer<LinearGraphProvider>(
             builder: (context, model, child)=>
             LevelGraph(
@@ -299,7 +305,7 @@ class _GraphsState extends State<Graphs> {
           SizedBox(
             height: 20.0,
           ),
-          if(GlobalVar.seriesMap[HomePageVM.instance.getSeriesCode].graphs.contains("${HomePageVM.instance.getSeriesCode}_openManholeSheet"))
+          if(GlobalVar.seriesMap[HomePageVM.instance.getSeriesCode].graphs.contains("${HomePageVM.instance.getSeriesCode}_ManholeGraph"))
           Consumer<OpenManholeGraphProvider>(
             builder: (context, model, child)=>
              ManholeGraph(
@@ -309,7 +315,7 @@ class _GraphsState extends State<Graphs> {
           SizedBox(
             height: 20.0,
           ),
-          if(GlobalVar.seriesMap[HomePageVM.instance.getSeriesCode].graphs.contains("${HomePageVM.instance.getSeriesCode}_temperatureSheet"))
+          if(GlobalVar.seriesMap[HomePageVM.instance.getSeriesCode].graphs.contains("${HomePageVM.instance.getSeriesCode}_TemperatureGraph"))
           Consumer<TempGraphProvider>(
             builder: (context,model ,child)=>
             TempGraph(

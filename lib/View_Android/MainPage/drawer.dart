@@ -15,6 +15,8 @@ import 'package:Decon/View_Android/DrawerFragments/Device_Setting.dart';
 import 'package:Decon/View_Android/DrawerFragments/HealthReport.dart';
 import 'package:Decon/View_Android/DrawerFragments/Home.dart';
 import 'package:Decon/View_Android/DrawerFragments/Statistics/Statistics.dart';
+import 'package:Decon/View_Android/DrawerFragments/maintainence_report.dart';
+import 'package:Decon/View_Android/DrawerFragments/monthly_report.dart';
 import 'package:Decon/View_Android/MainPage/HomePage.dart';
 import 'package:Decon/View_Android/clients/all_clients.dart';
 import 'package:Decon/View_Android/profile_screen.dart';
@@ -30,6 +32,8 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
+  
+  
 
     _onSelectedItem( Widget widget) {
       HomePageVM.instance.isfromDrawer = true;
@@ -62,28 +66,33 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     var b = SizeConfig.screenWidth / 375;
 
     return Container(
+      
       margin: EdgeInsets.only(left: b * 11, right: b * 16),
-      child: Material(
-        color: Color(0xffFfffff),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(b * 33),
-          onTap: () {
-            
-            _onSelectedItem( nextPage);
-          },
-          highlightColor: Color(0xffa9e0ff).withOpacity(0.5),
-          splashColor: Color(0xffa9e0ff).withOpacity(0.5),
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: h * 14, horizontal: b * 16),
-            child: Row(
-              children: [
-                Icon(ico, color: Colors.black),
-                SizedBox(width: b * 20),
-                Text(
-                  tit,
-                  style: txtS(Colors.black, 16, FontWeight.w400),
-                ),
-              ],
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(24.0),
+        child: Material(
+          color: GlobalVar.selectedTit == tit ?  blc : Color(0xffFfffff),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(b * 33),
+            onTap: () {
+             GlobalVar.selectedTit = tit;
+              _onSelectedItem( nextPage);
+            },
+            highlightColor: Color(0xffa9e0ff).withOpacity(0.5),
+            splashColor: Color(0xffa9e0ff).withOpacity(0.5),
+            child: Container(
+              
+              padding: EdgeInsets.symmetric(vertical: h * 14, horizontal: b * 16),
+              child: Row(
+                children: [
+                  Icon(ico, color: Colors.black),
+                  SizedBox(width: b * 20),
+                  Text(
+                    tit,
+                    style: txtS(Colors.black, 16, FontWeight.w400),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -150,8 +159,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           row(Icons.view_list, 'Client List', AllClients(), context),
           row(Icons.home, 'Home', Home(), context),
           row(Icons.settings, 'Device Settings', DeviceSetting(), context),
-          row(Icons.assessment, 'Statistics', AllDevices(), context),
-          row(Icons.build, 'Maintainence Report', HealthReport(), context),
+          row(Icons.assessment, 'Monthly Report', MonthlyReport(), context),
+          row(Icons.build, 'Maintainence Report', MaintainenceReport(), context),
           row(Icons.add, 'Add Device', AddDevice(), context),
           row(Icons.verified, 'About Vysion', AboutVysion(), context),
           row(Icons.settings_phone, 'Contact Us', Contact(), context),

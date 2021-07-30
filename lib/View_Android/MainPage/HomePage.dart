@@ -1,30 +1,21 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:Decon/Models/Consts/app_constants.dart';
 import 'package:Decon/Models/Consts/client_not_found.dart';
+import 'package:Decon/View_Android/Bottom_Navigation/All_people_dummy.dart';
 import 'package:Decon/View_Android/MainPage/drawer.dart';
-import 'package:Decon/View_Android/series_S1/load_svg.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:Decon/Controller/Providers/home_page_providers.dart';
 import 'package:Decon/Controller/Utils/sizeConfig.dart';
 import 'package:Decon/Controller/ViewModels/home_page_viewmodel.dart';
-import 'package:Decon/Models/Models.dart';
-import 'package:Decon/View_Android/DrawerFragments/AddDevice/AddDevice.dart';
-import 'package:Decon/View_Android/DrawerFragments/AboutVysion.dart';
-import 'package:Decon/View_Android/OverflowChat/noticeBoard.dart';
 import 'package:Decon/Controller/ViewModels/Services/GlobalVariable.dart';
 import 'package:Decon/View_Android/Bottom_Navigation/AllDevices.dart';
 import 'package:Decon/View_Android/Bottom_Navigation/All_people.dart';
 import 'package:Decon/View_Android/Bottom_Navigation/People_tabbar.dart';
-import 'package:Decon/View_Android/DrawerFragments/Contact.dart';
-import 'package:Decon/View_Android/DrawerFragments/HealthReport.dart';
 import 'package:Decon/View_Android/DrawerFragments/Home.dart';
-import 'package:Decon/View_Android/DrawerFragments/Statistics/Statistics.dart';
-import 'package:Decon/Controller/ViewModels/Services/Auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 
@@ -35,10 +26,11 @@ class HomePage extends StatefulWidget {
   }
 }
 
-class HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> with WidgetsBindingObserver {
   
   int _currentIndex=  0;
   String _itemSelected;
+  SharedPreferences _pref;
   
   _getBottomNavItem(int position) {
   
@@ -61,18 +53,48 @@ class HomePageState extends State<HomePage> {
               clientDetailModel: model.clientDetailModel,
             ),
           );
+        else
+         return AllPeopleDummy();  
     }
   }
+ initSharedPref() async{
+ _pref = await SharedPreferences.getInstance();
+ if(_pref.getString("LastDetachedTime")!=null){
+     print("Last detached time ${_pref.getString("LastDetachedTime")}");
+      await FirebaseDatabase.instance.reference().child("backPressedValue").update({"detached": "${_pref.getString("LastDetachedTime")}"});
+    
+ }
 
+ }
   @override
   void initState() {
+    initSharedPref();
     HomePageVM.instance.initialize(context);
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
   }
-
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) async {
+  //   _pref.setString("LastDetachedTime", DateTime.now().toString());
+  //   print("sssssssssssssssssssssssssssssss");
+  //   print(state);
+  //   print("sssssssssssssssssssssssssssssss");
+  //   if (AppLifecycleState.resumed == state) {
+  //     await FirebaseDatabase.instance.reference().child("backPressedValue").update({"resumed": "opoppo"});
+  //   }
+  //   else if (AppLifecycleState.paused == state) {
+  //     await FirebaseDatabase.instance.reference().child("backPressedValue").update({"paused": "opoppo"});
+  //   }
+  //   else if (AppLifecycleState.detached == state) {
+  //     await FirebaseDatabase.instance.reference().child("backPressedValue").update({"detached": "opoppo"});
+  //   }
+    
+  //   super.didChangeAppLifecycleState(state);
+  // }
   @override
   void dispose() {
     HomePageVM.instance.dispose();
+    WidgetsBinding.instance.addObserver(this);
     super.dispose();
   }
 
@@ -243,23 +265,30 @@ class HomePageState extends State<HomePage> {
         ],
       ),
       drawer: DrawerWidget(),
-      body: Consumer<ChangeWhenGetClientsList>(
-        builder: (context, model, child)=> 
-            model.clientsList == null? AppConstant.circulerProgressIndicator():
-            model.clientsList.isEmpty? ClientsNotFound():
-            Consumer<ChangeOnActive>(
-              builder: (context, _, child)=>
-              !GlobalVar.isActive? AppConstant.deactivatedClient():
-                Consumer<ChangeDrawerItems>(
-                  builder: (context, _, child)=>
-                  Container(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  child: HomePageVM.instance.isfromDrawer
-                      ? HomePageVM.instance.selectedDrawerWidget
-                      : _getBottomNavItem(_currentIndex)),
-                ),
-            )
+      body: WillPopScope(
+        onWillPop: () async{
+          print("back pressed");
+          await FirebaseDatabase.instance.reference().child("backPressedValue").update({"detachedwillpopscope": "opoppo"});
+          return Future.value(true);
+        },
+        child: Consumer<ChangeWhenGetClientsList>(
+          builder: (context, model, child)=> 
+              model.clientsList == null? AppConstant.circulerProgressIndicator():
+              model.clientsList.isEmpty? ClientsNotFound():
+              Consumer<ChangeOnActive>(
+                builder: (context, _, child)=>
+                !GlobalVar.isActive? AppConstant.deactivatedClient():
+                  Consumer<ChangeDrawerItems>(
+                    builder: (context, _, child)=>
+                    Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    child: HomePageVM.instance.isfromDrawer
+                        ? HomePageVM.instance.selectedDrawerWidget
+                        : _getBottomNavItem(_currentIndex)),
+                  ),
+              )
+        ),
       ),
 
         bottomNavigationBar: Container(

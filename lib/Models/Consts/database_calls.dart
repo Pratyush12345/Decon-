@@ -174,13 +174,13 @@ class DatabaseCallServices extends BaseCall{
     return await databaseUpdateCall(url, {"isActive" : 1} );
   }
 
-  Future setDeviceSettingDefault(String clientCode, String seriesCode) async{
+  Future setDeviceSettingDefault(String clientCode, String seriesCode, String sheetUrl) async{
     String url = "${DatabasePath.client}/$clientCode/series/$seriesCode/DeviceSetting";
     if(seriesCode == "S0"){
-    return await databaseUpdateCall(url, S0DeviceSettingModel().toDefaultJson());
+    return await databaseUpdateCall(url, S0DeviceSettingModel(sheetURL: sheetUrl).toDefaultJson());
     }
     else if(seriesCode == "S1"){
-    return await databaseUpdateCall(url, S1DeviceSettingModel().toDefaultJson());
+    return await databaseUpdateCall(url, S1DeviceSettingModel(sheetURL: sheetUrl ).toDefaultJson());
     }
   }
  Future setDeviceSetting(String clientCode, String seriesCode, Map<String, dynamic> jsonData ) async{
