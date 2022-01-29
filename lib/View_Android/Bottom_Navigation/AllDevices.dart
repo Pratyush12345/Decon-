@@ -33,6 +33,10 @@ class _AllDevicesState extends State<AllDevices> {
     192: "Sensor 2",
     193: "Sensor 3"
   };
+  final Map<int, String> _manholeCondition = {
+    0: "manhole close",
+    1: "manhole open",
+  };
   final Map<int, Color> _levelsColor = {
     0: Color(0xffC4C4C4),
     1: Color(0xff69D66D),
@@ -305,9 +309,10 @@ class _AllDevicesState extends State<AllDevices> {
               ),
                 ]),
                 Row(children: [
-              Icon(Icons.arrow_upward, size: b * 16, color: blc),
+              Icon(Icons.blur_circular_sharp, size: b * 16, color: blc),
+              SizedBox(width: 1.0,),
               Text(
-                "${_listDeviceData[index].openManhole??""}",
+                "${_manholeCondition[_listDeviceData[index].openManhole]??""}",
                 style: txtS(blc, 14, FontWeight.w400),
               ),
                 ]),

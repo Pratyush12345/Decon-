@@ -43,6 +43,11 @@ class _GraphsState extends State<Graphs> {
     193: Colors.white
   };
 
+  final Map<int, String> _manholeCondition = {
+    0: "manhole close",
+    1: "manhole open",
+  };
+
   @override
   void initState() {
     super.initState();
@@ -176,9 +181,10 @@ class _GraphsState extends State<Graphs> {
                   ),
                 ]),
                 Row(children: [
-                  Icon(Icons.arrow_upward, size: b * 16, color: blc),
+                  Icon(Icons.blur_circular_sharp, size: b * 16, color: blc),
+                  SizedBox(width: 1.0,),
                   Text(
-                    "${widget.deviceData.openManhole??""}",
+                    "${_manholeCondition[widget.deviceData.openManhole]??""}",
                     style: txtS(blc, 14, FontWeight.w400),
                   ),
                 ]),
@@ -300,6 +306,7 @@ class _GraphsState extends State<Graphs> {
             LevelGraph(
               seriesLinearData: model.seriesLinearData,
               lastDay: double.parse(model.noOfDays.toString()),
+              showNoDatafoundflag: model.showNoDatafound,
             ),
           ),
           SizedBox(
@@ -310,7 +317,9 @@ class _GraphsState extends State<Graphs> {
             builder: (context, model, child)=>
              ManholeGraph(
                 seriesManHoleData: model.seriesManHoleData,
-                lastDay: double.parse(model.noOfDays.toString())),
+                lastDay: double.parse(model.noOfDays.toString()),
+                showNoDatafoundflag: model.showNoDatafound,),
+                
           ),
           SizedBox(
             height: 20.0,
@@ -320,7 +329,9 @@ class _GraphsState extends State<Graphs> {
             builder: (context,model ,child)=>
             TempGraph(
                 seriesTempData: model.seriesTempData,
-                lastDay: double.parse(model.noOfDays.toString())),
+                lastDay: double.parse(model.noOfDays.toString()),
+                showNoDatafoundflag: model.showNoDatafound,
+                ),
           ),
           
         ],

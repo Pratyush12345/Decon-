@@ -43,7 +43,7 @@ class _ClickOnAddDeviceState extends State<ClickOnAddDevice> {
     if(_formKey.currentState.validate()){
       print(_latitudeText.text);
       if(_latitudeText.text!=null && _longitudeText.text!=null && _latitudeText.text!="" && _longitudeText.text!="")
-     _updatedatabase();     
+     _updatedatabase(double.parse(_latitudeText.text), double.parse(_longitudeText.text));     
       else
       {
         AppConstant.showFailToast(context, "Latitude and Longitude can not be null");
@@ -55,7 +55,7 @@ class _ClickOnAddDeviceState extends State<ClickOnAddDevice> {
   }
 
 
-  _updatedatabase() async {
+  _updatedatabase( double _latitude, double _longitude) async {
     String clientCode = HomePageVM.instance.getClientCode;
     String seriescode = HomePageVM.instance.getSeriesCode;
     String deviceCode = _deviceIdText.text;

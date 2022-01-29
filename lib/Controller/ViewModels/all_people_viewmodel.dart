@@ -28,8 +28,8 @@ class AllPeopleVM{
   Future<dynamic> getManagerDetail(String manageruid) async{
    try{
     managerDetailModel =  await _databaseCallServices.getManagerCredentails(manageruid);
-    return managerDetailModel ?? UserDetailModel();
-   }
+    return managerDetailModel ?? (managerDetailModel = UserDetailModel(key: null, name: "null"));
+     }
    catch(e){
      print(e);
    }
@@ -43,7 +43,8 @@ class AllPeopleVM{
   Future<dynamic> getAdminDetail(String adminuid) async{
    try{
     adminDetailModel =  await _databaseCallServices.getAdminCredentails(adminuid);
-    return adminDetailModel?? UserDetailModel();
+    return adminDetailModel ?? (adminDetailModel = UserDetailModel(key: null, name: "null"));
+    
     }
    catch(e){
      print(e);

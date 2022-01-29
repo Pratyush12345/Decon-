@@ -23,13 +23,14 @@ class _Replace_Admin extends State<Replace_Admin> {
   final _nameController = TextEditingController();
   final _adminpostController = TextEditingController();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  
+  int _clickedCount = 0 ;
   void validate() async{
     if(_formKey.currentState.validate()){
           DialogVM.instance.onReplaceAdminPressed(context, _nameController.text.trim(), 
           widget.clientVisible, _phoneNoController.text.trim(), _adminpostController.text.trim(), widget.uid);
     }
     else{
+      _clickedCount = 0 ;
       print("Not Validated");
     }
   }
@@ -213,7 +214,11 @@ class _Replace_Admin extends State<Replace_Admin> {
               ),
               padding: EdgeInsets.zero,
               onPressed: () {
+                 _clickedCount++;
+               if(_clickedCount ==1){
+               
                 validate();
+               }
               },
               child: Container(
                 alignment: Alignment.center,

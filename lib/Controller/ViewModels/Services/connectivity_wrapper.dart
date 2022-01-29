@@ -1,24 +1,23 @@
-import 'package:Decon/Controller/ViewModels/Services/Wrapper.dart';
+import 'package:Decon/Controller/ViewModels/Services/auth_wrapper.dart';
 import 'package:Decon/Models/Consts/NointernetScreen.dart';
 import 'package:Decon/View_Android/Authentication/Wait.dart';
 import 'package:flutter/material.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:provider/provider.dart';
+import 'package:connectivity/connectivity.dart';
 
-class Wrapper4 extends StatelessWidget{
+class ConnectivitytWrapper extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 
       return StreamBuilder(
-        stream: InternetConnectionChecker().onStatusChange ,
+        stream: Connectivity().onConnectivityChanged ,
         builder: (context, snapshot){
               if(snapshot.connectionState == ConnectionState.active){
                print("ccccccccccccccccccc");
                print(snapshot.data.toString());
                print("ccccccccccccccccccc");
-              if(snapshot.data.toString()  != InternetConnectionStatus.disconnected.toString())
+              if(snapshot.data.toString()  != ConnectivityResult.none.toString())
               {
-                return Wrapper();
+                return AuthWrapper();
               }
               
               else{

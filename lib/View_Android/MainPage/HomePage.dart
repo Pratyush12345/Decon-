@@ -68,7 +68,7 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
  }
   @override
   void initState() {
-    initSharedPref();
+    //initSharedPref();
     HomePageVM.instance.initialize(context);
     super.initState();
     WidgetsBinding.instance.addObserver(this);
@@ -122,9 +122,9 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
             
               children: [
                 Expanded(
-                  flex: 1,
+                  flex: 4,
                   child: Container(
-                        width: 80.0,
+                        width: 100.0,
                         child: 
                           Consumer<ChangeWhenGetClientsList>(
                        builder: (context, object,child ){
@@ -142,7 +142,7 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           isExpanded: true,
                           decoration: InputDecoration(
                             hintText: 'Demo Client',
-                            labelText: 'Select Client',
+                            //labelText: '',
                           ),
                           value: _itemSelected ?? null ,
                           items: object.clientsList.map((dropDownStringitem) {
@@ -151,7 +151,7 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                   value: dropDownStringitem.clientName,
                                   child: Text(
                                     dropDownStringitem.clientName,
-                                    overflow: TextOverflow.ellipsis,
+                                    overflow: TextOverflow.clip,
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         color: Colors.black87),
@@ -186,7 +186,7 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
                     child: Consumer<ChangeSeries>(
             builder: (context, model, child)=>
              Container(
-               width: 70.0,
+               width: 50.0,
                child: Padding(
                         padding: EdgeInsets.all(4.0),
                         child: ButtonTheme(
@@ -202,11 +202,11 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
                             decoration: InputDecoration(
                               hintText: 'S0',
-                              labelText: 'Select Series',
-                              labelStyle: TextStyle(
-                                fontSize: b * 16,
-                                color: Color(0xff858585),
-                              ),
+                              // labelText: '',
+                              // labelStyle: TextStyle(
+                              //   fontSize: b * 16,
+                              //   color: Color(0xff858585),
+                              // ),
                             ),
                             value: model.selectedSeries ,
                             items: (model.seriesList??[]).map((e) => DropdownMenuItem<String>(
@@ -266,9 +266,9 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
       ),
       drawer: DrawerWidget(),
       body: WillPopScope(
-        onWillPop: () async{
+        onWillPop: () {
           print("back pressed");
-          await FirebaseDatabase.instance.reference().child("backPressedValue").update({"detachedwillpopscope": "opoppo"});
+          //await FirebaseDatabase.instance.reference().child("backPressedValue").update({"detachedwillpopscope": "opoppo"});
           return Future.value(true);
         },
         child: Consumer<ChangeWhenGetClientsList>(

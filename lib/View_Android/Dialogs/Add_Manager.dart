@@ -16,12 +16,13 @@ class _Add_man extends State<Add_man> {
   final _phoneNoController = TextEditingController();
   final _nameController = TextEditingController();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  
+  int _clickedCount = 0 ;
   void validate(){
     if(_formKey.currentState.validate()){
       DialogVM.instance.onAddManagerPressed(context, _nameController.text.trim(), _phoneNoController.text.trim());                
     }
     else{
+      _clickedCount = 0 ;
       print("Not Validated");
     }
   }
@@ -161,7 +162,11 @@ class _Add_man extends State<Add_man> {
               ),
               padding: EdgeInsets.zero,
               onPressed: () {
+                _clickedCount++;
+               if(_clickedCount ==1){
+               
                 validate();
+               }
               },
               child: Container(
                 alignment: Alignment.center,

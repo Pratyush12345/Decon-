@@ -38,7 +38,9 @@ class _LocationDialog extends State<LocationDialog> {
     });
   }
  validate() async{
+   print("11111111111111");
    if(_formKey.currentState.validate()){
+     print("222222222222");
          if(_latitudeController.text!="" && _longitudeController.text!=""){
           double _lat = double.parse((_latitudeController.text));
           double _lon = double.parse(_longitudeController.text);

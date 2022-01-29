@@ -501,7 +501,7 @@ class _PeopleTabBar extends State<PeopleTabBar> with SingleTickerProviderStateMi
                                                                         Text("${model.listClientDetailModel[_listUserDetailModelAdmins[index].key]?.cityName??"Loading..."}",
                                                                           style:TextStyle(
                                                                             color: Colors.black,
-                                                                            fontSize: SizeConfig.b *4.1,
+                                                                            fontSize: SizeConfig.b *4.0,
                                                                             fontWeight: FontWeight.w500,
                                                                           ),
                                                                         ),

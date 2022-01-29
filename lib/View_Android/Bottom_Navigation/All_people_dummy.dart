@@ -53,6 +53,7 @@ class _AllPeopleDummy extends State<AllPeopleDummy> {
         duration: Duration(milliseconds: 400),
         builder: (context) {
           return Add_Delegates(list: GlobalVar.strAccessLevel=="2" ? _listOfManagerTeam : _listOfAdminTeam,
+          secondarylist: GlobalVar.strAccessLevel=="2" ?  _listOfAdminTeam : _listOfManagerTeam ,
           adminDetail: AllPeopleVM.instance.adminDetailModel);
         });
   }

@@ -111,7 +111,11 @@ class DataFromSheet {
   );
 
   factory DataFromSheet.fromLevelJson(dynamic json) {
-    return DataFromSheet("${json['key']}", "${json['value'].toString().split(",")[0].trim()}");
+    try{
+      return DataFromSheet("${json['key']}", "${json['value'].toString().split(",")[0].trim()}");
+    }catch(e){
+      return  DataFromSheet("${json['key']}", "0");
+    }
   }
 
   factory DataFromSheet.fromOpenManholeJson(dynamic json) {
@@ -119,11 +123,19 @@ class DataFromSheet {
    "Close" : 0,
    "Open" : 1
   };
-    return DataFromSheet("${json['key']}", "${ _map[json['value'].toString().split(",")[1].trim()]}");
+    try{
+     return DataFromSheet("${json['key']}", "${ _map[json['value'].toString().split(",")[1].trim()]}");
+    }catch(e){
+     return  DataFromSheet("${json['key']}", "0");
+    }
   }
 
   factory DataFromSheet.fromTempJson(dynamic json) {
+    try{
     return DataFromSheet("${json['key']}", "${json['value'].toString().split(",")[3].trim()}");
+   }catch(e){
+     return  DataFromSheet("${json['key']}", "0");
+    }
   }
 
   // Method to make GET parameters.

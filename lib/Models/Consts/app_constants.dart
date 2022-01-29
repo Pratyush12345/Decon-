@@ -120,9 +120,12 @@ class AppConstant {
   static  void showFailToast(BuildContext context,String msg, {int duration, int gravity}) {
     Toast.show(msg, context, duration: 5,backgroundColor: Colors.red);
   }
+  static  void showUpFailToast(BuildContext context,String msg, {int duration, int gravity}) {
+    Toast.show(msg, context, duration: 5,backgroundColor: Colors.red, gravity: Toast.TOP);
+  }
 }
 
-
+String privacy_policy_url = "";
 
 const Color tc = Color(0xff979797);
 const Color dc = Color(0xff263238);

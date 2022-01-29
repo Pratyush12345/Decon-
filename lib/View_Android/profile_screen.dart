@@ -1,10 +1,8 @@
 import 'package:Decon/Controller/Utils/sizeConfig.dart';
-import 'package:Decon/Controller/ViewModels/Services/GlobalVariable.dart';
 import 'package:Decon/Models/Consts/app_constants.dart';
 import 'package:Decon/Models/Models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Profile extends StatefulWidget {
@@ -41,22 +39,7 @@ class _ProfileState extends State<Profile> {
           !this.widget.myProfile ? "User Profile" : "My Profile",
           style: txtS(Colors.black, 16, FontWeight.w500),
         ),
-        actions: [
-          InkWell(
-            onTap: () {},
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            child: Container(
-              margin: EdgeInsets.only(right: b * 20),
-              height: h * 32,
-              width: b * 32,
-              decoration: BoxDecoration(
-                color: blc,
-                shape: BoxShape.circle,
-              ),
-            ),
-          ),
-        ],
+        
         backgroundColor: Colors.white,
       ),
       key: _scaffoldKey,

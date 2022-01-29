@@ -4,6 +4,7 @@ import 'package:Decon/Controller/ViewModels/Services/GlobalVariable.dart';
 import 'package:Decon/Controller/Utils/sizeConfig.dart';
 import 'package:Decon/Controller/ViewModels/Services/test.dart';
 import 'package:Decon/Controller/ViewModels/home_page_viewmodel.dart';
+import 'package:Decon/Models/Consts/AppString.dart';
 import 'package:Decon/Models/Consts/app_constants.dart';
 import 'package:Decon/Models/Models.dart';
 import 'package:Decon/View_Android/Bottom_Navigation/AllDevices.dart';
@@ -14,6 +15,7 @@ import 'package:Decon/View_Android/DrawerFragments/Contact.dart';
 import 'package:Decon/View_Android/DrawerFragments/Device_Setting.dart';
 import 'package:Decon/View_Android/DrawerFragments/HealthReport.dart';
 import 'package:Decon/View_Android/DrawerFragments/Home.dart';
+import 'package:Decon/View_Android/DrawerFragments/Privacy_Policy.dart';
 import 'package:Decon/View_Android/DrawerFragments/Statistics/Statistics.dart';
 import 'package:Decon/View_Android/DrawerFragments/maintainence_report.dart';
 import 'package:Decon/View_Android/DrawerFragments/monthly_report.dart';
@@ -24,6 +26,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DrawerWidget extends StatefulWidget {
   
@@ -158,12 +161,49 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           if(GlobalVar.strAccessLevel == "1")
           row(Icons.view_list, 'Client List', AllClients(), context),
           row(Icons.home, 'Home', Home(), context),
+          if(GlobalVar.strAccessLevel !="3" && GlobalVar.strAccessLevel !="5")
           row(Icons.settings, 'Device Settings', DeviceSetting(), context),
           row(Icons.assessment, 'Monthly Report', MonthlyReport(), context),
           row(Icons.build, 'Maintainence Report', MaintainenceReport(), context),
+          if(GlobalVar.strAccessLevel !="3" && GlobalVar.strAccessLevel !="5")
           row(Icons.add, 'Add Device', AddDevice(), context),
           row(Icons.verified, 'About Vysion', AboutVysion(), context),
           row(Icons.settings_phone, 'Contact Us', Contact(), context),
+          Container(
+            margin:
+                EdgeInsets.only(left: b * 11, right: b * 16, bottom: h * 10),
+            child: Material(
+              color: Color(0xffFfffff),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(b * 33),
+                onTap: () async{
+                  String _url = "${AppString.privacy_policy_url}";
+                 if(await canLaunch("$_url")){
+                  launch(_url);
+                 }else{
+                   throw 'Could not launch $_url';
+                 }
+
+                },
+                highlightColor: Colors.red.withOpacity(0.4),
+                splashColor: Colors.red.withOpacity(0.4),
+                child: Container(
+              padding: EdgeInsets.symmetric(
+                  vertical: h * 14, horizontal: b * 16),
+              child: Row(
+                children: [
+                  Icon(Icons.local_parking, color: Colors.black),
+                  SizedBox(width: b * 20),
+                  Text(
+                    "Privacy Policy",
+                    style: txtS(Colors.black, 16, FontWeight.w400),
+                  ),
+                ],
+              ),
+                ),
+              ),
+            ),
+          ),
           Spacer(),
           Container(
             margin:

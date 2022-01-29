@@ -27,7 +27,7 @@ class GraphsVM {
   List<DataFromSheet> _levelData = [];
   List<DataFromSheet> _manHoleData = [];
   List<DataFromSheet> _temperatureData = [];
-  int i;
+  int i; var result;
 
   final Map<String, String> _monthstonum = {
     "January": "01",
@@ -71,14 +71,18 @@ class GraphsVM {
     "November",
     "December"
   ];
+  // final List<String> yearlist = [
+  //   "2019",
+  //   "2020",
+  //   "2021",
+  //   "2022",
+  //   "2023",
+  //   "2024",
+  //   "2025",
+  // ];
   final List<String> yearlist = [
-    "2019",
-    "2020",
-    "2021",
-    "2022",
-    "2023",
-    "2024",
-    "2025",
+    "${(DateTime.now().year-1)}",
+    "${DateTime.now().year}",
   ];
   final Map<String, int> _endDateMap = {
     "01": 31,
@@ -110,13 +114,21 @@ class GraphsVM {
     Provider.of<TempGraphProvider>(context, listen: false).reinitialize();
     Provider.of<OpenManholeGraphProvider>(context, listen: false).reinitialize();
     _callFunctions();
-    
+    initfields();
   }
+
   _callFunctions() async{
     String searchKey = "$_monthNo/$currentYY";
+    print("device id---------${_deviceData.id.split("_")[2].substring(1, _deviceData.id.split("_")[2].length)}");
+    print("sheet url----------${_sheetURL}");
+    print("search key--------${searchKey}");
+    print("secrip teditot url--------${_scriptEditorURL}");
     String url1 = "$_scriptEditorURL?searchKey=$searchKey&deviceNo=${_deviceData.id.split("_")[2].substring(1, _deviceData.id.split("_")[2].length)}&sheetURL=$_sheetURL&sheetNo=DataSheet";
-    
-    await getDataFromSheetList(url1);
+    print("url1111111-------$url1");
+   result = await getDataFromSheetList(url1);
+   print("--------------------------");
+   print(result);
+   print("--------------------------");
    if(GlobalVar.seriesMap[HomePageVM.instance.getSeriesCode].graphs.contains("${HomePageVM.instance.getSeriesCode}_LevelGraph"))
     _createLevelGraphDatapoints();
    if(GlobalVar.seriesMap[HomePageVM.instance.getSeriesCode].graphs.contains("${HomePageVM.instance.getSeriesCode}_TemperatureGraph"))
@@ -158,6 +170,12 @@ class GraphsVM {
 
   getDataFromSheetList(String _url) async {
     return await http.get(_url).then((response) {
+      print("responsed .body========% ${response.body.length}");
+      if(response.body.length<=2){
+        print("in ifffffffffffff");
+       return null;
+      }
+      else{
       var jsonFeedback = convert.jsonDecode(response.body) as List; 
       if(HomePageVM.instance.getSeriesCode == "S0"|| HomePageVM.instance.getSeriesCode == "S1"){
       _levelData = jsonFeedback.map((json) => DataFromSheet.fromLevelJson(json)).toList();
@@ -165,6 +183,8 @@ class GraphsVM {
       }
       if(HomePageVM.instance.getSeriesCode == "S1")
       _temperatureData = jsonFeedback.map((json) => DataFromSheet.fromTempJson(json)).toList();
+      return "data found";
+      }
     });
   }
 
@@ -237,7 +257,8 @@ class GraphsVM {
             shape: DataMarkerType.circle,
             height: 3.0),
       ));
-      Provider.of<LinearGraphProvider>(context, listen: false).linearChangeGraph(_seriesLinearData, _endDateMap[_monthNo]);
+
+      Provider.of<LinearGraphProvider>(context, listen: false).linearChangeGraph(_seriesLinearData, _endDateMap[_monthNo], result == null? true: false);
     
     
   }
@@ -278,7 +299,7 @@ class GraphsVM {
             shape: DataMarkerType.circle,
             height: 3.0),
       ));
-      Provider.of<TempGraphProvider>(context, listen: false).tempChangeGraph(_seriesTempData, _endDateMap[_monthNo]);
+      Provider.of<TempGraphProvider>(context, listen: false).tempChangeGraph(_seriesTempData, _endDateMap[_monthNo], result == null? true: false);
     
   }
 
@@ -327,6 +348,6 @@ class GraphsVM {
             shape: DataMarkerType.circle,
             height: 3.0),
       ));
-      Provider.of<OpenManholeGraphProvider>(context, listen: false).openManholeChangeGraph(_seriesManHoleData, _endDateMap[_monthNo]);
+      Provider.of<OpenManholeGraphProvider>(context, listen: false).openManholeChangeGraph(_seriesManHoleData, _endDateMap[_monthNo], result == null? true: false);
   }
 }

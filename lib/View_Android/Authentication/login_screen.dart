@@ -1,9 +1,11 @@
+import 'package:Decon/Models/Consts/AppString.dart';
 import 'package:Decon/Models/Consts/app_constants.dart';
 import 'package:Decon/View_Android/Authentication/login_viewmodel.dart';
 import 'package:Decon/View_Android/Authentication/otp_screen.dart';
 import 'package:Decon/View_Android/DeconManager/AddCity.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -109,6 +111,20 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ),
+              ),
+              InkWell(
+                onTap:  () async{
+                  String _url = "${AppString.privacy_policy_url}";
+                 if(await canLaunch("$_url")){
+                  launch(_url);
+                 }else{
+                   throw 'Could not launch $_url';
+                 }
+
+                },
+                child: Text("Terms & Privacy Policy",
+                 style: txtS(Colors.grey, 14.0, FontWeight.bold),
+                 ),
               ),
               sh(20),
             ],

@@ -10,4 +10,5 @@ class DatabasePath{
   static String getClientDetail = "clients";
   static String client = "clients";
   static String setClientList = "clientsList";
+  static String getUserCustomClaim = "https://us-central1-decon-3545e.cloudfunctions.net/restApis/getUserDetail";
 }

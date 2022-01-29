@@ -23,7 +23,7 @@ class Auth  {
   User currentuser;
   SharedPreferences pref;
   BuildContext changeContext;
-
+  
   _sharedprefinit() async {
     pref = await SharedPreferences.getInstance();
   }
@@ -42,6 +42,7 @@ class Auth  {
             .reference()
             .child("/superAdmins/${FirebaseAuth.instance.currentUser.uid}")
             .update({"andrtokenid": token});
+          
       }
       else if (GlobalVar.strAccessLevel == "2") {
         FirebaseDatabase.instance
@@ -54,6 +55,7 @@ class Auth  {
             .reference()
             .child("/admins/${FirebaseAuth.instance.currentUser.uid}")
             .update({"andrtokenid": token});
+         
       }
       else if (GlobalVar.strAccessLevel == "4") {
         FirebaseDatabase.instance
@@ -76,7 +78,7 @@ class Auth  {
       
       });
   }
-
+    
    _getUserCredentails() async{
     if(GlobalVar.strAccessLevel == "1"){
        GlobalVar.userDetail =  await _databaseCallServices.getSuperAdminCredentails(FirebaseAuth.instance.currentUser.uid);
@@ -94,7 +96,7 @@ class Auth  {
     else if(GlobalVar.strAccessLevel == "5"){
       GlobalVar.userDetail =  await _databaseCallServices.getAdminTeamCredentails(FirebaseAuth.instance.currentUser.uid);
       GlobalVar.userDetail.clientsVisible = await _databaseCallServices.getAdminClientsVisible(GlobalVar.userDetail.headUid);
-    }
+      }
     else{
       print("randommmmmmm user");
       print(FirebaseAuth.instance.currentUser.uid);
@@ -133,7 +135,7 @@ class Auth  {
     return value; 
   }
 
-  signInWithCred(cred) async {
+  signInWithCred(cred) async { 
     currentuser = (await _firebaseAuth.signInWithCredential(cred)).user;
     return "done";
   }
