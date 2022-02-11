@@ -88,7 +88,7 @@ class HomePageVM {
       
   }
   _attachfunction(){
-     _onUserChangedSubscription    = _delquery.onChildRemoved.listen((event) { 
+     _onUserChangedSubscription = _delquery.onChildRemoved.listen((event) { 
           
           if(event.snapshot.key == "phoneNo" && event.snapshot.value == "${GlobalVar.userDetail.phoneNo}")
            Auth.instance.signOut();

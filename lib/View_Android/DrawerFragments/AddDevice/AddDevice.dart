@@ -69,9 +69,10 @@ class _AddDeviceState extends State<AddDevice> {
                      DeviceData deviceData = DeviceData.fromJson(value, HomePageVM.instance.getSeriesCode ); 
                     _listOfDevices.add(deviceData);                              
                });
-               _listOfDevices?.sort((a, b) =>
-                   int.parse(a.id.split("_")[2].substring(1, a.id.split("_")[2].length)).compareTo(
-                       int.parse(b.id.split("_")[2].substring(1, b.id.split("_")[2].length))));
+               _listOfDevices?.sort((a, b) {
+                   return int.parse(a.id.split("_")[2].substring(1, a.id.split("_")[2].length)).compareTo(
+                       int.parse(b.id.split("_")[2].substring(1, b.id.split("_")[2].length)));
+                       });
                if (snapshot.data.snapshot.value != null)
                  return ListView.builder(
                       padding: EdgeInsets.symmetric(horizontal: b * 22, vertical: h*4),

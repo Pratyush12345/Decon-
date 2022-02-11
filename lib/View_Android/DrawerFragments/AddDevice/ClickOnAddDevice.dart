@@ -59,15 +59,22 @@ class _ClickOnAddDeviceState extends State<ClickOnAddDevice> {
     String clientCode = HomePageVM.instance.getClientCode;
     String seriescode = HomePageVM.instance.getSeriesCode;
     String deviceCode = _deviceIdText.text;
+    int _battery;
+
     if(!_isAddressChangedManually)
     address = await AddressCalculator(_latitude, _longitude).getLocation();
     if (widget.isUpdating) {
+      DataSnapshot _snapshot = await FirebaseDatabase.instance.reference()
+          .child("clients/$clientCode/series/$seriescode/devices/${deviceCode.split("_")[2]}/battery").once();
+    _battery = _snapshot.value;
+    
       await FirebaseDatabase.instance
           .reference()
           .child("clients/$clientCode/series/$seriescode/devices/${deviceCode.split("_")[2]}")
           .update({
         "latitude": _latitude,
         "longitude": _longitude,
+        "battery" : _battery == null?100: _battery,
         "address": address,
       });
     } else {

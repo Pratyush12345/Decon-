@@ -181,7 +181,7 @@ class DeviceData {
     id = snapshot.value["id"];
     latitude = double.parse(snapshot.value["latitude"].toString());
     longitude = double.parse(snapshot.value["longitude"].toString());
-    battery = snapshot.value["battery"];
+    battery = snapshot.value["battery"]??100;
     distance = snapshot.value["distance"];
     if(_seriesCode == "S0"){
       wlevel = snapshot.value["wLevel"];
