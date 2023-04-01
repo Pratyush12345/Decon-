@@ -322,8 +322,8 @@ class _AllPeople extends State<AllPeople> {
               SizedBox(height: SizeConfig.v * 1),
               Container(
                 height: h *200,
-                child: StreamBuilder<Event>(
-                      stream: FirebaseDatabase.instance.reference().child("managerTeam").orderByChild("headUid").equalTo("${widget.clientDetailModel?.selectedManager}").onValue,
+                child: StreamBuilder<DatabaseEvent>(
+                      stream: FirebaseDatabase.instance.ref().child("managerTeam").orderByChild("headUid").equalTo("${widget.clientDetailModel?.selectedManager}").onValue,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                             if(!PeopleVM.instance.isManagerTeamSearched){
@@ -445,8 +445,8 @@ class _AllPeople extends State<AllPeople> {
                 ),
               Container(
                 height: h *200,
-                child:StreamBuilder<Event>(
-                  stream: FirebaseDatabase.instance.reference().child("adminTeam").orderByChild("headUid").equalTo("${widget.clientDetailModel?.selectedAdmin}").onValue,
+                child:StreamBuilder<DatabaseEvent>(
+                  stream: FirebaseDatabase.instance.ref().child("adminTeam").orderByChild("headUid").equalTo("${widget.clientDetailModel?.selectedAdmin}").onValue,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                         if(!PeopleVM.instance.isAdminTeamSearched){

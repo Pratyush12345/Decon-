@@ -16,7 +16,7 @@ class Wait extends StatelessWidget {
                height: h *200,
                width: b * 200,
                child: RiveAnimation.asset('images/loading7.riv',
-               animation: "loading",
+               animations: ["loading"],
                ),
              ),
       ),

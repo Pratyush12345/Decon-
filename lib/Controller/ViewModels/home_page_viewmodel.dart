@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:Decon/Controller/Providers/devie_setting_provider.dart';
 import 'package:Decon/Controller/Providers/home_page_providers.dart';
 import 'package:Decon/Controller/ViewModels/Services/Auth.dart';
@@ -30,9 +29,9 @@ class HomePageVM {
   List<String> citieslist = [];
   Query _query;
   Query _delquery;
-  StreamSubscription<Event> _onDataAddedSubscription;
-  StreamSubscription<Event> _onDataChangedSubscription;
-  StreamSubscription<Event> _onUserChangedSubscription;
+  StreamSubscription<DatabaseEvent> _onDataAddedSubscription;
+  StreamSubscription<DatabaseEvent> _onDataChangedSubscription;
+  StreamSubscription<DatabaseEvent> _onUserChangedSubscription;
   DatabaseCallServices _databaseCallServices = DatabaseCallServices();
   final FirebaseDatabase _database = FirebaseDatabase.instance;
   String _ccode, _scode;
@@ -48,16 +47,16 @@ class HomePageVM {
           return UpdateDialog(updateInfo: info );
         });
   }
-
-  onDeviceAdded(Event event) {
-    if (event.snapshot.value["address"] != null) {
+ 
+  onDeviceAdded(DatabaseEvent event) {
+    if ((event.snapshot.value as Map)["address"] != null) {
       Provider.of<ChangeDeviceData>(context, listen: false).changeDeviceData("onDeviceAdded", newDeviceData: DeviceData.fromSnapshot(event.snapshot, _scode));
     }
   }
 
-  onDeviceChanged(Event event) {
+  onDeviceChanged(DatabaseEvent event) {
     try {
-      if (event.snapshot.value["address"] != null) {
+      if ((event.snapshot.value as Map)["address"] != null) {
         Provider.of<ChangeDeviceData>(context, listen: false).changeDeviceData("onDeviceChanged", newDeviceData: DeviceData.fromSnapshot(event.snapshot, _scode));
       }
     } catch (e) {
@@ -69,20 +68,20 @@ class HomePageVM {
      if (GlobalVar.strAccessLevel == "1") {
        }
       else if (GlobalVar.strAccessLevel == "2") {
-        _delquery =   _database.reference().child("/managers/${FirebaseAuth.instance.currentUser.uid}");
+        _delquery =   _database.ref().child("/managers/${FirebaseAuth.instance.currentUser.uid}");
         _attachfunction();
       }  
       else if (GlobalVar.strAccessLevel == "3") {
-        _delquery =   _database.reference().child("/admins/${FirebaseAuth.instance.currentUser.uid}");
+        _delquery =   _database.ref().child("/admins/${FirebaseAuth.instance.currentUser.uid}");
        _attachfunction();
          
       }
       else if (GlobalVar.strAccessLevel == "4") {
-        _delquery =   _database.reference().child("/managerTeam/${FirebaseAuth.instance.currentUser.uid}");
+        _delquery =   _database.ref().child("/managerTeam/${FirebaseAuth.instance.currentUser.uid}");
         _attachfunction();
       }
       else if (GlobalVar.strAccessLevel == "5") {
-        _delquery =   _database.reference().child("/adminTeam/${FirebaseAuth.instance.currentUser.uid}");
+        _delquery =   _database.ref().child("/adminTeam/${FirebaseAuth.instance.currentUser.uid}");
         _attachfunction();   
       }
       
@@ -96,10 +95,10 @@ class HomePageVM {
   }
   _getDeviceSetting(_ccode, _scode) async{
     
-    DataSnapshot snapshot = await FirebaseDatabase.instance
-        .reference()
+    DataSnapshot snapshot = (await FirebaseDatabase.instance
+        .ref()
         .child("clients/$_ccode/series/$_scode/DeviceSetting")
-        .once();
+        .once()).snapshot;
     if(_scode == "S0"){
       if(snapshot.value!=null){
       S0DeviceSettingModel deviceSettingModel = S0DeviceSettingModel.fromSnapshot(snapshot);
@@ -142,7 +141,7 @@ class HomePageVM {
   _getClientsList() async {  
     List<ClientListModel> _clientList = [];
     try{
-    DataSnapshot citiesSnapshot = await FirebaseDatabase.instance.reference().child("clientsList").once();
+    DataSnapshot citiesSnapshot = (await FirebaseDatabase.instance.ref().child("clientsList").once()).snapshot;
     _clientsMap = citiesSnapshot.value??{};
     if(GlobalVar.strAccessLevel=="1"){
     _clientsMap.removeWhere((key, value) => GlobalVar.userDetail.clientsVisible.contains(key));
@@ -190,7 +189,7 @@ class HomePageVM {
   }
  
   _getClientisActive(String clientCode) async{
-    DataSnapshot snapshot = await FirebaseDatabase.instance.reference().child("clients/$clientCode/isActive").once();
+    DataSnapshot snapshot = (await FirebaseDatabase.instance.ref().child("clients/$clientCode/isActive").once()).snapshot;
     if(snapshot.value == 1)
     GlobalVar.isActive = true;
     else 
@@ -221,20 +220,23 @@ class HomePageVM {
     await _setQuery(_ccode, _scode);
   } 
   _getScriptEditorUrl() async{
-    _scriptEditorURL = (await FirebaseDatabase.instance.reference().child("clients/$_ccode/series/$_scode/DeviceSetting/doPost").once()).value;
+    _scriptEditorURL = (await FirebaseDatabase.instance.ref().child("clients/$_ccode/series/$_scode/DeviceSetting/doPost").once()).snapshot.value;
   }
 _checkForUpdate() async{
   InAppUpdate.checkForUpdate().then((info) {
       AppUpdateInfo _updateInfo;
       _updateInfo = info;
       
-      print("=====================================");
-      print(_updateInfo.updateAvailable);
+      print("===================UPDATE AVAILABILITY==================");
+      print(_updateInfo.availableVersionCode);
       print(_updateInfo.flexibleUpdateAllowed);
       print(_updateInfo.availableVersionCode);
       print(_updateInfo.immediateUpdateAllowed);
+      print(_updateInfo.updateAvailability.name);
+      print(_updateInfo.updateAvailability.index);
+      print(_updateInfo.updateAvailability.value);
       print("=====================================");
-       if(_updateInfo.updateAvailable){
+       if(_updateInfo.updateAvailability.name!="updateNotAvailable"){
          _showUpdateDialog(info);
        }
       

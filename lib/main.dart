@@ -1,3 +1,4 @@
+import 'package:Decon/Controller/MessagingService/FirebaseMessaging.dart';
 import 'package:Decon/Controller/Providers/People_provider.dart';
 import 'package:Decon/Controller/Providers/devie_setting_provider.dart';
 import 'package:Decon/Controller/Providers/home_page_providers.dart';
@@ -6,6 +7,9 @@ import 'package:Decon/Controller/ViewModels/Services/connectivity_wrapper.dart';
 import 'package:Decon/View_Android/DrawerFragments/Statistics/graphs_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core_platform_interface/firebase_core_platform_interface.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +17,8 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  if(!kIsWeb) initmessage();
   runApp(MyApp());
 }
 
@@ -25,7 +31,7 @@ class MyApp extends StatelessWidget {
     //SystemChrome.setEnabledSystemUIOverlays([]);    
     return StreamProvider<User>.value(
       value: Auth.instance.appuser,
-      
+      initialData: FirebaseAuth.instance.currentUser,
       child: MultiProvider(
         providers: [
            ChangeNotifierProvider(create: (context)=> AfterAdminChangeProvider(),),
@@ -74,4 +80,17 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+}
+
+
+initmessage()  async{
+  await FirebaseMessagingService.instance.setUpFlutterNotifications();
+
+  FirebaseMessaging.onBackgroundMessage((RemoteMessage message) async{
+      //await Firebase.initializeApp(options: FirebaseOptions(apiKey: apiKey, appId: appId, messagingSenderId: messagingSenderId, projectId: projectId)))
+      //FirebaseMessagingService.instance.showNotificationv1(message.data["title"], message.data["body"]);
+      FirebaseMessagingService.instance.showNotificationv1(message.notification.title, message.notification.title);    
+  } );
+   // initializing messaging handlers
+  
 }

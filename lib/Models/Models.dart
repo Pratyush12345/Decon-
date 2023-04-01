@@ -28,15 +28,15 @@ class S1DeviceSettingModel {
       this.doPost});
 
   S1DeviceSettingModel.fromSnapshot(DataSnapshot snapshot)
-      : manholedepth = double.parse(snapshot.value["manHoleDepth"].toString()),
-        criticallevelabove = double.parse(snapshot.value["criticalLevelAbove"].toString()),
-        informativelevelabove = double.parse(snapshot.value["informativeLevelAbove"].toString()),
-        nomrallevelabove =  double.parse(snapshot.value["nomralLevelAbove"].toString()),
-        groundlevelbelow = double.parse(snapshot.value["groundLevelBelow"].toString()),
-        tempthresholdvalue = double.parse(snapshot.value["tempThresholdValue"].toString()),
-        batterythresholdvalue = int.parse(snapshot.value["batteryThresholdValue"].toString()),
-        sheetURL = snapshot.value["sheetURL"].toString(),
-        doPost = snapshot.value["doPost"].toString();
+      : manholedepth = double.parse((snapshot.value as Map)["manHoleDepth"].toString()),
+        criticallevelabove = double.parse((snapshot.value as Map)["criticalLevelAbove"].toString()),
+        informativelevelabove = double.parse((snapshot.value as Map)["informativeLevelAbove"].toString()),
+        nomrallevelabove =  double.parse((snapshot.value as Map)["nomralLevelAbove"].toString()),
+        groundlevelbelow = double.parse((snapshot.value as Map)["groundLevelBelow"].toString()),
+        tempthresholdvalue = double.parse((snapshot.value as Map)["tempThresholdValue"].toString()),
+        batterythresholdvalue = int.parse((snapshot.value as Map)["batteryThresholdValue"].toString()),
+        sheetURL = (snapshot.value as Map)["sheetURL"].toString(),
+        doPost = (snapshot.value as Map)["doPost"].toString();
 
   toJson() {
     return {
@@ -78,10 +78,10 @@ class S0DeviceSettingModel {
       this.doPost});
 
   S0DeviceSettingModel.fromSnapshot(DataSnapshot snapshot)
-      : manholedepth = double.parse(snapshot.value["manHoleDepth"].toString()),
-        batterythresholdvalue = int.parse(snapshot.value["batteryThresholdValue"].toString()),
-        sheetURL = snapshot.value["sheetURL"].toString(),
-        doPost = snapshot.value["doPost"].toString();
+      : manholedepth = double.parse((snapshot.value as Map)["manHoleDepth"].toString()),
+        batterythresholdvalue = int.parse((snapshot.value as Map)["batteryThresholdValue"].toString()),
+        sheetURL = (snapshot.value as Map)["sheetURL"].toString(),
+        doPost = (snapshot.value as Map)["doPost"].toString();
 
   toJson() {
     return {
@@ -178,13 +178,14 @@ class DeviceData {
       this.signalStrength});
 
   DeviceData.fromSnapshot(DataSnapshot snapshot, String _seriesCode) {
-    id = snapshot.value["id"];
-    latitude = double.parse(snapshot.value["latitude"].toString());
-    longitude = double.parse(snapshot.value["longitude"].toString());
-    battery = snapshot.value["battery"]??100;
-    distance = snapshot.value["distance"];
+    Map map = snapshot.value;
+    id = (snapshot.value as Map) ["id"];
+    latitude = double.parse(map["latitude"].toString());
+    longitude = double.parse(map["longitude"].toString());
+    battery = map["battery"]??100;
+    distance = map["distance"];
     if(_seriesCode == "S0"){
-      wlevel = snapshot.value["wLevel"];
+      wlevel = map["wLevel"];
     }
     else if(_seriesCode == "S1"){
       S1DeviceSettingModel _s1DeviceSettingModel = (GlobalVar.seriesMap["S1"].model as S1DeviceSettingModel);
@@ -199,13 +200,13 @@ class DeviceData {
       else if (distance < _s1DeviceSettingModel.criticallevelabove) 
       wlevel = 3;
     }
-    status = snapshot.value["simStatus"] ?? 1;
-    openManhole = snapshot.value["openManhole"];
-    temperature = snapshot.value["temperature"];
-    lastUpdated = snapshot.value["lastUpdated"];
-    address = snapshot.value["address"] ?? "Empty";
-    signalStrength = snapshot.value["signalStrength"];
-    lightIntensity = snapshot.value["lightIntensity"];
+    status = map["simStatus"] ?? 1;
+    openManhole = map["openManhole"];
+    temperature = map["temperature"];
+    lastUpdated = map["lastUpdated"];
+    address = map["address"] ?? "Empty";
+    signalStrength = map["signalStrength"];
+    lightIntensity = map["lightIntensity"];
   }
 DeviceData.fromJson(Map<dynamic, dynamic> json, String _seriesCode) {
     id = json["id"];
@@ -328,15 +329,16 @@ class Messages {
       this.cityCode, this.location, this.resolveid);
 
   Messages.fromSnapshot(DataSnapshot snapshot) {
+    Map map = snapshot.value;
     key = snapshot.key;
-    url = snapshot.value["url"];
-    selfid = snapshot.value["selfId"];
-    time = snapshot.value["time"];
-    type = snapshot.value["type"];
-    caption = snapshot.value["caption"];
-    cityCode = snapshot.value["cityCode"];
-    location = snapshot.value["location"];
-    resolveid = snapshot.value["resolveid"];
+    url = map["url"];
+    selfid = map["selfId"];
+    time = map["time"];
+    type = map["type"];
+    caption = map["caption"];
+    cityCode = map["cityCode"];
+    location = map["location"];
+    resolveid = map["resolveid"];
   }
 }
 class Item {

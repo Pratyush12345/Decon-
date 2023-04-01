@@ -5,6 +5,7 @@ import 'package:Decon/Models/Models.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -33,45 +34,43 @@ class Auth  {
   }
 
    _updateToken() {
-    FirebaseMessagingService().sendNotification(); // initializing messaging handlers
-    FirebaseMessagingService().flutterlocalnotificationplugin.cancelAll();
-
-    FirebaseMessaging().getToken().then((token) {
+    
+    FirebaseMessaging.instance.getToken().then((token) {
       if (GlobalVar.strAccessLevel == "1") {
         FirebaseDatabase.instance
-            .reference()
+            .ref()
             .child("/superAdmins/${FirebaseAuth.instance.currentUser.uid}")
             .update({"andrtokenid": token});
           
       }
       else if (GlobalVar.strAccessLevel == "2") {
         FirebaseDatabase.instance
-            .reference()
+            .ref()
             .child("/managers/${FirebaseAuth.instance.currentUser.uid}")
             .update({"andrtokenid": token});
       }  
       else if (GlobalVar.strAccessLevel == "3") {
         FirebaseDatabase.instance
-            .reference()
+            .ref()
             .child("/admins/${FirebaseAuth.instance.currentUser.uid}")
             .update({"andrtokenid": token});
          
       }
       else if (GlobalVar.strAccessLevel == "4") {
         FirebaseDatabase.instance
-            .reference()
+            .ref()
             .child("/managerTeam/${FirebaseAuth.instance.currentUser.uid}")
             .update({"andrtokenid": token});
       }
       else if (GlobalVar.strAccessLevel == "5") {
         FirebaseDatabase.instance
-            .reference()
+            .ref()
             .child("/adminTeam/${FirebaseAuth.instance.currentUser.uid}")
             .update({"andrtokenid": token});
       }
       else {
         FirebaseDatabase.instance
-            .reference()
+            .ref()
             .child("/randomUser/${FirebaseAuth.instance.currentUser.uid}")
             .update({"andrtokenid": token});
       }

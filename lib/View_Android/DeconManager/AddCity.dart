@@ -69,7 +69,7 @@ class _AddCityState extends State<AddCity> {
                   
                ButtonTheme(
                    
-                   child: RaisedButton(
+                   child: MaterialButton(
                    shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(24.0),
                                 side: BorderSide(color: Colors.blue)),

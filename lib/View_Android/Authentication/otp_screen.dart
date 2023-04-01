@@ -5,7 +5,7 @@ import 'package:Decon/View_Android/Authentication/login_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:pinput/pin_put/pin_put.dart';
+import 'package:pinput/pinput.dart';
 
 class Otp extends StatefulWidget {
   final String phoneNo;
@@ -38,6 +38,13 @@ class _OtpState extends State<Otp> {
       color: Colors.white,
       borderRadius: BorderRadius.circular(b * 5),
     );
+    final defaultPinTheme = PinTheme(
+                      height: 40.0,
+                      width: 40.0,
+                      textStyle: TextStyle(fontSize: b * 20, color: dc),
+                      decoration: pinPutDecoration,
+                    
+                    );
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -65,27 +72,21 @@ class _OtpState extends State<Otp> {
                 sh(25),
                 Container(
                   width: SizeConfig.screenWidth,
-                  child: PinPut(
+                  child: Pinput(
                     onTap: () {
                       keyboard = true;
                     },
-                    onSubmit: (value) {
+                    onSubmitted: (value) {
                       keyboard = false;
-                    },
-                    onSaved: (value) {
-                      keyboard = true;
-                    },
-                    withCursor: true,
-                    fieldsCount: 6,
-                    textStyle: TextStyle(fontSize: b * 20, color: dc),
-                    eachFieldWidth: 40,
-                    eachFieldHeight: 40,
+                    },                    
+                    showCursor: true,
+                    length: 6,
+                    defaultPinTheme: defaultPinTheme,
                     focusNode: _pinPutFocusNode,
                     controller: _pinPutController,
-                    submittedFieldDecoration: pinPutDecoration,
-                    selectedFieldDecoration: pinPutDecoration,
-                    followingFieldDecoration: pinPutDecoration,
-                  ),
+                    submittedPinTheme: defaultPinTheme,
+                    followingPinTheme: defaultPinTheme ,
+                    ),
                 ),
                 sh(15),
                 Row(

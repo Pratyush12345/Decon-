@@ -19,7 +19,7 @@ class HealthReport extends StatelessWidget{
   Widget build(BuildContext context) {
     
     return Center(
-      child: RaisedButton(
+      child: MaterialButton(
         onPressed: launchUrl,
         child: Text('health_report_message'),
       )

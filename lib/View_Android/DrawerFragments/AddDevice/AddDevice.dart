@@ -55,9 +55,9 @@ class _AddDeviceState extends State<AddDevice> {
       body: 
          Consumer<ChangeDeviceData>(
         builder: (context, _model, child) =>
-          StreamBuilder<Event>(
+          StreamBuilder<DatabaseEvent>(
            stream: FirebaseDatabase.instance
-               .reference()
+               .ref()
                .child(
                    "clients/${HomePageVM.instance.getClientCode}/series/${HomePageVM.instance.getSeriesCode}/devices")
                .onValue,

@@ -203,7 +203,7 @@ class _NoticeBoardState extends State<NoticeBoard> {
                             ],
                           ),
                           //if (Auth.instance.post != null)
-                            RaisedButton(
+                            MaterialButton(
                               child: Text("Resolve"),
                               onPressed: () {
                                 type = "image";
@@ -306,13 +306,13 @@ class _NoticeBoardState extends State<NoticeBoard> {
   }
 
   Future<String> pickImage(BuildContext context, String pickedArea) async {
-    PickedFile selectedImage;
+    File selectedImage;
     if (pickedArea == "FromGallery") {
-      selectedImage = await ImagePicker().getImage(
+      selectedImage = await ImagePicker.pickImage(
         source: ImageSource.gallery,
       );
     } else {
-      selectedImage = await ImagePicker().getImage(
+      selectedImage = await ImagePicker.pickImage(
         source: ImageSource.camera,
       );
     }
@@ -423,7 +423,7 @@ class _NoticeBoardState extends State<NoticeBoard> {
     _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
   }
 
-  onEventRemoved(Event event) {
+  onEventRemoved(DatabaseEvent event) {
     _scrolleffect = true;
     var index;
     _allMessages.forEach((element) {
@@ -460,7 +460,7 @@ class _NoticeBoardState extends State<NoticeBoard> {
     _selfId = FirebaseAuth.instance.currentUser.uid;
     _query = dbRef.reference().child('OverflowQueries');
 
-    _query.onChildAdded.listen((Event event) {
+    _query.onChildAdded.listen((DatabaseEvent event) {
       Messages _messages = Messages.fromSnapshot(event.snapshot);
       bool _isMsgshow = false;
       if (_messages.type != null && _messages.key != "null") {

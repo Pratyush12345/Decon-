@@ -116,8 +116,8 @@ class _AllClientsState extends State<AllClients> {
               sh(30),
               
            Expanded(
-             child: StreamBuilder<Event>(
-               stream: FirebaseDatabase.instance.reference().child("clientsList").onValue,
+             child: StreamBuilder<DatabaseEvent>(
+               stream: FirebaseDatabase.instance.ref().child("clientsList").onValue,
                builder: (context, snapshot){
                  if(snapshot.hasData){
                     _clientsMap = snapshot.data.snapshot.value;

@@ -64,8 +64,8 @@ class _ClickOnAddDeviceState extends State<ClickOnAddDevice> {
     if(!_isAddressChangedManually)
     address = await AddressCalculator(_latitude, _longitude).getLocation();
     if (widget.isUpdating) {
-      DataSnapshot _snapshot = await FirebaseDatabase.instance.reference()
-          .child("clients/$clientCode/series/$seriescode/devices/${deviceCode.split("_")[2]}/battery").once();
+      DataSnapshot _snapshot = (await FirebaseDatabase.instance.reference()
+          .child("clients/$clientCode/series/$seriescode/devices/${deviceCode.split("_")[2]}/battery").once()).snapshot;
     _battery = _snapshot.value;
     
       await FirebaseDatabase.instance

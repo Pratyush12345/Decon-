@@ -137,7 +137,7 @@ class _ManagersListState extends State<ManagersList> {
             
            Container(
              height: MediaQuery.of(context).size.height*0.7,
-             child: StreamBuilder<Event>(
+             child: StreamBuilder<DatabaseEvent>(
                stream: FirebaseDatabase.instance.reference().child("managers").onValue,
                builder: (context, snapshot){
                  if(snapshot.hasData){

@@ -119,10 +119,10 @@ class GraphsVM {
 
   _callFunctions() async{
     String searchKey = "$_monthNo/$currentYY";
-    print("device id---------${_deviceData.id.split("_")[2].substring(1, _deviceData.id.split("_")[2].length)}");
-    print("sheet url----------${_sheetURL}");
-    print("search key--------${searchKey}");
-    print("secrip teditot url--------${_scriptEditorURL}");
+    // print("device id---------${_deviceData.id.split("_")[2].substring(1, _deviceData.id.split("_")[2].length)}");
+    // print("sheet url----------${_sheetURL}");
+    // print("search key--------${searchKey}");
+    // print("secrip teditot url--------${_scriptEditorURL}");
     String url1 = "$_scriptEditorURL?searchKey=$searchKey&deviceNo=${_deviceData.id.split("_")[2].substring(1, _deviceData.id.split("_")[2].length)}&sheetURL=$_sheetURL&sheetNo=DataSheet";
     print("url1111111-------$url1");
    result = await getDataFromSheetList(url1);
@@ -169,7 +169,7 @@ class GraphsVM {
   }
 
   getDataFromSheetList(String _url) async {
-    return await http.get(_url).then((response) {
+    return await http.get(Uri.parse(_url)).then((response) {
       print("responsed .body========% ${response.body.length}");
       if(response.body.length<=2){
         print("in ifffffffffffff");

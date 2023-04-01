@@ -18,7 +18,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:in_app_update/in_app_update.dart';
+// import 'package:in_app_update/in_app_update.dart';
 import 'package:provider/provider.dart';
 
 
@@ -233,8 +233,8 @@ class _PeopleTabBar extends State<PeopleTabBar> with SingleTickerProviderStateMi
                           Expanded(
                               child: SingleChildScrollView(
                                   physics: ScrollPhysics(),
-                                  child: StreamBuilder<Event>(
-                                      stream: FirebaseDatabase.instance.reference().child("managers").onValue,
+                                  child: StreamBuilder<DatabaseEvent>(
+                                      stream: FirebaseDatabase.instance.ref().child("managers").onValue,
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData) {
                                           Map datamap = snapshot.data.snapshot.value;
@@ -383,8 +383,8 @@ class _PeopleTabBar extends State<PeopleTabBar> with SingleTickerProviderStateMi
                           Expanded(
                               child: SingleChildScrollView(
                                   physics: ScrollPhysics(),
-                                  child: StreamBuilder<Event>(
-                                      stream: FirebaseDatabase.instance.reference().child("admins").onValue,
+                                  child: StreamBuilder<DatabaseEvent>(
+                                      stream: FirebaseDatabase.instance.ref().child("admins").onValue,
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData) {
                                           Map datamap = snapshot.data.snapshot.value;

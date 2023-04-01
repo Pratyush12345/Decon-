@@ -16,7 +16,7 @@ class AppConstant {
         height: 200.0,
         width: 200.0,
         child: RiveAnimation.asset('images/loading7.riv',
-                    animation: "loading",
+                    animations: ["loading"],
                     ),
       ),
     );
@@ -115,13 +115,13 @@ class AppConstant {
   }
 
   static  void showSuccessToast(BuildContext context,String msg, {int duration, int gravity}) {
-    Toast.show(msg, context, duration: 5,backgroundColor: Colors.green);
+    Toast.show(msg,  duration: 5,backgroundColor: Colors.green);
   }
   static  void showFailToast(BuildContext context,String msg, {int duration, int gravity}) {
-    Toast.show(msg, context, duration: 5,backgroundColor: Colors.red);
+    Toast.show(msg,  duration: 5,backgroundColor: Colors.red);
   }
   static  void showUpFailToast(BuildContext context,String msg, {int duration, int gravity}) {
-    Toast.show(msg, context, duration: 5,backgroundColor: Colors.red, gravity: Toast.TOP);
+    Toast.show(msg,  duration: 5,backgroundColor: Colors.red, gravity: 1);
   }
 }
 

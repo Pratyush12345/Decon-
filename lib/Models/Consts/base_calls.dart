@@ -3,12 +3,12 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 abstract class BaseCall{
-  DatabaseReference _dbRef = FirebaseDatabase.instance.reference();
+  DatabaseReference _dbRef = FirebaseDatabase.instance.ref();
   CollectionReference _fsRef =  FirebaseFirestore.instance.collection('CurrentLogins');
   @protected
   Future<dynamic> databaseOnceCall(String databaseUrl) async{
    try{
-   DataSnapshot snapshot = await _dbRef.child(databaseUrl).once();
+   DataSnapshot snapshot = (await _dbRef.child(databaseUrl).once()).snapshot;
    return snapshot;
    }
    catch(e){
@@ -19,7 +19,7 @@ abstract class BaseCall{
   @protected
   Future<dynamic> databaseOrderByChildCall(String databaseUrl, String orderBy, String equalTo) async{
    try{
-   DataSnapshot snapshot = await _dbRef.child(databaseUrl).orderByChild(orderBy).equalTo(equalTo).once();
+   DataSnapshot snapshot = (await _dbRef.child(databaseUrl).orderByChild(orderBy).equalTo(equalTo).once()).snapshot;
    return snapshot;
    }
    catch(e){

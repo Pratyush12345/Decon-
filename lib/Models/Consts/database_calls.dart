@@ -50,7 +50,7 @@ class DatabaseCallServices extends BaseCall{
 
   Future<bool> getUserCustomClaim(String phoneNo) async {
    String url = "${DatabasePath.getUserCustomClaim}?phoneNo=$phoneNo";
-   http.Response response = await http.Client().get(url);
+   http.Response response = await http.Client().get(Uri.parse(url));
    
    try{
    Map _map = jsonDecode(response.body);

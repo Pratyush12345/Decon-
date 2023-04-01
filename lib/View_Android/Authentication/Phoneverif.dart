@@ -316,7 +316,7 @@ class _PhoneVerifState extends State<PhoneVerif> {
                       ? ButtonTheme(
                           height: SizeConfig.screenHeight * 30 / 640,
                           minWidth: SizeConfig.screenWidth * 120 / 360,
-                          child: RaisedButton(
+                          child: MaterialButton(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
                                   SizeConfig.screenWidth * 6 / 360),
@@ -353,7 +353,7 @@ class _PhoneVerifState extends State<PhoneVerif> {
                       : ButtonTheme(
                           height: 60.0,
                           minWidth: 60.0,
-                          child: RaisedButton(
+                          child: MaterialButton(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30.0),
                                 side: BorderSide(color: Colors.blue)),

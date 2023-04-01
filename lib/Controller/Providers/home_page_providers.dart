@@ -17,7 +17,7 @@ class ChangeDeviceData extends ChangeNotifier{
 
   void rebuild(){
     notifyListeners();
-  }
+  } 
 
   void changeDeviceData(String methodName, { DeviceData newDeviceData } ){
     if(methodName == "onDeviceAdded" && allDeviceData!=null){

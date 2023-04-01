@@ -35,7 +35,7 @@ class AddClientVM {
         seriesList = [];
         for(int i =0; i<list.length ; i++){
           if(isEdit){
-          String sheetUrl = (await FirebaseDatabase.instance.reference().child("clients/$clientCode/series/${list[i]}/DeviceSetting/sheetURL").once()).value; 
+          String sheetUrl = (await FirebaseDatabase.instance.ref().child("clients/$clientCode/series/${list[i]}/DeviceSetting/sheetURL").once()).snapshot.value; 
            seriesList.add(SeriesControllerModel(seriesName: list[i], sheetController: TextEditingController(text: sheetUrl??"")));
           }else{
            seriesList.add(SeriesControllerModel(seriesName: list[i], sheetController: TextEditingController(text: "")));

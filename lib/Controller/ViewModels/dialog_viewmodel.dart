@@ -129,6 +129,7 @@ class DialogVM {
       _databaseCallServices.removeAdmin(uid);
 
       Navigator.of(context).pop();
+      
     } catch (e) {
       print(e);
     }
